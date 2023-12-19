@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "chyzylogistics",
+  "version": "${version}",
+  "name": "Chyzy Logistics",
+  "description": "",
+  "authors": ["chyzman"],
+  "contributors": [
+    "Dr.Zeal - Texture Artist",
+    "glisco - was supprised"
+  ],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/chyzyLogistics/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": ["com.chyzman.chyzyLogistics.client.ChyzyLogisticsClient"],
+    "main": ["com.chyzman.chyzyLogistics.ChyzyLogistics"]
+  },
+  "mixins": [
+    "chyzyLogistics.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  },
+  "accessWidener" : "chyzylogistics.accesswidener"
+}

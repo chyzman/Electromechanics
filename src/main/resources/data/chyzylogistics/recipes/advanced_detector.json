@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "I": {
+      "item": "minecraft:copper_ingot"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "C": {
+      "item": "minecraft:comparator"
+    },
+    "D": {
+      "item": "chyzylogistics:detector"
+    }
+  },
+  "pattern": [
+    "III",
+    "RCD",
+    "III"
+  ],
+  "result": {
+    "item": "chyzylogistics:advanced_detector"
+  }
+}

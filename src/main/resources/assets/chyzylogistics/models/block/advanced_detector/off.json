@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/observer",
+  "textures": {
+    "bottom": "chyzylogistics:block/advanced_detector/back",
+    "side": "chyzylogistics:block/advanced_detector/side",
+    "top": "chyzylogistics:block/advanced_detector/top",
+    "front": "chyzylogistics:block/advanced_detector/front",
+    "particle": "chyzylogistics:block/advanced_detector/front"
+  }
+}

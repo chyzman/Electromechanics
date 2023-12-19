@@ -1,0 +1,6 @@
+{
+  "parent": "chyzylogistics:block/detector/off",
+  "textures": {
+    "bottom": "chyzylogistics:block/detector/back_on"
+  }
+}

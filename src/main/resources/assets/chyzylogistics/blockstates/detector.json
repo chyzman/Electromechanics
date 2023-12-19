@@ -1,0 +1,50 @@
+{
+  "variants": {
+    "facing=down,powered=false": {
+      "model": "chyzylogistics:block/detector/off",
+      "x": 90
+    },
+    "facing=down,powered=true": {
+      "model": "chyzylogistics:block/detector/on",
+      "x": 90
+    },
+    "facing=east,powered=false": {
+      "model": "chyzylogistics:block/detector/off",
+      "y": 90
+    },
+    "facing=east,powered=true": {
+      "model": "chyzylogistics:block/detector/on",
+      "y": 90
+    },
+    "facing=north,powered=false": {
+      "model": "chyzylogistics:block/detector/off"
+    },
+    "facing=north,powered=true": {
+      "model": "chyzylogistics:block/detector/on"
+    },
+    "facing=south,powered=false": {
+      "model": "chyzylogistics:block/detector/off",
+      "y": 180
+    },
+    "facing=south,powered=true": {
+      "model": "chyzylogistics:block/detector/on",
+      "y": 180
+    },
+    "facing=up,powered=false": {
+      "model": "chyzylogistics:block/detector/off",
+      "x": 270
+    },
+    "facing=up,powered=true": {
+      "model": "chyzylogistics:block/detector/on",
+      "x": 270
+    },
+    "facing=west,powered=false": {
+      "model": "chyzylogistics:block/detector/off",
+      "y": 270
+    },
+    "facing=west,powered=true": {
+      "model": "chyzylogistics:block/detector/on",
+      "y": 270
+    }
+  }
+}

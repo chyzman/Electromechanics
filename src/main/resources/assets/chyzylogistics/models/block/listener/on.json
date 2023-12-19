@@ -1,0 +1,6 @@
+{
+  "parent": "chyzylogistics:block/listener/off",
+  "textures": {
+    "bottom": "chyzylogistics:block/listener/back_on"
+  }
+}
