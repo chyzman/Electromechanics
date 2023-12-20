@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "chyzylogistics:block/stern_copper",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "chyzylogistics:block/stern_copper"
+    },
+    "facing=south": {
+      "model": "chyzylogistics:block/stern_copper",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "chyzylogistics:block/stern_copper",
+      "y": 270
+    }
+  }
+}

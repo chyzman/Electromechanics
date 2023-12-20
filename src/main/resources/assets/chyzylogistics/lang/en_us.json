@@ -1,5 +1,16 @@
 {
   "block.chyzylogistics.detector": "Detector",
   "block.chyzylogistics.advanced_detector": "Advanced Detector",
-  "block.chyzylogistics.listener": "Listener"
+  "block.chyzylogistics.listener": "Listener",
+
+  "block.chyzylogistics.gate": "Gate",
+  "block.chyzylogistics.not_gate": "NOT Gate",
+  "block.chyzylogistics.and_gate": "AND Gate",
+  "block.chyzylogistics.or_gate": "OR Gate",
+  "block.chyzylogistics.xor_gate": "XOR Gate",
+  "block.chyzylogistics.nand_gate": "NAND Gate",
+  "block.chyzylogistics.nor_gate": "NOR Gate",
+  "block.chyzylogistics.xnor_gate": "XNOR Gate",
+
+  "block.chyzylogistics.stern_copper": "Stern Copper"
 }
