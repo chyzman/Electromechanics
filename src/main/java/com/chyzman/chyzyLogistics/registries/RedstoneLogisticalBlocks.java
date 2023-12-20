@@ -1,6 +1,7 @@
 package com.chyzman.chyzyLogistics.registries;
 
 import com.chyzman.chyzyLogistics.block.ListenerBlock;
+import com.chyzman.chyzyLogistics.block.SternCopperBlock;
 import com.chyzman.chyzyLogistics.block.detector.AdvancedDetectorBlock;
 import com.chyzman.chyzyLogistics.block.detector.DetectorBlock;
 import com.chyzman.chyzyLogistics.block.gate.BiGateBlock;
@@ -42,6 +43,8 @@ public class RedstoneLogisticalBlocks implements BlockRegistryContainer {
     public static final Block NOR_GATE = new BiGateBlock((right, left) -> !(right || left),FabricBlockSettings.copy(Blocks.REPEATER));
 
     public static final Block XNOR_GATE =  new BiGateBlock((right, left) -> right == left,FabricBlockSettings.copy(Blocks.REPEATER));
+
+    public static final Block STERN_COPPER = new SternCopperBlock(FabricBlockSettings.copy(Blocks.COPPER_BLOCK));
 
     @Override
     public BlockItem createBlockItem(Block block, String identifier) {
