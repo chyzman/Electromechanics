@@ -1,5 +1,6 @@
 package com.chyzman.chyzyLogistics.mixin;
 
+import com.chyzman.chyzyLogistics.block.slime.SlimeSlab;
 import com.chyzman.chyzyLogistics.data.SlimeTags;
 import com.chyzman.chyzyLogistics.util.Colored;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
@@ -7,8 +8,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
-import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import net.minecraft.block.*;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.block.piston.PistonHandler;
@@ -16,10 +16,13 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.*;
+import org.apache.commons.lang3.ArrayUtils;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
@@ -36,8 +39,6 @@ public abstract class PistonHandlerMixin {
     private static void isBlockStickyExt(BlockState state, CallbackInfoReturnable<Boolean> cir) {
         if(state.isIn(SlimeTags.Blocks.STICKY_BLOCKS)) cir.setReturnValue(true);
     }
-
-    //----------------------------------------------------------------------------//
 
     @Inject(method = "isAdjacentBlockStuck", at = @At(value = "HEAD"), cancellable = true)
     private static void isAdjacentBlockStuckExt(BlockState state, BlockState adjacentState, CallbackInfoReturnable<Boolean> cir) {
@@ -74,8 +75,8 @@ public abstract class PistonHandlerMixin {
     //----------------------------------------------------------------------------//
 
     @Inject(method = "calculatePush", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;", shift = At.Shift.BY, by = 2, ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-    private void firstBlockCulling(CallbackInfoReturnable<Boolean> cir, BlockState blockState) {
-        if (!blockState.isIn(SlimeTags.Blocks.SLIME_SLABS) /*&& !blockState.contains(SlabBlock.TYPE)*/) return;
+    private void shouldCancelCalculateEarly(CallbackInfoReturnable<Boolean> cir, BlockState blockState) {
+        if (!(SlimeSlab.isSlimeSlab(blockState))) return;
 
         boolean motionDirUp = this.motionDirection == Direction.UP;
         boolean pistonDirUp = this.world.getBlockState(this.posFrom).get(FacingBlock.FACING) == Direction.UP;
@@ -88,72 +89,58 @@ public abstract class PistonHandlerMixin {
 
     //----------------------------------------------------------------------------//
 
-    @ModifyVariable(method = "tryMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;", shift = At.Shift.BY, by = 2, ordinal = 1), ordinal = 0) //@WrapOperation(method = "tryMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;", ordinal = 1))
-    private BlockState setBlockState(BlockState blockState, @Local(argsOnly = true) BlockPos pos, @Local(ordinal = 0) int i){
-        BlockState blockState2 = this.world.getBlockState(pos.offset(this.motionDirection.getOpposite(), i - 1));
+    // Another check with the required context with to direction of the motion
+    @WrapOperation(method = "tryMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/piston/PistonHandler;isAdjacentBlockStuck(Lnet/minecraft/block/BlockState;Lnet/minecraft/block/BlockState;)Z"))
+    private boolean test(BlockState prevState, BlockState nextState, Operation<Boolean> original){
+        if (!(SlimeSlab.isSlimeSlab(prevState))) return original.call(prevState, nextState);
 
-        if (!(blockState2.isIn(SlimeTags.Blocks.SLIME_SLABS) /*|| blockState2.contains(SlabBlock.TYPE)*/)) {
-            return blockState;
-        }
-
-        boolean type2IsTop = blockState2.get(SlabBlock.TYPE) == SlabType.TOP;
+        boolean type2IsTop = prevState.get(SlabBlock.TYPE) == SlabType.TOP;
         boolean motionDirectionUp = this.motionDirection == Direction.UP;
+        boolean horizontalDirection = this.motionDirection.getId() >= 2;
 
-        if (motionDirectionUp == type2IsTop) return Blocks.AIR.getDefaultState();
+        if(horizontalDirection){
+            if (!(SlimeSlab.isSlimeSlab(nextState))) return original.call(prevState, nextState);
 
-        if (blockState.isIn(SlimeTags.Blocks.SLIME_SLABS) /*|| blockState.contains(SlabBlock.TYPE)*/) {
-            boolean typeIsTop = blockState.get(SlabBlock.TYPE) == SlabType.TOP;
+            boolean typeIsTop = nextState.get(SlabBlock.TYPE) == SlabType.TOP;
 
-            if (this.motionDirection.getId() >= 2) {
-                if (!type2IsTop && typeIsTop) return Blocks.AIR.getDefaultState();
-                if (type2IsTop && !typeIsTop) return Blocks.AIR.getDefaultState();
+            if (type2IsTop != typeIsTop || motionDirectionUp != typeIsTop) {
+                return false;
             }
-
-            if (motionDirectionUp && !typeIsTop) return Blocks.AIR.getDefaultState();
-            if (!motionDirectionUp && typeIsTop) return Blocks.AIR.getDefaultState();
+        } else if (motionDirectionUp == type2IsTop) {
+            return false;
         }
 
-        return blockState;
+        return original.call(prevState, nextState);
     }
 
     //----------------------------------------------------------------------------//
 
+    @Unique
+    private static final Direction[] HORIZONTAL = new Direction[]{ Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST };
+
+    // Used to call directions that should not be checked since it is
+    // top slab or bottom slab meaning the bottom direction and
+    // top direction respectfully does not matter based on the block
     @ModifyExpressionValue(method = "tryMoveAdjacentBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Direction;values()[Lnet/minecraft/util/math/Direction;"))
-    private Direction[] test1(Direction[] original, @Local() BlockState blockState, @Share("SlabType") LocalRef<SlabType> slabType){
-        ObjectArrayList<Direction> directions = new ObjectArrayList<>();
+    private Direction[] filterDirectionsIfSlab(Direction[] original, @Local() BlockState blockState, @Share("isSlimeSlab") LocalBooleanRef isSlimeSlab) {
+        isSlimeSlab.set(SlimeSlab.isSlimeSlab(blockState));
 
-        for (Direction direction : original) {
-            if (blockState.isIn(SlimeTags.Blocks.SLIME_SLABS)/* || blockState.contains(SlabBlock.TYPE)*/ && this.motionDirection.getId() >= 2) {
-                slabType.set(blockState.get(SlabBlock.TYPE));
+        if (!(isSlimeSlab.get() && this.motionDirection.getId() >= 2)) return original;
 
-                if (slabType.get() == SlabType.BOTTOM && direction == Direction.UP) {
-                    continue;
-                } else if (slabType.get() == SlabType.TOP && direction == Direction.DOWN) {
-                    continue;
-                }
-            }
-
-            directions.add(direction);
-        }
-
-        return directions.toArray(Direction[]::new);
+        return ArrayUtils.addAll(
+                new Direction[] { (blockState.get(SlabBlock.TYPE) == SlabType.TOP) ? Direction.UP : Direction.DOWN },
+                HORIZONTAL);
     }
 
+    // Used to further cull weather the two blocks are sticking to each
+    // other based on the idea that one is a slime slab but not sticking to each other
     @WrapOperation(method = "tryMoveAdjacentBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/piston/PistonHandler;isAdjacentBlockStuck(Lnet/minecraft/block/BlockState;Lnet/minecraft/block/BlockState;)Z"))
-    private boolean test2(BlockState blockState2, BlockState blockState, Operation<Boolean> original, @Local() Direction direction, @Share("SlabType") LocalRef<SlabType> slabType){
-        if (blockState2.isIn(SlimeTags.Blocks.SLIME_SLABS) /*|| blockState2.contains(SlabBlock.TYPE)*/) {
-            SlabType type2 = blockState2.get(SlabBlock.TYPE);
+    private boolean checkIfSlabsStick(BlockState blockState2, BlockState blockState, Operation<Boolean> original, @Local() Direction direction, @Share("isSlimeSlab") LocalBooleanRef isSlimeSlab){
+        if (SlimeSlab.isSlimeSlab(blockState2)) {
+            boolean type2IsTop = blockState2.get(SlabBlock.TYPE) == SlabType.TOP;
 
-            if (direction.getId() >= 2) {
-                if (slabType.get() == SlabType.TOP && type2 == SlabType.BOTTOM) {
-                    return false;
-                } else if (slabType.get() == SlabType.BOTTOM && type2 == SlabType.TOP) {
-                    return false;
-                }
-            }
-
-            if (direction == Direction.DOWN && type2 == SlabType.BOTTOM) return false;
-            if (direction == Direction.UP && type2 == SlabType.TOP) return false;
+            if (isSlimeSlab.get() && direction.getId() >= 2 && (blockState.get(SlabBlock.TYPE) == SlabType.TOP) != type2IsTop) return false;
+            if ((direction == Direction.UP) == type2IsTop) return false;
         }
 
         return original.call(blockState2, blockState);

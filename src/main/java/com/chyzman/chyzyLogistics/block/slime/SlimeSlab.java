@@ -1,14 +1,21 @@
 package com.chyzman.chyzyLogistics.block.slime;
 
+import com.chyzman.chyzyLogistics.data.SlimeTags;
+import com.chyzman.chyzyLogistics.registries.SlimeBlocks;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
+import net.minecraft.block.enums.SlabType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.ArrayUtils;
+import org.spongepowered.asm.mixin.Unique;
 
 public class SlimeSlab extends SlabBlock {
 
@@ -53,5 +60,9 @@ public class SlimeSlab extends SlabBlock {
         }
 
         super.onSteppedOn(world, pos, state, entity);
+    }
+
+    public static boolean isSlimeSlab(BlockState state){
+        return state.isIn(SlimeTags.Blocks.SLIME_SLABS) && state.contains(SlabBlock.TYPE);
     }
 }
