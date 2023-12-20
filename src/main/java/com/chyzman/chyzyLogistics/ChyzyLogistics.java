@@ -3,6 +3,7 @@ package com.chyzman.chyzyLogistics;
 import com.chyzman.chyzyLogistics.block.detector.AdvancedDetectorBlockEntity;
 import com.chyzman.chyzyLogistics.block.detector.DetectorBlockEntity;
 import com.chyzman.chyzyLogistics.registries.RedstoneLogisticalBlocks;
+import com.chyzman.chyzyLogistics.registries.SlimeBlocks;
 import io.wispforest.owo.itemgroup.Icon;
 import io.wispforest.owo.itemgroup.OwoItemGroup;
 import io.wispforest.owo.itemgroup.json.OwoItemGroupLoader;
@@ -11,6 +12,7 @@ import io.wispforest.owo.registration.reflect.FieldRegistrationHandler;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemGroups;
@@ -29,6 +31,7 @@ public class ChyzyLogistics implements ModInitializer {
     @Override
     public void onInitialize() {
         FieldRegistrationHandler.register(RedstoneLogisticalBlocks.class, MODID, false);
+        SlimeBlocks.init();
 
         ServerEventListeners.init();
 
@@ -40,6 +43,24 @@ public class ChyzyLogistics implements ModInitializer {
                         (context, entries) -> {
                             entries.addAll(
                                     RedstoneLogisticalBlocks.getBlockItems().stream().map(ItemStack::new).toList(),
+                                    ItemGroup.StackVisibility.PARENT_AND_SEARCH_TABS
+                            );
+                        },
+                        false
+                );
+                wrapperGroup.addCustomTab(
+                        Icon.of(SlimeBlocks.getSlimeSlabs().get(0)),
+                        "slime_block_variants",
+                        (context, entries) -> {
+                            entries.addAll(
+                                    SlimeBlocks.getSlimeSlabs().stream().map(ItemStack::new).toList(),
+                                    ItemGroup.StackVisibility.PARENT_AND_SEARCH_TABS
+                            );
+
+                            entries.add(Blocks.SLIME_BLOCK);
+
+                            entries.addAll(
+                                    SlimeBlocks.getSlimeBlocks().stream().map(ItemStack::new).toList(),
                                     ItemGroup.StackVisibility.PARENT_AND_SEARCH_TABS
                             );
                         },

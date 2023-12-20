@@ -5,9 +5,13 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "BlockEntityAccessor",
-    "ObserverBlockAccessor", "RedstoneWireBlockMixin"
+    "ObserverBlockAccessor",
+    "RedstoneWireBlockMixin",
+    "PistonHandlerMixin"
   ],
   "client": [
+    "ModelLoaderAccessor",
+    "client.TranslationStorageMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "chyzylogistics:block/slime_slab_normal"
+    },
+    "type=double": {
+      "model": "minecraft:block/slime_block"
+    },
+    "type=top": {
+      "model": "chyzylogistics:block/slime_slab_top_normal"
+    }
+  }
+}
