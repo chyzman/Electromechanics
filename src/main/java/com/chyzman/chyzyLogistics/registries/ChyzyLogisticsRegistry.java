@@ -1,11 +1,10 @@
 package com.chyzman.chyzyLogistics.registries;
 
-import com.chyzman.chyzyLogistics.block.gate.BiGateBlock;
-import com.chyzman.chyzyLogistics.block.gate.GateBlock;
+import com.chyzman.chyzyLogistics.block.ListenerBlock;
 import com.chyzman.chyzyLogistics.block.detector.AdvancedDetectorBlock;
 import com.chyzman.chyzyLogistics.block.detector.DetectorBlock;
-import com.chyzman.chyzyLogistics.block.ListenerBlock;
-import com.chyzman.chyzyLogistics.block.gate.NotGateBlock;
+import com.chyzman.chyzyLogistics.block.gate.BiGateBlock;
+import com.chyzman.chyzyLogistics.block.gate.MonoGateBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -46,9 +45,9 @@ public class ChyzyLogisticsRegistry {
 
     public static final Block LISTENER_BLOCK = registerBlockAndItem("listener", new ListenerBlock(FabricBlockSettings.copy(Blocks.OBSERVER)));
 
-    public static final Block GATE = registerBlockAndItem("gate", new GateBlock(FabricBlockSettings.copy(Blocks.REPEATER)));
+    public static final Block GATE = registerBlockAndItem("gate", new MonoGateBlock(aBoolean -> aBoolean, FabricBlockSettings.copy(Blocks.REPEATER)));
 
-    public static final Block NOT_GATE = registerBlockAndItem("not_gate", new NotGateBlock(FabricBlockSettings.copy(Blocks.REPEATER)));
+    public static final Block NOT_GATE = registerBlockAndItem("not_gate", new MonoGateBlock(aBoolean -> !aBoolean, FabricBlockSettings.copy(Blocks.REPEATER)));
 
     public static final Block AND_GATE = registerBlockAndItem("and_gate", new BiGateBlock((right, left) -> right && left,FabricBlockSettings.copy(Blocks.REPEATER)));
 
@@ -56,11 +55,11 @@ public class ChyzyLogisticsRegistry {
 
     public static final Block XOR_GATE = registerBlockAndItem("xor_gate", new BiGateBlock((right, left) -> right ^ left,FabricBlockSettings.copy(Blocks.REPEATER)));
 
-    public static final Block XNOR_GATE = registerBlockAndItem("xnor_gate", new BiGateBlock((right, left) -> right == left,FabricBlockSettings.copy(Blocks.REPEATER)));
-
     public static final Block NAND_GATE = registerBlockAndItem("nand_gate", new BiGateBlock((right, left) -> !(right && left),FabricBlockSettings.copy(Blocks.REPEATER)));
 
     public static final Block NOR_GATE = registerBlockAndItem("nor_gate", new BiGateBlock((right, left) -> !(right || left),FabricBlockSettings.copy(Blocks.REPEATER)));
+
+    public static final Block XNOR_GATE = registerBlockAndItem("xnor_gate", new BiGateBlock((right, left) -> right == left,FabricBlockSettings.copy(Blocks.REPEATER)));
 
     public static void init() {
     }
