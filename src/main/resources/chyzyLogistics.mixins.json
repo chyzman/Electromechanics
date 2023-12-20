@@ -6,7 +6,8 @@
   "mixins": [
     "BlockEntityAccessor",
     "ObserverBlockAccessor",
-    "RedstoneWireBlockMixin"
+    "RedstoneWireBlockMixin",
+    "PistonHandlerMixin"
   ],
   "client": [
     "ModelLoaderAccessor",

@@ -4,13 +4,16 @@ import com.chyzman.chyzyLogistics.ChyzyLogistics;
 import com.chyzman.chyzyLogistics.block.slime.SlimeBlockColored;
 import com.chyzman.chyzyLogistics.block.slime.SlimeSlab;
 import com.chyzman.chyzyLogistics.block.slime.SlimeSlabColored;
+import com.chyzman.chyzyLogistics.data.SlimeTags;
 import com.chyzman.chyzyLogistics.item.ColoredBlockItem;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import io.wispforest.owo.util.TagInjector;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.SlimeBlock;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -70,6 +73,28 @@ public class SlimeBlocks {
                         return item;
                     });
         }
+
+        iterateVariants(block -> {
+            if(block instanceof SlimeBlock){
+                TagInjector.inject(Registries.BLOCK, SlimeTags.Blocks.SLIME_BLOCKS.id(), block);
+                TagInjector.inject(Registries.BLOCK, SlimeTags.Blocks.COLORED_SLIME_BLOCKS.id(), block);
+            } else if (block instanceof SlimeSlab){
+                TagInjector.inject(Registries.BLOCK, SlimeTags.Blocks.SLIME_SLABS.id(), block);
+                TagInjector.inject(Registries.BLOCK, SlimeTags.Blocks.COLORED_SLIME_SLABS.id(), block);
+            }
+
+            TagInjector.inject(Registries.BLOCK, SlimeTags.Blocks.STICKY_BLOCKS.id(), block);
+        });
+
+        variantInfo().forEach((s, block) -> {
+            if(block instanceof SlimeSlab) {
+                TagInjector.inject(Registries.BLOCK, SlimeTags.Blocks.SLIME_SLABS.id(), block);
+            }
+
+            TagInjector.inject(Registries.BLOCK, SlimeTags.Blocks.STICKY_BLOCKS.id(), block);
+        });
+
+        TagInjector.inject(Registries.BLOCK, SlimeTags.Blocks.STICKY_BLOCKS.id(), Blocks.HONEY_BLOCK);
     }
 
     //--
