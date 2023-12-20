@@ -1,0 +1,6 @@
+{
+  "parent": "chyzylogistics:block/gate/board/base",
+  "textures" : {
+    "particle": "block/repeater"
+  }
+}

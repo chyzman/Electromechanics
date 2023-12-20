@@ -1,0 +1,164 @@
+{
+  "multipart": [
+    {
+      "apply": {"model": "chyzylogistics:block/gate/board/and/off", "y": 180},
+      "when": { "AND": [{"facing": "north"}, {"inverted": "false"}, {"powered": "false"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/board/and/off", "y": 270},
+      "when": { "AND": [{"facing": "east"}, {"inverted": "false"}, {"powered": "false"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/board/and/off"},
+      "when": { "AND": [{"facing": "south"}, {"inverted": "false"}, {"powered": "false"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/board/and/off", "y": 90},
+      "when": { "AND": [{"facing": "west"}, {"inverted": "false"}, {"powered": "false"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/board/nand/off", "y": 180},
+      "when": { "AND": [{"facing": "north"}, {"inverted": "true"}, {"powered": "false"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/board/nand/off", "y": 270},
+      "when": { "AND": [{"facing": "east"}, {"inverted": "true"}, {"powered": "false"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/board/nand/off"},
+      "when": { "AND": [{"facing": "south"}, {"inverted": "true"}, {"powered": "false"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/board/nand/off", "y": 90},
+      "when": { "AND": [{"facing": "west"}, {"inverted": "true"}, {"powered": "false"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/board/and/on", "y": 180},
+      "when": { "AND": [{"facing": "north"}, {"inverted": "false"}, {"powered": "true"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/board/and/on", "y": 270},
+      "when": { "AND": [{"facing": "east"}, {"inverted": "false"}, {"powered": "true"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/board/and/on"},
+      "when": { "AND": [{"facing": "south"}, {"inverted": "false"}, {"powered": "true"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/board/and/on", "y": 90},
+      "when": { "AND": [{"facing": "west"}, {"inverted": "false"}, {"powered": "true"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/board/nand/on", "y": 180},
+      "when": { "AND": [{"facing": "north"}, {"inverted": "true"}, {"powered": "true"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/board/nand/on", "y": 270},
+      "when": { "AND": [{"facing": "east"}, {"inverted": "true"}, {"powered": "true"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/board/nand/on"},
+      "when": { "AND": [{"facing": "south"}, {"inverted": "true"}, {"powered": "true"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/board/nand/on", "y": 90},
+      "when": { "AND": [{"facing": "west"}, {"inverted": "true"}, {"powered": "true"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge", "y": 180},
+      "when": { "AND": [{"facing": "north"}, {"inverted": "false"}, {"powered": "false"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge", "y": 270},
+      "when": { "AND": [{"facing": "east"}, {"inverted": "false"}, {"powered": "false"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge"},
+      "when": { "AND": [{"facing": "south"}, {"inverted": "false"}, {"powered": "false"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge", "y": 90},
+      "when": { "AND": [{"facing": "west"}, {"inverted": "false"}, {"powered": "false"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge_on", "y": 180},
+      "when": { "AND": [{"facing": "north"}, {"inverted": "false"}, {"powered": "true"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge_on", "y": 270},
+      "when": { "AND": [{"facing": "east"}, {"inverted": "false"}, {"powered": "true"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge_on"},
+      "when": { "AND": [{"facing": "south"}, {"inverted": "false"}, {"powered": "true"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge_on", "y": 90},
+      "when": { "AND": [{"facing": "west"}, {"inverted": "false"}, {"powered": "true"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge", "y": 180},
+      "when": { "AND": [{"facing": "west"}, {"right_powered": "false"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge", "y": 270},
+      "when": { "AND": [{"facing": "north"}, {"right_powered": "false"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge"},
+      "when": { "AND": [{"facing": "east"}, {"right_powered": "false"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge", "y": 90},
+      "when": { "AND": [{"facing": "south"}, {"right_powered": "false"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge_on", "y": 180},
+      "when": { "AND": [{"facing": "west"}, {"right_powered": "true"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge_on", "y": 270},
+      "when": { "AND": [{"facing": "north"}, {"right_powered": "true"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge_on"},
+      "when": { "AND": [{"facing": "east"}, {"right_powered": "true"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge_on", "y": 90},
+      "when": { "AND": [{"facing": "south"}, {"right_powered": "true"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge"},
+      "when": { "AND": [{"facing": "west"}, {"left_powered": "false"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge", "y": 90},
+      "when": { "AND": [{"facing": "north"}, {"left_powered": "false"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge", "y": 180},
+      "when": { "AND": [{"facing": "east"}, {"left_powered": "false"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge", "y": 270},
+      "when": { "AND": [{"facing": "south"}, {"left_powered": "false"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge_on"},
+      "when": { "AND": [{"facing": "west"}, {"left_powered": "true"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge_on", "y": 90},
+      "when": { "AND": [{"facing": "north"}, {"left_powered": "true"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge_on","y": 180},
+      "when": { "AND": [{"facing": "east"}, {"left_powered": "true"}] }
+    },
+    {
+      "apply": {"model": "chyzylogistics:block/gate/torch/edge_on", "y": 270},
+      "when": { "AND": [{"facing": "south"}, {"left_powered": "true"}] }
+    }
+  ]
+}

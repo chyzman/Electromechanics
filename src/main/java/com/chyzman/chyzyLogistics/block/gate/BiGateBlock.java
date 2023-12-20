@@ -5,6 +5,7 @@ import net.minecraft.block.*;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
@@ -26,6 +27,7 @@ public class BiGateBlock extends GateBlock {
                         .getDefaultState()
                         .with(FACING, Direction.NORTH)
                         .with(POWERED, Boolean.FALSE)
+                        .with(INVERTED, Boolean.FALSE)
                         .with(RIGHT_POWERED, Boolean.FALSE)
                         .with(LEFT_POWERED, Boolean.FALSE)
         );
@@ -39,12 +41,12 @@ public class BiGateBlock extends GateBlock {
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (!this.isLocked(world, pos, state)) {
-            boolean rightPowered = world.getEmittedRedstonePower(pos.offset(state.get(FACING).rotateYClockwise()), state.get(FACING).rotateYClockwise()) > 0;
-            boolean leftPowered = world.getEmittedRedstonePower(pos.offset(state.get(FACING).rotateYCounterclockwise()), state.get(FACING).rotateYCounterclockwise()) > 0;
+            boolean rightPowered = world.getEmittedRedstonePower(pos.offset(state.get(FACING).rotateYCounterclockwise()), state.get(FACING).rotateYCounterclockwise()) > 0;
+            boolean leftPowered = world.getEmittedRedstonePower(pos.offset(state.get(FACING).rotateYClockwise()), state.get(FACING).rotateYClockwise()) > 0;
             var tempState = state
                     .with(RIGHT_POWERED, rightPowered)
                     .with(LEFT_POWERED, leftPowered)
-                    .with(POWERED, this.shouldEmitPower.apply(rightPowered, leftPowered));
+                    .with(POWERED, !state.get(INVERTED) && this.shouldEmitPower.apply(rightPowered, leftPowered));
             if (!tempState.equals(state)) {
                 world.setBlockState(pos, tempState, Block.NOTIFY_LISTENERS);
                 world.scheduleBlockTick(pos, this, this.getUpdateDelayInternal(state), TickPriority.VERY_HIGH);
@@ -54,9 +56,9 @@ public class BiGateBlock extends GateBlock {
 
     @Override
     protected int getPower(World world, BlockPos pos, BlockState state) {
-        boolean rightPowered = world.getEmittedRedstonePower(pos.offset(state.get(FACING).rotateYClockwise()), state.get(FACING).rotateYClockwise()) > 0;
-        boolean leftPowered = world.getEmittedRedstonePower(pos.offset(state.get(FACING).rotateYCounterclockwise()), state.get(FACING).rotateYCounterclockwise()) > 0;
-        return this.shouldEmitPower.apply(rightPowered, leftPowered) ? 15 : 0;
+        boolean rightPowered = world.getEmittedRedstonePower(pos.offset(state.get(FACING).rotateYCounterclockwise()), state.get(FACING).rotateYCounterclockwise()) > 0;
+        boolean leftPowered = world.getEmittedRedstonePower(pos.offset(state.get(FACING).rotateYClockwise()), state.get(FACING).rotateYClockwise()) > 0;
+        return (!state.get(INVERTED) &&this.shouldEmitPower.apply(rightPowered, leftPowered)) ? 15 : 0;
     }
 
     @Override

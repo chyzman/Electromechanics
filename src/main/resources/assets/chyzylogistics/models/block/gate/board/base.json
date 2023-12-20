@@ -1,0 +1,21 @@
+{
+  "credit": "Made by chyzman",
+  "ambientocclusion": false,
+  "textures": {
+    "1": "block/smooth_stone"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 2, 16],
+      "faces": {
+        "north": {"uv": [0, 14, 16, 16], "texture": "#1", "cullface": "north"},
+        "east": {"uv": [0, 14, 16, 16], "texture": "#1", "cullface": "east"},
+        "south": {"uv": [0, 14, 16, 16], "texture": "#1", "cullface": "south"},
+        "west": {"uv": [0, 14, 16, 16], "texture": "#1", "cullface": "west"},
+        "up": {"uv": [0, 0, 16, 16], "texture": "#particle"},
+        "down": {"uv": [0, 0, 16, 16], "texture": "#1", "cullface": "down"}
+      }
+    }
+  ]
+}

@@ -20,7 +20,7 @@ public class ServerEventListeners {
                     }
                 }
             }
-            return triggered ? ActionResult.SUCCESS : ActionResult.PASS;
+            return (triggered && world.isClient) ? ActionResult.SUCCESS : ActionResult.PASS;
         });
     }
 }
