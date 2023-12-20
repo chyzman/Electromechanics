@@ -77,59 +77,56 @@ public abstract class PistonHandlerMixin {
     private void firstBlockCulling(CallbackInfoReturnable<Boolean> cir, BlockState blockState) {
         if (!blockState.isIn(SlimeTags.Blocks.SLIME_SLABS) /*&& !blockState.contains(SlabBlock.TYPE)*/) return;
 
-        Direction pistionDir = world.getBlockState(posFrom).get(FacingBlock.FACING);
+        boolean motionDirUp = this.motionDirection == Direction.UP;
+        boolean pistonDirUp = this.world.getBlockState(this.posFrom).get(FacingBlock.FACING) == Direction.UP;
+        boolean typeIsTop = blockState.get(SlabBlock.TYPE) == SlabType.TOP;
 
-        boolean bl = ((motionDirection == Direction.DOWN && pistionDir == Direction.UP) && blockState.get(SlabBlock.TYPE) == SlabType.TOP)
-                || ((motionDirection == Direction.UP && pistionDir == Direction.DOWN) && blockState.get(SlabBlock.TYPE) == SlabType.BOTTOM);
+        boolean bl = ((!motionDirUp && pistonDirUp) && typeIsTop) || ((motionDirUp && !pistonDirUp) && !typeIsTop);
 
         if(bl) cir.setReturnValue(true);
     }
 
     //----------------------------------------------------------------------------//
 
-    @Unique private boolean gelatin$setToAir = false;
+//    @Unique private boolean gelatin$setToAir = false;
 
-    @Inject(method = "tryMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;", ordinal = 1, shift = At.Shift.BY, by = 2), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void secondBlockCulling(BlockPos pos, Direction dir, CallbackInfoReturnable<Boolean> cir, BlockState blockState, int i, BlockPos blockPos) {
+//    @Inject(method = "tryMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;", ordinal = 1, shift = At.Shift.BY, by = 2), locals = LocalCapture.CAPTURE_FAILHARD)
+    @ModifyVariable(method = "tryMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;", shift = At.Shift.BY, by = 2, ordinal = 1), ordinal = 0) //@WrapOperation(method = "tryMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;", ordinal = 1))
+    private BlockState setBlockState(BlockState blockState, @Local(argsOnly = true) BlockPos pos, @Local(ordinal = 0) int i){
         //Used as a fix for some weird mixin problem with doing and an inject and modify variable in this way
         //It breaks the local capture of the blockstate within the OG equation
-        BlockPos blockPos2 = pos.offset(this.motionDirection.getOpposite(), i - 1);
-        BlockState blockState2 = world.getBlockState(blockPos2);
-
-        gelatin$setToAir = false;
+        BlockState blockState2 = this.world.getBlockState(pos.offset(this.motionDirection.getOpposite(), i - 1));
 
         //--------------------------\/--\/--\/------------------------------\\
-        if (blockState2.isIn(SlimeTags.Blocks.SLIME_SLABS) /*|| blockState2.contains(SlabBlock.TYPE)*/) {
-            if (motionDirection == Direction.DOWN && blockState2.get(SlabBlock.TYPE) == SlabType.BOTTOM) {
-                gelatin$setToAir = true;
-            }
-            if (motionDirection == Direction.UP && blockState2.get(SlabBlock.TYPE) == SlabType.TOP) {
-                gelatin$setToAir = true;
-            }
-
-            if (blockState.isIn(SlimeTags.Blocks.SLIME_SLABS) /*|| blockState.contains(SlabBlock.TYPE)*/) {
-                if (motionDirection.getId() >= 2) {
-                    if (blockState2.get(SlabBlock.TYPE) == SlabType.BOTTOM && blockState.get(SlabBlock.TYPE) == SlabType.TOP) {
-                        gelatin$setToAir = true;
-                    }
-                    if (blockState2.get(SlabBlock.TYPE) == SlabType.TOP && blockState.get(SlabBlock.TYPE) == SlabType.BOTTOM) {
-                        gelatin$setToAir = true;
-                    }
-                }
-                if (motionDirection == Direction.UP && blockState.get(SlabBlock.TYPE) == SlabType.BOTTOM) {
-                    gelatin$setToAir = true;
-                }
-                if (motionDirection == Direction.DOWN && blockState.get(SlabBlock.TYPE) == SlabType.TOP) {
-                    gelatin$setToAir = true;
-                }
-            }
+        if (!(blockState2.isIn(SlimeTags.Blocks.SLIME_SLABS) /*|| blockState2.contains(SlabBlock.TYPE)*/)) {
+            return blockState;
         }
+
+        boolean type2IsTop = blockState2.get(SlabBlock.TYPE) == SlabType.TOP;
+
+        boolean motionDirectionUp = this.motionDirection == Direction.UP;
+
+        if (motionDirectionUp == type2IsTop) return Blocks.AIR.getDefaultState();
+
+        if (blockState.isIn(SlimeTags.Blocks.SLIME_SLABS) /*|| blockState.contains(SlabBlock.TYPE)*/) {
+            boolean typeIsTop = blockState.get(SlabBlock.TYPE) == SlabType.TOP;
+
+            if (this.motionDirection.getId() >= 2) {
+                if (!type2IsTop && typeIsTop) return Blocks.AIR.getDefaultState();
+                if (type2IsTop && !typeIsTop) return Blocks.AIR.getDefaultState();
+            }
+
+            if (motionDirectionUp && !typeIsTop) return Blocks.AIR.getDefaultState();
+            if (!motionDirectionUp && typeIsTop) return Blocks.AIR.getDefaultState();
+        }
+
+        return blockState;
     }
 
-    @ModifyVariable(method = "tryMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;", shift = At.Shift.BY, by = 2, ordinal = 1), ordinal = 0)
-    private BlockState setBlockState(BlockState state) {
-        return gelatin$setToAir ? Blocks.AIR.getDefaultState() : state;
-    }
+//    @ModifyVariable(method = "tryMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;", shift = At.Shift.BY, by = 2, ordinal = 1), ordinal = 0)
+//    private BlockState setBlockState(BlockState state) {
+//        return gelatin$setToAir ? Blocks.AIR.getDefaultState() : state;
+//    }
 
     //----------------------------------------------------------------------------//
 
@@ -138,7 +135,7 @@ public abstract class PistonHandlerMixin {
         ObjectArrayList<Direction> directions = new ObjectArrayList<>();
 
         for (Direction direction : original) {
-            if (blockState.isIn(SlimeTags.Blocks.SLIME_SLABS)/* || blockState.contains(SlabBlock.TYPE)*/ && motionDirection.getId() >= 2) {
+            if (blockState.isIn(SlimeTags.Blocks.SLIME_SLABS)/* || blockState.contains(SlabBlock.TYPE)*/ && this.motionDirection.getId() >= 2) {
                 slabType.set(blockState.get(SlabBlock.TYPE));
 
                 if (slabType.get() == SlabType.BOTTOM && direction == Direction.UP) {
