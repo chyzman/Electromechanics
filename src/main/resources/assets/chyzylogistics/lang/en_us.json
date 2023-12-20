@@ -12,5 +12,8 @@
   "block.chyzylogistics.nor_gate": "NOR Gate",
   "block.chyzylogistics.xnor_gate": "XNOR Gate",
 
-  "block.chyzylogistics.stern_copper": "Stern Copper"
+  "block.chyzylogistics.stern_copper": "Stern Copper",
+
+  "itemGroup.redstone_blocks.tab.advanced_redstone_blocks": "Advanced Redstone Blocks",
+  "itemGroup.redstone_blocks.tab.slime_block_variants": "Slime Block Variants"
 }
