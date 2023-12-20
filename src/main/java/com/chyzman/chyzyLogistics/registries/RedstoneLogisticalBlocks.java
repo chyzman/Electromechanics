@@ -30,19 +30,11 @@ public class RedstoneLogisticalBlocks implements BlockRegistryContainer {
 
     public static final Block GATE = new MonoGateBlock(aBoolean -> aBoolean, FabricBlockSettings.copy(Blocks.REPEATER));
 
-    public static final Block NOT_GATE = new MonoGateBlock(aBoolean -> !aBoolean, FabricBlockSettings.copy(Blocks.REPEATER));
-
     public static final Block AND_GATE = new BiGateBlock((right, left) -> right && left,FabricBlockSettings.copy(Blocks.REPEATER));
 
     public static final Block OR_GATE = new BiGateBlock((right, left) -> right || left,FabricBlockSettings.copy(Blocks.REPEATER));
 
     public static final Block XOR_GATE = new BiGateBlock((right, left) -> right ^ left,FabricBlockSettings.copy(Blocks.REPEATER));
-
-    public static final Block NAND_GATE = new BiGateBlock((right, left) -> !(right && left),FabricBlockSettings.copy(Blocks.REPEATER));
-
-    public static final Block NOR_GATE = new BiGateBlock((right, left) -> !(right || left),FabricBlockSettings.copy(Blocks.REPEATER));
-
-    public static final Block XNOR_GATE =  new BiGateBlock((right, left) -> right == left,FabricBlockSettings.copy(Blocks.REPEATER));
 
     public static final Block STERN_COPPER = new SternCopperBlock(FabricBlockSettings.copy(Blocks.COPPER_BLOCK));
 
