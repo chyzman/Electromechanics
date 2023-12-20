@@ -1,5 +1,6 @@
 {
   "block.chyzylogistics.detector": "Detector",
   "block.chyzylogistics.advanced_detector": "Advanced Detector",
-  "block.chyzylogistics.listener": "Listener"
+  "block.chyzylogistics.listener": "Listener",
+  "itemGroup.redstone_blocks.tab.advanced_redstone_blocks": "Advanced Redstone Blocks"
 }
