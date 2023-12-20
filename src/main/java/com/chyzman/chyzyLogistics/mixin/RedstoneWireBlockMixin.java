@@ -15,10 +15,8 @@ public abstract class RedstoneWireBlockMixin {
     @Inject(method = "connectsTo(Lnet/minecraft/block/BlockState;Lnet/minecraft/util/math/Direction;)Z",
             at = @At("HEAD"), cancellable = true)
     private static void dontConnectToMyDamnGates(BlockState state, Direction dir, CallbackInfoReturnable<Boolean> cir) {
-        if (state.getBlock() instanceof MonoGateBlock gateBlock) {
-            if (!gateBlock.wireConnectsTo(state, dir)) {
-                cir.setReturnValue(false);
-            }
+        if (state.getBlock() instanceof MonoGateBlock gateBlock && !gateBlock.wireConnectsTo(state, dir)) {
+            cir.setReturnValue(false);
         }
     }
 }

@@ -1,0 +1,5 @@
+{
+  "target_group": "minecraft:redstone_blocks",
+  "extend": true,
+  "tabs": []
+}

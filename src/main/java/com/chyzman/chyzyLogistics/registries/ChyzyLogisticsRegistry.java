@@ -1,7 +1,6 @@
 package com.chyzman.chyzyLogistics.registries;
 
 import com.chyzman.chyzyLogistics.block.ListenerBlock;
-import com.chyzman.chyzyLogistics.block.SternCopperBlock;
 import com.chyzman.chyzyLogistics.block.detector.AdvancedDetectorBlock;
 import com.chyzman.chyzyLogistics.block.detector.DetectorBlock;
 import com.chyzman.chyzyLogistics.block.gate.BiGateBlock;
@@ -61,8 +60,6 @@ public class ChyzyLogisticsRegistry {
     public static final Block NOR_GATE = registerBlockAndItem("nor_gate", new BiGateBlock((right, left) -> !(right || left),FabricBlockSettings.copy(Blocks.REPEATER)));
 
     public static final Block XNOR_GATE = registerBlockAndItem("xnor_gate", new BiGateBlock((right, left) -> right == left,FabricBlockSettings.copy(Blocks.REPEATER)));
-
-    public static final Block STERN_COPPER = registerBlockAndItem("stern_copper", new SternCopperBlock(FabricBlockSettings.copy(Blocks.COPPER_BLOCK)));
 
     public static void init() {
     }
