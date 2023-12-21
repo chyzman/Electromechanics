@@ -5,6 +5,8 @@ import com.chyzman.chyzyLogistics.block.SternCopperBlock;
 import com.chyzman.chyzyLogistics.block.detector.AdvancedDetectorBlock;
 import com.chyzman.chyzyLogistics.block.detector.DetectorBlock;
 import com.chyzman.chyzyLogistics.block.gate.BiGateBlock;
+import com.chyzman.chyzyLogistics.block.gate.BiGateType;
+import com.chyzman.chyzyLogistics.block.gate.GateType;
 import com.chyzman.chyzyLogistics.block.gate.MonoGateBlock;
 import com.google.common.collect.ImmutableList;
 import io.wispforest.owo.registration.reflect.BlockRegistryContainer;
@@ -28,13 +30,13 @@ public class RedstoneLogisticalBlocks implements BlockRegistryContainer {
 
     public static final Block LISTENER = new ListenerBlock(FabricBlockSettings.copy(Blocks.OBSERVER));
 
-    public static final Block GATE = new MonoGateBlock(aBoolean -> aBoolean, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block GATE = new MonoGateBlock(GateType.GATE, FabricBlockSettings.copy(Blocks.REPEATER));
 
-    public static final Block AND_GATE = new BiGateBlock((right, left) -> right && left,FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block AND_GATE = new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
 
-    public static final Block OR_GATE = new BiGateBlock((right, left) -> right || left,FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block OR_GATE = new BiGateBlock(BiGateType.OR, FabricBlockSettings.copy(Blocks.REPEATER));
 
-    public static final Block XOR_GATE = new BiGateBlock((right, left) -> right ^ left,FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block XOR_GATE = new BiGateBlock(BiGateType.XOR, FabricBlockSettings.copy(Blocks.REPEATER));
 
     public static final Block STERN_COPPER = new SternCopperBlock(FabricBlockSettings.copy(Blocks.COPPER_BLOCK));
 

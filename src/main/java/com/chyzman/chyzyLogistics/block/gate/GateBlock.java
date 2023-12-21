@@ -1,6 +1,9 @@
 package com.chyzman.chyzyLogistics.block.gate;
 
 import com.mojang.serialization.MapCodec;
+import io.wispforest.owo.serialization.Endec;
+import io.wispforest.owo.serialization.endec.StructEndecBuilder;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.AbstractRedstoneGateBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -23,31 +26,37 @@ public abstract class GateBlock extends AbstractRedstoneGateBlock {
 
     public GateBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(
-                this.stateManager
-                        .getDefaultState()
-                        .with(FACING, Direction.NORTH)
-                        .with(POWERED, Boolean.FALSE)
-                        .with(INVERTED, Boolean.FALSE)
-        );
+
+        this.setDefaultState(buildDefaultState());
     }
 
-    @Override
-    protected MapCodec<? extends AbstractRedstoneGateBlock> getCodec() {
-        return null;
+    public BlockState buildDefaultState(){
+        return this.stateManager
+                .getDefaultState()
+                .with(FACING, Direction.NORTH)
+                .with(POWERED, Boolean.FALSE)
+                .with(INVERTED, Boolean.FALSE);
     }
+
+    public abstract boolean wireConnectsTo(BlockState state, Direction dir);
+
+    @Override
+    protected abstract MapCodec<? extends AbstractRedstoneGateBlock> getCodec();
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (!player.getAbilities().allowModifyWorld) {
             return ActionResult.PASS;
-        } else {
-            world.playSound(player, pos, SoundEvents.BLOCK_COMPARATOR_CLICK, SoundCategory.BLOCKS, 0.3F, state.get(INVERTED) ? 0.55F : 0.5F);
-            world.setBlockState(pos, state.with(INVERTED, !state.get(INVERTED)), Block.NOTIFY_LISTENERS);
-            return ActionResult.success(world.isClient);
         }
-    }
 
+        world.playSound(player, pos, SoundEvents.BLOCK_COMPARATOR_CLICK, SoundCategory.BLOCKS, 0.3F, state.get(INVERTED) ? 0.55F : 0.5F);
+
+        var newState = state.with(INVERTED, !state.get(INVERTED));
+
+        world.setBlockState(pos, newState.with(POWERED, hasPower(world, pos, newState)), Block.NOTIFY_LISTENERS);
+
+        return ActionResult.success(world.isClient);
+    }
     @Override
     protected int getUpdateDelayInternal(BlockState state) {
         return 2;
@@ -58,5 +67,5 @@ public abstract class GateBlock extends AbstractRedstoneGateBlock {
         builder.add(FACING, POWERED, INVERTED);
     }
 
-    public abstract boolean wireConnectsTo(BlockState state, Direction dir);
+
 }
