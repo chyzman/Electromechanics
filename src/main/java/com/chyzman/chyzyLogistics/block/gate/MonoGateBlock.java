@@ -16,7 +16,13 @@ import net.minecraft.world.tick.TickPriority;
 
 public class MonoGateBlock extends GateBlock {
 
-    public final GateType type;
+    private static final MapCodec<MonoGateBlock> CODEC =  StructEndecBuilder.of(
+            Endec.STRING.xmap(GateType::getType, GateType::type).fieldOf("variant", MonoGateBlock::getType),
+            Endec.ofCodec(AbstractBlock.Settings.CODEC).fieldOf("properties", AbstractBlock::getSettings),
+            MonoGateBlock::new
+    ).mapCodec();
+
+    private final GateType type;
 
     public MonoGateBlock(GateType type, Settings settings) {
         super(settings);
@@ -30,11 +36,7 @@ public class MonoGateBlock extends GateBlock {
 
     @Override
     protected MapCodec<? extends AbstractRedstoneGateBlock> getCodec() {
-        return StructEndecBuilder.of(
-                Endec.STRING.xmap(GateType::getType, GateType::type).fieldOf("variant", MonoGateBlock::getType),
-                Endec.ofCodec(AbstractBlock.Settings.CODEC).fieldOf("properties", AbstractBlock::getSettings),
-                MonoGateBlock::new
-        ).mapCodec();
+        return CODEC;
     }
 
     @Override

@@ -2,9 +2,11 @@ package com.chyzman.chyzyLogistics.block.slime;
 
 import com.chyzman.chyzyLogistics.data.SlimeTags;
 import com.chyzman.chyzyLogistics.registries.SlimeBlocks;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
+import net.minecraft.block.SlimeBlock;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -19,8 +21,15 @@ import org.spongepowered.asm.mixin.Unique;
 
 public class SlimeSlab extends SlabBlock {
 
+    public static final MapCodec<SlimeSlab> CODEC = createCodec(SlimeSlab::new);
+
     public SlimeSlab(Settings settings) {
         super(settings);
+    }
+
+    @Override
+    public MapCodec<? extends SlimeSlab> getCodec() {
+        return CODEC;
     }
 
     @Override

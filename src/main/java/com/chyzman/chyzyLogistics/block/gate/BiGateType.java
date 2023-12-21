@@ -18,7 +18,7 @@ public record BiGateType(String type, BiFunction<Boolean, Boolean, Boolean> logi
 
     public static final BiGateType AND = new BiGateType("and", (right, left) -> right && left);
     public static final BiGateType OR = new BiGateType("or", (right, left) -> right || left);
-    public static final BiGateType XOR = new BiGateType("XOR", (right, left) -> right ^ left);
+    public static final BiGateType XOR = new BiGateType("xor", (right, left) -> right ^ left);
 
     public static BiGateType getType(String type){
         return TYPES.getOrDefault(type, AND);

@@ -17,6 +17,13 @@ import net.minecraft.world.World;
 import net.minecraft.world.tick.TickPriority;
 
 public class BiGateBlock extends GateBlock {
+
+    private static final MapCodec<BiGateBlock> CODEC =  StructEndecBuilder.of(
+            Endec.STRING.xmap(BiGateType::getType, BiGateType::type).fieldOf("variant", BiGateBlock::getType),
+            Endec.ofCodec(AbstractBlock.Settings.CODEC).fieldOf("properties", AbstractBlock::getSettings),
+            BiGateBlock::new
+    ).mapCodec();
+
     public static final BooleanProperty RIGHT_POWERED = BooleanProperty.of("right_powered");
     public static final BooleanProperty LEFT_POWERED = BooleanProperty.of("left_powered");
 
@@ -34,11 +41,7 @@ public class BiGateBlock extends GateBlock {
 
     @Override
     protected MapCodec<? extends AbstractRedstoneGateBlock> getCodec() {
-        return StructEndecBuilder.of(
-                Endec.STRING.xmap(BiGateType::getType, BiGateType::type).fieldOf("variant", BiGateBlock::getType),
-                Endec.ofCodec(AbstractBlock.Settings.CODEC).fieldOf("properties", AbstractBlock::getSettings),
-                BiGateBlock::new
-        ).mapCodec();
+        return CODEC;
     }
 
     @Override
