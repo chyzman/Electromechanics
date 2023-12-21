@@ -120,5 +120,4 @@ public class BiGateBlock extends GateBlock {
     private boolean shouldPower(boolean rightPowered, boolean leftPowered, BlockState state){
         return state.get(INVERTED) != this.type.logicFunc().apply(rightPowered, leftPowered);
     }
-
 }

@@ -1,0 +1,32 @@
+{
+  "credit": "Made by chyzman",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "block/redstone_torch"
+  },
+  "elements": [
+    {
+      "from": [7, 4, 2],
+      "to": [9, 4, 4],
+      "faces": {
+        "up": {"uv": [7, 6, 9, 8], "texture": "#particle"}
+      }
+    },
+    {
+      "from": [7, 1, 1],
+      "to": [9, 5, 5],
+      "faces": {
+        "east": {"uv": [6, 5, 10, 9], "texture": "#particle"},
+        "west": {"uv": [6, 5, 10, 9], "texture": "#particle"}
+      }
+    },
+    {
+      "from": [6, 1, 2],
+      "to": [10, 5, 4],
+      "faces": {
+        "north": {"uv": [6, 5, 10, 9], "texture": "#particle"},
+        "south": {"uv": [6, 5, 10, 9], "texture": "#particle"}
+      }
+    }
+  ]
+}
