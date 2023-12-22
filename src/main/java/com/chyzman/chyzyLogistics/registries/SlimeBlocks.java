@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public class SlimeBlocks {
 
@@ -49,7 +50,7 @@ public class SlimeBlocks {
 
         SLIME_VARIANTS.put("slime_slab", slimeSlab);
 
-        for (DyeColor value : DyeColor.values()) {
+        for (DyeColor value : Stream.of(0, 8, 7, 15, 12, 14, 1, 4, 5, 13, 9, 3, 11, 10, 2, 6).map(DyeColor::byId).toList()) {
             RegistryUtils.registerBlockAndItem(value.asString() + "_slime_slab",
                     () -> new ColoredSlimeSlab(value, FabricBlockSettings.copyOf(Blocks.SLIME_BLOCK).mapColor(value)),
                     block -> {
