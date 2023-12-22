@@ -2,6 +2,7 @@ package com.chyzman.chyzyLogistics.client;
 
 import com.chyzman.chyzyLogistics.ChyzyLogistics;
 import com.chyzman.chyzyLogistics.mixin.ModelLoaderAccessor;
+import com.chyzman.chyzyLogistics.registries.RedstoneWires;
 import com.chyzman.chyzyLogistics.registries.SlimeBlocks;
 import com.google.common.collect.ImmutableMap;
 import net.fabricmc.fabric.api.client.model.loading.v1.BlockStateResolver;
@@ -30,12 +31,17 @@ public class ColoredSlimeVariantsModelLoader implements ModelResolver, BlockStat
 
     private static final Map<String, Identifier> BLOCKSTATE_ID_CACHE = new HashMap<>();
 
+    private static final Map<String, Block> variants = new HashMap<>();;
+
     public static void init(){
         var STATIC_DEFS = ModelLoaderAccessor.gelatin$getSTATIC_DEFINITIONS();
 
         Map<Identifier, StateManager<Block, BlockState>> mutableMap = new LinkedHashMap<>(STATIC_DEFS);
 
-        for (var entry : SlimeBlocks.variantInfo().entrySet()) {
+        variants.putAll(SlimeBlocks.variantInfo());
+        variants.putAll(RedstoneWires.variantInfo());
+
+        for (var entry : variants.entrySet()) {
             Block defaultEntry = entry.getValue();
 
             Identifier baseId = new Identifier(ChyzyLogistics.MODID, "colored_" + entry.getKey());
@@ -62,7 +68,7 @@ public class ColoredSlimeVariantsModelLoader implements ModelResolver, BlockStat
         ModelLoadingPlugin.register(pluginContext -> {
             pluginContext.resolveModel().register(INSTANCE);
 
-            for (var entry : SlimeBlocks.variantInfo().entrySet()) {
+            for (var entry : variants.entrySet()) {
                 String variant = entry.getKey();
 
                 for (DyeColor dyeColor : DyeColor.values()) {
@@ -94,7 +100,7 @@ public class ColoredSlimeVariantsModelLoader implements ModelResolver, BlockStat
 
         Identifier baseModelId = null;
 
-        for (var entry : SlimeBlocks.variantInfo().entrySet()) {
+        for (var entry : variants.entrySet()) {
             String variant = entry.getKey();
 
             if (!SlimeBlocks.isVariant(id, variant)) continue;
@@ -146,7 +152,7 @@ public class ColoredSlimeVariantsModelLoader implements ModelResolver, BlockStat
 
             if(Objects.equals(modelId.getPath(), "slime_slab")) return;
 
-            for (var variant : SlimeBlocks.variantInfo().keySet()) {
+            for (var variant : variants.keySet()) {
                 if (!SlimeBlocks.isVariant(Registries.BLOCK.getId(block), variant)) continue;
 
                 String key = ChyzyLogistics.MODID + ":colored_" + variant + modelId.getVariant();

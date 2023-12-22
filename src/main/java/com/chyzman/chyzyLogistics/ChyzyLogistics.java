@@ -3,6 +3,7 @@ package com.chyzman.chyzyLogistics;
 import com.chyzman.chyzyLogistics.block.detector.AdvancedDetectorBlockEntity;
 import com.chyzman.chyzyLogistics.block.detector.DetectorBlockEntity;
 import com.chyzman.chyzyLogistics.registries.RedstoneLogisticalBlocks;
+import com.chyzman.chyzyLogistics.registries.RedstoneWires;
 import com.chyzman.chyzyLogistics.registries.SlimeBlocks;
 import io.wispforest.owo.itemgroup.Icon;
 import io.wispforest.owo.itemgroup.OwoItemGroup;
@@ -31,7 +32,9 @@ public class ChyzyLogistics implements ModInitializer {
     @Override
     public void onInitialize() {
         FieldRegistrationHandler.register(RedstoneLogisticalBlocks.class, MODID, false);
+
         SlimeBlocks.init();
+        RedstoneWires.init();
 
         ServerEventListeners.init();
 
@@ -61,6 +64,20 @@ public class ChyzyLogistics implements ModInitializer {
 
                             entries.addAll(
                                     SlimeBlocks.getSlimeBlocks().stream().map(ItemStack::new).toList(),
+                                    ItemGroup.StackVisibility.PARENT_AND_SEARCH_TABS
+                            );
+                        },
+                        false
+                );
+
+                wrapperGroup.addCustomTab(
+                        Icon.of(Blocks.REDSTONE_WIRE),
+                        "stone_wire_variants",
+                        (context, entries) -> {
+                            entries.add(Blocks.REDSTONE_WIRE);
+
+                            entries.addAll(
+                                    RedstoneWires.getDusts().stream().map(ItemStack::new).toList(),
                                     ItemGroup.StackVisibility.PARENT_AND_SEARCH_TABS
                             );
                         },
