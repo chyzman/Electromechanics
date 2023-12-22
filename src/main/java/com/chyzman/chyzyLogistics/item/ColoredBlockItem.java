@@ -14,6 +14,8 @@ import net.minecraft.util.DyeColor;
 @EnvironmentInterface(value = EnvType.CLIENT, itf = ItemColorProvider.class)
 public class ColoredBlockItem extends BlockItem implements ItemColorProvider, Colored {
 
+    private Float adjustment = null;
+
     private final DyeColor dyeColor;
 
     public ColoredBlockItem(Block block, Settings settings) {
@@ -22,12 +24,23 @@ public class ColoredBlockItem extends BlockItem implements ItemColorProvider, Co
         this.dyeColor = ((Colored) block).getColor();
     }
 
+    public ColoredBlockItem adjustment(float adjustment){
+        this.adjustment = adjustment;
+
+        return this;
+    }
+
     @Override
     @Environment(EnvType.CLIENT)
     public int getColor(ItemStack stack, int tintIndex) {
-        return Color.ofDye(this.dyeColor).argb();
-    }
+        Color color = Color.ofDye(this.dyeColor);
 
+        if(adjustment != null) {
+            color = color.interpolate(Color.WHITE, adjustment);
+        }
+
+        return color.argb();
+    }
 
     @Override
     public DyeColor getColor() {

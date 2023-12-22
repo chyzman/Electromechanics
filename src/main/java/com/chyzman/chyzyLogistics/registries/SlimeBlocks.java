@@ -1,9 +1,9 @@
 package com.chyzman.chyzyLogistics.registries;
 
 import com.chyzman.chyzyLogistics.ChyzyLogistics;
-import com.chyzman.chyzyLogistics.block.slime.SlimeBlockColored;
+import com.chyzman.chyzyLogistics.block.slime.ColoredSlimeBlock;
 import com.chyzman.chyzyLogistics.block.slime.SlimeSlab;
-import com.chyzman.chyzyLogistics.block.slime.SlimeSlabColored;
+import com.chyzman.chyzyLogistics.block.slime.ColoredSlimeSlab;
 import com.chyzman.chyzyLogistics.data.SlimeTags;
 import com.chyzman.chyzyLogistics.item.ColoredBlockItem;
 import com.google.common.collect.ImmutableList;
@@ -17,7 +17,6 @@ import net.minecraft.block.SlimeBlock;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
@@ -26,8 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class SlimeBlocks {
 
@@ -39,7 +36,7 @@ public class SlimeBlocks {
     public static void init(){
         SLIME_VARIANTS.put("slime_block", Blocks.SLIME_BLOCK);
 
-        var slimeSlab = registerBlockAndItem(
+        var slimeSlab = RegistryUtils.registerBlockAndItem(
                 "slime_slab",
                 () -> new SlimeSlab(FabricBlockSettings.copyOf(Blocks.SLIME_BLOCK)),
                 block -> {
@@ -53,8 +50,8 @@ public class SlimeBlocks {
         SLIME_VARIANTS.put("slime_slab", slimeSlab);
 
         for (DyeColor value : DyeColor.values()) {
-            registerBlockAndItem(value.asString() + "_slime_slab",
-                    () -> new SlimeSlabColored(value, FabricBlockSettings.copyOf(Blocks.SLIME_BLOCK).mapColor(value)),
+            RegistryUtils.registerBlockAndItem(value.asString() + "_slime_slab",
+                    () -> new ColoredSlimeSlab(value, FabricBlockSettings.copyOf(Blocks.SLIME_BLOCK).mapColor(value)),
                     block -> {
                         var item = new ColoredBlockItem(block, new FabricItemSettings());
 
@@ -63,8 +60,8 @@ public class SlimeBlocks {
                         return item;
                     });
 
-            registerBlockAndItem(value.asString() + "_slime_block",
-                    () -> new SlimeBlockColored(value, FabricBlockSettings.copyOf(Blocks.SLIME_BLOCK).mapColor(value)),
+            RegistryUtils.registerBlockAndItem(value.asString() + "_slime_block",
+                    () -> new ColoredSlimeBlock(value, FabricBlockSettings.copyOf(Blocks.SLIME_BLOCK).mapColor(value)),
                     block -> {
                         var item = new ColoredBlockItem(block, new FabricItemSettings());
 
@@ -97,45 +94,7 @@ public class SlimeBlocks {
         TagInjector.inject(Registries.BLOCK, SlimeTags.Blocks.STICKY_BLOCKS.id(), Blocks.HONEY_BLOCK);
     }
 
-    //--
 
-    private static Block registerColoredBlockAndItem(DyeColor color, String variant, Function<DyeColor, Block> blockFunc, Function<Block, BlockItem> blockItemFunc){
-        var block = registerColoredBlock(color, variant, blockFunc);
-
-        registerColoredBlockItem(color, variant, block, blockItemFunc);
-
-        return block;
-    }
-
-    private static Block registerColoredBlock(DyeColor color, String variant, Function<DyeColor, Block> blockFunc){
-        return registerBlock(color.asString() + "_" + variant, () -> blockFunc.apply(color));
-    }
-
-    private static BlockItem registerColoredBlockItem(DyeColor color, String variant, Block block, Function<Block, BlockItem> blockItemFunc){
-        return registerBlockItem(color.asString() + "_" + variant, block, blockItemFunc);
-    }
-
-    //--
-
-    private static Block registerBlockAndItem(String path, Supplier<Block> blockFunc, Function<Block, BlockItem> blockItemFunc){
-        var block = registerBlock(path, blockFunc);
-
-        registerBlockItem(path, block, blockItemFunc);
-
-        return block;
-    }
-
-    private static Block registerBlock(String path, Supplier<Block> blockFunc){
-        var block = blockFunc.get();
-
-        return Registry.register(Registries.BLOCK, new Identifier(ChyzyLogistics.MODID, path), block);
-    }
-
-    private static BlockItem registerBlockItem(String path, Block block, Function<Block, BlockItem> blockItemFunc){
-        var item = blockItemFunc.apply(block);
-
-        return Registry.register(Registries.ITEM, new Identifier(ChyzyLogistics.MODID, path), item);
-    }
 
     //--
 
