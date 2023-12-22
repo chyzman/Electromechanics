@@ -11,7 +11,6 @@ import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelResolver;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.render.block.BlockModels;
 import net.minecraft.client.render.model.UnbakedModel;
 import net.minecraft.client.util.ModelIdentifier;
@@ -25,9 +24,9 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.util.*;
 
-public class ColoredSlimeVariantsModelLoader implements ModelResolver, BlockStateResolver  {
+public class ColoredVariantsModelLoader implements ModelResolver, BlockStateResolver  {
 
-    public static final ColoredSlimeVariantsModelLoader INSTANCE = new ColoredSlimeVariantsModelLoader();
+    public static final ColoredVariantsModelLoader INSTANCE = new ColoredVariantsModelLoader();
 
     private static final Map<String, Identifier> BLOCKSTATE_ID_CACHE = new HashMap<>();
 
@@ -44,7 +43,13 @@ public class ColoredSlimeVariantsModelLoader implements ModelResolver, BlockStat
         for (var entry : variants.entrySet()) {
             Block defaultEntry = entry.getValue();
 
-            Identifier baseId = new Identifier(ChyzyLogistics.MODID, "colored_" + entry.getKey());
+            Identifier baseId;
+
+            if(entry.getKey().equals("redstone_wire")){
+                baseId = new Identifier(entry.getKey());
+            } else {
+                baseId = new Identifier(ChyzyLogistics.MODID, "colored_" + entry.getKey());
+            }
 
             Collection<Property<?>> properties = defaultEntry.getStateManager().getProperties();
 
@@ -74,7 +79,7 @@ public class ColoredSlimeVariantsModelLoader implements ModelResolver, BlockStat
                 for (DyeColor dyeColor : DyeColor.values()) {
                     pluginContext.registerBlockStateResolver(
                             SlimeBlocks.getColoredVariant(dyeColor, variant),
-                            ColoredSlimeVariantsModelLoader.INSTANCE
+                            ColoredVariantsModelLoader.INSTANCE
                     );
                 }
             }
@@ -152,10 +157,18 @@ public class ColoredSlimeVariantsModelLoader implements ModelResolver, BlockStat
 
             if(Objects.equals(modelId.getPath(), "slime_slab")) return;
 
-            for (var variant : variants.keySet()) {
+            for (var entry : variants.entrySet()) {
+                String variant = entry.getKey();
+
                 if (!SlimeBlocks.isVariant(Registries.BLOCK.getId(block), variant)) continue;
 
-                String key = ChyzyLogistics.MODID + ":colored_" + variant + modelId.getVariant();
+                String key;
+
+                if(entry.getKey().equals("redstone_wire")){
+                    key = "minecraft" + ":" + variant + modelId.getVariant();
+                } else {
+                    key = ChyzyLogistics.MODID + ":colored_" + variant + modelId.getVariant();
+                }
 
                 if (BLOCKSTATE_ID_CACHE.get(key) == null) {
                     throw new IllegalResolverStateException("A Block Variant was found to be missing the needed data to load models, which will cause massive issues! [Variant: " + variant + "]");

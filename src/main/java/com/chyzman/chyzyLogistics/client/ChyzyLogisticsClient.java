@@ -17,11 +17,6 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
-import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachedBlockView;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.registry.Registries;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +30,7 @@ public class ChyzyLogisticsClient implements ClientModInitializer {
     public void onInitializeClient() {
         ClientEventListeners.init();
 
-        ColoredSlimeVariantsModelLoader.init();
+        ColoredVariantsModelLoader.init();
 
         BlockRenderLayerMap.INSTANCE.putBlock(Block.getBlockFromItem(SlimeBlocks.getSlimeSlabs().get(0)), TRANSLUCENT);
 
