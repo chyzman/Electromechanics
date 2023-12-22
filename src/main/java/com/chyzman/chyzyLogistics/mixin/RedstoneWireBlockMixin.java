@@ -113,7 +113,7 @@ public abstract class RedstoneWireBlockMixin {
             at = @At(value = "FIELD", target = "Lnet/minecraft/block/RedstoneWireBlock;wiresGivePower:Z")
     )
     private boolean useGlobalGivePower(boolean original){
-        if(((Object) this == Blocks.REDSTONE_WIRE)) return original;
+        //if(((Object) this == Blocks.REDSTONE_WIRE)) return original;
 
         return original && GLOBAL_WIRES_GIVE_POWER;
     }
