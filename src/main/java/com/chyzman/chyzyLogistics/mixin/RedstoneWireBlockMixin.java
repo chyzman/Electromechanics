@@ -31,15 +31,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import java.util.Map;
 
 @Mixin(RedstoneWireBlock.class)
-public abstract class RedstoneWireBlockMixin extends Block {
-
-    @Shadow @Final public static Map<Direction, EnumProperty<WireConnection>> DIRECTION_TO_WIRE_CONNECTION_PROPERTY;
-
-    @Shadow protected abstract WireConnection getRenderConnectionType(BlockView world, BlockPos pos, Direction direction, boolean bl);
-
-    public RedstoneWireBlockMixin(Settings settings) {
-        super(settings);
-    }
+public abstract class RedstoneWireBlockMixin {
 
     @Inject(method = "connectsTo(Lnet/minecraft/block/BlockState;Lnet/minecraft/util/math/Direction;)Z",
             at = @At("HEAD"), cancellable = true)
@@ -49,20 +41,25 @@ public abstract class RedstoneWireBlockMixin extends Block {
         }
     }
 
+    //
+
+    @Shadow @Final public static Map<Direction, EnumProperty<WireConnection>> DIRECTION_TO_WIRE_CONNECTION_PROPERTY;
+
+    @Shadow protected abstract WireConnection getRenderConnectionType(BlockView world, BlockPos pos, Direction direction, boolean bl);
+
+    @Inject(method = "connectsTo(Lnet/minecraft/block/BlockState;Lnet/minecraft/util/math/Direction;)Z",
+            at = @At("HEAD"), cancellable = true)
+    private static void connectToWires(BlockState state, Direction dir, CallbackInfoReturnable<Boolean> cir) {
+        if (state.getBlock() instanceof ColoredRedstoneWireBlock) cir.setReturnValue(true);
+    }
+
     @Inject(
             method = "getRenderConnectionType(Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/Direction;Z)Lnet/minecraft/block/enums/WireConnection;",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/BlockView;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;", ordinal = 0, shift = At.Shift.BY, by = 2),
-            cancellable = true,
-            locals = LocalCapture.CAPTURE_FAILHARD
+            cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD
     )
     private void preventConnectionIfInvalid(BlockView world, BlockPos pos, Direction direction, boolean bl, CallbackInfoReturnable<WireConnection> cir, BlockPos blockPos, BlockState blockState){
         if(!ColoredRedstoneWireBlock.isValid((Block) (Object) this, blockState.getBlock())) {
-            if(world instanceof WorldAccess access && !access.isClient()) {
-//                System.out.println("1 None: [Pos: " + pos + ", Block: " + this + "]");
-//                System.out.println("2 None: [Pos: " + blockPos + ", Block: " + blockState.getBlock() + "]");
-//                System.out.println();
-            }
-
             cir.setReturnValue(WireConnection.NONE);
         }
     }
@@ -81,7 +78,7 @@ public abstract class RedstoneWireBlockMixin extends Block {
         for(Direction direction : Direction.Type.HORIZONTAL) {
             Block otherBlock = world.getBlockState(pos.offset(direction)).getBlock();
 
-            if(ColoredRedstoneWireBlock.isValid(this, otherBlock)) continue;
+            if(ColoredRedstoneWireBlock.isValid((Block) (Object) this, otherBlock)) continue;
 
             WireConnection wireConnection = this.getRenderConnectionType(world, pos, direction, bl);
 
@@ -91,31 +88,13 @@ public abstract class RedstoneWireBlockMixin extends Block {
                 WireConnection oppositeWireConnection = this.getRenderConnectionType(world, pos, oppositeDirection, bl);
 
                 if(oppositeWireConnection == WireConnection.NONE){
-                    state = state.with((Property) DIRECTION_TO_WIRE_CONNECTION_PROPERTY.get(oppositeDirection), WireConnection.NONE);
+                    state = state.with(DIRECTION_TO_WIRE_CONNECTION_PROPERTY.get(oppositeDirection), WireConnection.NONE);
                 }
             }
 
-            state = state.with((Property) DIRECTION_TO_WIRE_CONNECTION_PROPERTY.get(direction), wireConnection);
+            state = state.with(DIRECTION_TO_WIRE_CONNECTION_PROPERTY.get(direction), wireConnection);
         }
 
         return state;
     }
-
-//    /**
-//     * @author F
-//     * @reason F
-//     */
-//    @Overwrite
-//    private BlockState getDefaultWireState(BlockView world, BlockState state, BlockPos pos) {
-//        boolean bl = !world.getBlockState(pos.up()).isSolidBlock(world, pos);
-//
-//        for(Direction direction : Direction.Type.HORIZONTAL) {
-//            //if (!((WireConnection)state.get((Property)DIRECTION_TO_WIRE_CONNECTION_PROPERTY.get(direction))).isConnected()) {
-//                WireConnection wireConnection = this.getRenderConnectionType(world, pos, direction, bl);
-//                state = state.with((Property)DIRECTION_TO_WIRE_CONNECTION_PROPERTY.get(direction), wireConnection);
-//            //}
-//        }
-//
-//        return state;
-//    }
 }
