@@ -2,6 +2,7 @@ package com.chyzman.chyzyLogistics;
 
 import com.chyzman.chyzyLogistics.block.detector.AdvancedDetectorBlockEntity;
 import com.chyzman.chyzyLogistics.block.detector.DetectorBlockEntity;
+import com.chyzman.chyzyLogistics.block.gate.GateBlock;
 import com.chyzman.chyzyLogistics.registries.RedstoneLogisticalBlocks;
 import com.chyzman.chyzyLogistics.registries.SlimeBlocks;
 import io.wispforest.owo.itemgroup.Icon;
@@ -12,18 +13,21 @@ import io.wispforest.owo.registration.reflect.FieldRegistrationHandler;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.minecraft.block.AbstractRedstoneGateBlock;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.ObserverBlock;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemGroups;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
+
+import java.util.ArrayList;
 
 import static com.chyzman.chyzyLogistics.util.ChyzyLogisticsRegistryHelper.id;
 
 public class ChyzyLogistics implements ModInitializer {
     public static final String MODID = "chyzylogistics";
+
+    public static boolean bypassingAir = true;
 
     public static final BlockEntityType<DetectorBlockEntity> DETECTOR_BLOCK_ENTITY = net.minecraft.registry.Registry.register(Registries.BLOCK_ENTITY_TYPE, id("detector"), FabricBlockEntityTypeBuilder.create(DetectorBlockEntity::new, RedstoneLogisticalBlocks.DETECTOR).build());
     public static final BlockEntityType<AdvancedDetectorBlockEntity> ADVANCED_DETECTOR_BLOCK_ENTITY = net.minecraft.registry.Registry.register(Registries.BLOCK_ENTITY_TYPE, id("advanced_detector"), FabricBlockEntityTypeBuilder.create(AdvancedDetectorBlockEntity::new, RedstoneLogisticalBlocks.ADVANCED_DETECTOR).build());
@@ -41,8 +45,19 @@ public class ChyzyLogistics implements ModInitializer {
                         Icon.of(RedstoneLogisticalBlocks.ADVANCED_DETECTOR),
                         "advanced_redstone_blocks",
                         (context, entries) -> {
+                            var blockItems = Registries.ITEM.stream().filter(item -> item instanceof BlockItem).map(item -> (BlockItem) item).toList();
+                            var gates = new ArrayList<>(blockItems.stream().filter(item -> item.getBlock() instanceof AbstractRedstoneGateBlock).map(ItemStack::new).toList());
+                            var observers = new ArrayList<>(blockItems.stream().filter(item -> item.getBlock() instanceof ObserverBlock).map(ItemStack::new).toList());
+                            for (int i = 0; i <= ((int)Math.ceil(gates.size() / 9.0) * 9) - gates.size(); i++) {
+                                gates.add(ItemStack.EMPTY);
+                            };
+                            var items = new ArrayList<>(gates);
+                            for (int i = 0; i <= ((int)Math.ceil(observers.size() / 9.0) * 9) - observers.size(); i++) {
+                                observers.add(ItemStack.EMPTY);
+                            };
+                            items.addAll(observers);
                             entries.addAll(
-                                    RedstoneLogisticalBlocks.getBlockItems().stream().map(ItemStack::new).toList(),
+                                    items,
                                     ItemGroup.StackVisibility.PARENT_AND_SEARCH_TABS
                             );
                         },

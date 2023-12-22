@@ -4,10 +4,8 @@
   "package": "com.chyzman.chyzyLogistics.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "BlockEntityAccessor",
-    "ObserverBlockAccessor",
-    "RedstoneWireBlockMixin",
-    "PistonHandlerMixin"
+    "BlockEntityAccessor", "FabricItemGroupEntriesMixin", "ItemGroupMixin", "ObserverBlockAccessor",
+    "PistonHandlerMixin", "RedstoneWireBlockMixin"
   ],
   "client": [
     "ModelLoaderAccessor",
