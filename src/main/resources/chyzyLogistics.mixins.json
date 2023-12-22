@@ -5,11 +5,13 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "BlockEntityAccessor",
-    "ObserverBlockAccessor",
-    "PistonHandlerMixin",
-    "RedstoneWireBlockAccessor",
     "FabricItemGroupEntriesMixin",
     "ItemGroupMixin",
+    "ObserverBlockAccessor",
+    "PistonHandlerMixin",
+    "AbstractRedstoneGateBlockMixin",
+    "RedstoneViewMixin",
+    "RedstoneWireBlockAccessor",
     "RedstoneWireBlockMixin"
   ],
   "client": [

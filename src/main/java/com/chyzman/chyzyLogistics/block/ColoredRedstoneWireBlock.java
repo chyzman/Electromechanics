@@ -5,6 +5,7 @@ import com.chyzman.chyzyLogistics.util.Colored;
 import io.wispforest.owo.ui.core.Color;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.RedstoneWireBlock;
 import net.minecraft.block.enums.WireConnection;
 import net.minecraft.client.color.block.BlockColorProvider;
@@ -142,6 +143,6 @@ public class ColoredRedstoneWireBlock extends RedstoneWireBlock implements Block
             dyeColor2 = coloredWiredBlock2.getColor();
         }
 
-        return dyeColor == dyeColor2;
+        return (dyeColor == null || dyeColor2 == null) || dyeColor == dyeColor2;
     }
 }
