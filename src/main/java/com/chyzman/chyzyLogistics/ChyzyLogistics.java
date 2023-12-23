@@ -2,13 +2,11 @@ package com.chyzman.chyzyLogistics;
 
 import com.chyzman.chyzyLogistics.block.detector.AdvancedDetectorBlockEntity;
 import com.chyzman.chyzyLogistics.block.detector.DetectorBlockEntity;
-import com.chyzman.chyzyLogistics.block.gate.GateBlock;
+import com.chyzman.chyzyLogistics.block.redstone.RedstoneEvents;
 import com.chyzman.chyzyLogistics.registries.RedstoneLogisticalBlocks;
 import com.chyzman.chyzyLogistics.registries.RedstoneWires;
 import com.chyzman.chyzyLogistics.registries.SlimeBlocks;
 import io.wispforest.owo.itemgroup.Icon;
-import io.wispforest.owo.itemgroup.OwoItemGroup;
-import io.wispforest.owo.itemgroup.json.OwoItemGroupLoader;
 import io.wispforest.owo.itemgroup.json.WrapperGroup;
 import io.wispforest.owo.registration.reflect.FieldRegistrationHandler;
 import net.fabricmc.api.ModInitializer;
@@ -17,9 +15,14 @@ import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityT
 import net.minecraft.block.AbstractRedstoneGateBlock;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ObserverBlock;
+import net.minecraft.block.RedstoneWireBlock;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.*;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemGroups;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
+import net.minecraft.util.DyeColor;
 
 import java.util.ArrayList;
 
@@ -41,6 +44,20 @@ public class ChyzyLogistics implements ModInitializer {
         RedstoneWires.init();
 
         ServerEventListeners.init();
+
+        RedstoneEvents.SHOULD_CANCEl_CONNECTION.register((world, pos, state, pos2, state2) -> {
+            var block = state.getBlock();
+            var block2 = state2.getBlock();
+
+            if(!(block instanceof RedstoneWireBlock) || !(block2 instanceof RedstoneWireBlock)) return false;
+
+            DyeColor dyeColor = RedstoneWires.getDyeColor(block);
+            DyeColor dyeColor2 = RedstoneWires.getDyeColor(block2);
+
+            if(dyeColor == null || dyeColor2 == null) return false;
+
+            return dyeColor != dyeColor2;
+        });
 
         RegistryEntryAddedCallback.event(Registries.ITEM_GROUP).register((rawId, id, group) -> {
             if(id.equals(ItemGroups.REDSTONE.getValue()) && group instanceof WrapperGroup wrapperGroup){

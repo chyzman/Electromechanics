@@ -18,6 +18,12 @@ public class ColoredBlockItem extends BlockItem implements ItemColorProvider, Co
 
     private final DyeColor dyeColor;
 
+    public ColoredBlockItem(DyeColor color, Block block, Settings settings) {
+        super(block, settings);
+
+        this.dyeColor = color;
+    }
+
     public ColoredBlockItem(Block block, Settings settings) {
         super(block, settings);
 
