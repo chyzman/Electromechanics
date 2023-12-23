@@ -1,10 +1,10 @@
 package com.chyzman.chyzyLogistics.mixin;
 
-import com.chyzman.chyzyLogistics.block.ColoredRedstoneWireBlock;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.block.AbstractRedstoneGateBlock;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.RedstoneWireBlock;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -13,6 +13,6 @@ public abstract class AbstractRedstoneGateBlockMixin {
 
     @ModifyExpressionValue(method = "getPower", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isOf(Lnet/minecraft/block/Block;)Z"))
     private boolean adjustForColoredVariants(boolean orignal, @Local(ordinal = 1) BlockState blockState){
-        return orignal || blockState.getBlock() instanceof ColoredRedstoneWireBlock;
+        return orignal || blockState.getBlock() instanceof RedstoneWireBlock;
     }
 }
