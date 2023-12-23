@@ -1,1 +1,2 @@
 accessWidener v1 named
+accessible method net/minecraft/block/BlockSetType register (Lnet/minecraft/block/BlockSetType;)Lnet/minecraft/block/BlockSetType;

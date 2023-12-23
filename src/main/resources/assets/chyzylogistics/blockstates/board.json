@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "chyzylogistics:block/gate/board/base",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "chyzylogistics:block/gate/board/base"
+    },
+    "facing=south": {
+      "model": "chyzylogistics:block/gate/board/base",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "chyzylogistics:block/gate/board/base",
+      "y": 270
+    }
+  }
+}

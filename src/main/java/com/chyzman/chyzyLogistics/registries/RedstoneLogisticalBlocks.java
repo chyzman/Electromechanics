@@ -9,10 +9,14 @@ import com.google.common.collect.ImmutableList;
 import io.wispforest.owo.registration.reflect.BlockRegistryContainer;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSetType;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.ButtonBlock;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.sound.SoundEvents;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +41,30 @@ public class RedstoneLogisticalBlocks implements BlockRegistryContainer {
 
     public static final Block T_FLIP_FLOP = new LatchGateBlock(LatchGateType.T_FLIP_FLOP, FabricBlockSettings.copy(Blocks.REPEATER));
 
+    public static final Block BOARD = new BoardBlock(FabricBlockSettings.copy(Blocks.REPEATER));
+
     public static final Block STERN_COPPER = new SternCopperBlock(FabricBlockSettings.copy(Blocks.COPPER_BLOCK));
+
+    public static final BlockSetType OBSERVER_BLOCK_SET_TYPE = BlockSetType.register(
+            new BlockSetType(
+                    "observer",
+                    true,
+                    true,
+                    false,
+                    BlockSetType.ActivationRule.MOBS,
+                    BlockSoundGroup.STONE,
+                    SoundEvents.BLOCK_IRON_DOOR_CLOSE,
+                    SoundEvents.BLOCK_IRON_DOOR_OPEN,
+                    SoundEvents.BLOCK_IRON_TRAPDOOR_CLOSE,
+                    SoundEvents.BLOCK_IRON_TRAPDOOR_OPEN,
+                    SoundEvents.BLOCK_STONE_PRESSURE_PLATE_CLICK_OFF,
+                    SoundEvents.BLOCK_STONE_PRESSURE_PLATE_CLICK_ON,
+                    SoundEvents.BLOCK_STONE_BUTTON_CLICK_OFF,
+                    SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON
+            )
+    );
+
+    public static final Block Observer_Button = new ButtonBlock(OBSERVER_BLOCK_SET_TYPE, 2, FabricBlockSettings.copy(Blocks.OBSERVER).noCollision().strength(0.5F).pistonBehavior(PistonBehavior.DESTROY));
 
     @Override
     public BlockItem createBlockItem(Block block, String identifier) {

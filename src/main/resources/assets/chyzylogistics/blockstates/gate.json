@@ -134,7 +134,7 @@
       "apply": {"model": "chyzylogistics:block/gate/diode/edge", "y": 270},
       "when": { "OR": [
         {"facing": "west", "inverted": "true", "powered": "true"},
-        {"facing": "west", "inverted": "true", "powered": "false"}
+        {"facing": "west", "inverted": "false", "powered": "false"}
       ] }
     },
 

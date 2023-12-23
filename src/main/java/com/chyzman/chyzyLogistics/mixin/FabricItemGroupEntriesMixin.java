@@ -1,6 +1,5 @@
 package com.chyzman.chyzyLogistics.mixin;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;

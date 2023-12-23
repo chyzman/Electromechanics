@@ -2,7 +2,8 @@
   "credit": "Made by chyzman",
   "ambientocclusion": false,
   "textures": {
-    "1": "block/smooth_stone"
+    "1": "block/smooth_stone",
+    "particle": "chyzylogistics:block/gate/board/base"
   },
   "elements": [
     {

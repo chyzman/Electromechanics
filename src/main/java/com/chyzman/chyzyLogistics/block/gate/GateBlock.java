@@ -57,6 +57,7 @@ public abstract class GateBlock extends AbstractRedstoneGateBlock {
 
         return ActionResult.success(world.isClient);
     }
+
     @Override
     protected int getUpdateDelayInternal(BlockState state) {
         return 2;
