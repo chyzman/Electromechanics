@@ -12,6 +12,7 @@ repositories {
         url "https://api.modrinth.com/maven"
         content {includeGroup "maven.modrinth" }
     }
+    maven { url = "https://maven.maxhenkel.de/repository/public" }
     repositories {
         maven { url = "https://jitpack.io" }
     }
@@ -29,6 +30,8 @@ dependencies {
     }
 
     include("io.wispforest:owo-sentinel:${project.owo_version}")
+
+    implementation include("net.objecthunter:exp4j:${project.exp4j_version}")
 
     modImplementation("maven.modrinth:lithium:${project.lithium}")
 
