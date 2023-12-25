@@ -12,7 +12,8 @@
     "AbstractRedstoneGateBlockMixin",
     "RedstoneViewMixin",
     "RedstoneWireBlockAccessor",
-    "RedstoneWireBlockMixin"
+    "RedstoneWireBlockMixin",
+    "Lithium_RedstoneWireBlockMixin"
   ],
   "client": [
     "ModelLoaderAccessor",
