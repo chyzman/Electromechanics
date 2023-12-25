@@ -5,6 +5,7 @@ import com.chyzman.chyzyLogistics.block.SternCopperBlock;
 import com.chyzman.chyzyLogistics.block.detector.AdvancedDetectorBlock;
 import com.chyzman.chyzyLogistics.block.detector.DetectorBlock;
 import com.chyzman.chyzyLogistics.block.gate.*;
+import com.chyzman.chyzyLogistics.logic.SimpleGateHandler;
 import com.google.common.collect.ImmutableList;
 import io.wispforest.owo.registration.reflect.BlockRegistryContainer;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -31,13 +32,25 @@ public class RedstoneLogisticalBlocks implements BlockRegistryContainer {
 
     public static final Block LISTENER = new ListenerBlock(FabricBlockSettings.copy(Blocks.OBSERVER));
 
-    public static final Block GATE = new MonoGateBlock(GateType.GATE, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block GATE = new ProGateBlock(SimpleGateHandler.BASE); // new MonoGateBlock(GateType.GATE, FabricBlockSettings.copy(Blocks.REPEATER));
 
-    public static final Block AND_GATE = new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block AND_GATE = new ProGateBlock(SimpleGateHandler.AND); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
 
-    public static final Block OR_GATE = new BiGateBlock(BiGateType.OR, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block OR_GATE = new ProGateBlock(SimpleGateHandler.OR); //new BiGateBlock(BiGateType.OR, FabricBlockSettings.copy(Blocks.REPEATER));
 
-    public static final Block XOR_GATE = new BiGateBlock(BiGateType.XOR, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block XOR_GATE = new ProGateBlock(SimpleGateHandler.XOR); //new BiGateBlock(BiGateType.XOR, FabricBlockSettings.copy(Blocks.REPEATER));
+
+    //--
+
+    public static final Block TRI_AND_GATE = new ProGateBlock(SimpleGateHandler.TRIPLE_AND); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
+
+    public static final Block TRI_OR_GATE = new ProGateBlock(SimpleGateHandler.TRIPLE_OR); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
+
+    public static final Block AND_THEN_OR_GATE = new ProGateBlock(SimpleGateHandler.AND_THEN_OR); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
+
+    public static final Block OR_THEN_AND_GATE = new ProGateBlock(SimpleGateHandler.OR_THEN_AND); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
+
+    //--
 
     public static final Block T_FLIP_FLOP = new LatchGateBlock(LatchGateType.T_FLIP_FLOP, FabricBlockSettings.copy(Blocks.REPEATER));
 

@@ -1,6 +1,7 @@
 package com.chyzman.chyzyLogistics.mixin;
 
 import com.chyzman.chyzyLogistics.block.gate.MonoGateBlock;
+import com.chyzman.chyzyLogistics.block.gate.ProGateBlock;
 import com.chyzman.chyzyLogistics.block.redstone.RedstoneEvents;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;

@@ -2,6 +2,7 @@ package com.chyzman.chyzyLogistics;
 
 import com.chyzman.chyzyLogistics.block.detector.AdvancedDetectorBlockEntity;
 import com.chyzman.chyzyLogistics.block.detector.DetectorBlockEntity;
+import com.chyzman.chyzyLogistics.block.gate.ProGateBlockEntity;
 import com.chyzman.chyzyLogistics.block.redstone.RedstoneEvents;
 import com.chyzman.chyzyLogistics.registries.RedstoneLogisticalBlocks;
 import com.chyzman.chyzyLogistics.registries.RedstoneWires;
@@ -23,12 +24,14 @@ import net.minecraft.item.ItemGroups;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 
 import static com.chyzman.chyzyLogistics.util.ChyzyLogisticsRegistryHelper.id;
 
 public class ChyzyLogistics implements ModInitializer {
+
     public static final String MODID = "chyzylogistics";
 
     public static boolean bypassingAir = true;
@@ -39,6 +42,7 @@ public class ChyzyLogistics implements ModInitializer {
     @Override
     public void onInitialize() {
         FieldRegistrationHandler.register(RedstoneLogisticalBlocks.class, MODID, false);
+        ProGateBlockEntity.getBlockEntityType();
 
         SlimeBlocks.init();
         RedstoneWires.init();
@@ -119,5 +123,9 @@ public class ChyzyLogistics implements ModInitializer {
         });
 
 
+    }
+
+    public static Identifier id(String path){
+        return new Identifier(MODID, path);
     }
 }
