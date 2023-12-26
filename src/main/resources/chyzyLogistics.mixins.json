@@ -3,17 +3,19 @@
   "minVersion": "0.8",
   "package": "com.chyzman.chyzyLogistics.mixin",
   "compatibilityLevel": "JAVA_17",
+  "plugin": "com.chyzman.chyzyLogistics.mixin.ImplMixinConfigPlugin",
   "mixins": [
+    "AbstractRedstoneGateBlockMixin",
     "BlockEntityAccessor",
+    "ExpressionBuilderAccessor",
     "FabricItemGroupEntriesMixin",
     "ItemGroupMixin",
+    "Lithium_RedstoneWireBlockMixin",
     "ObserverBlockAccessor",
     "PistonHandlerMixin",
-    "AbstractRedstoneGateBlockMixin",
     "RedstoneViewMixin",
     "RedstoneWireBlockAccessor",
-    "RedstoneWireBlockMixin",
-    "Lithium_RedstoneWireBlockMixin"
+    "RedstoneWireBlockMixin"
   ],
   "client": [
     "ModelLoaderAccessor",

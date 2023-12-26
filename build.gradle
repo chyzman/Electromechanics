@@ -33,7 +33,7 @@ dependencies {
 
     implementation include("net.objecthunter:exp4j:${project.exp4j_version}")
 
-    modImplementation("maven.modrinth:lithium:${project.lithium}")
+    //modImplementation("maven.modrinth:lithium:${project.lithium}")
 
     include(implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.1.1")))
 }

@@ -144,10 +144,10 @@ public abstract class RedstoneWireBlockMixin {
     private BlockState adjustState(BlockState state, @Local(argsOnly = true) BlockView world, @Local(argsOnly = true) BlockPos pos){
         boolean bl = !world.getBlockState(pos.up()).isSolidBlock(world, pos);
 
-        if(world instanceof WorldView worldView && worldView.isClient()) {
-            System.out.println();
-            System.out.println(state.toString());
-        }
+//        if(world instanceof WorldView worldView && worldView.isClient()) {
+//            System.out.println();
+//            System.out.println(state.toString());
+//        }
 
         for(Direction direction : Direction.Type.HORIZONTAL) {
             if(isValid(world, direction, pos, state,null)) continue;

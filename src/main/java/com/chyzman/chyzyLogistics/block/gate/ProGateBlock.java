@@ -3,7 +3,6 @@ package com.chyzman.chyzyLogistics.block.gate;
 import com.chyzman.chyzyLogistics.block.redstone.RedstoneEvents;
 import com.chyzman.chyzyLogistics.logic.*;
 import com.mojang.serialization.MapCodec;
-import io.wispforest.owo.ops.WorldOps;
 import io.wispforest.owo.serialization.Endec;
 import io.wispforest.owo.serialization.endec.StructEndecBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -11,25 +10,18 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Util;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.RedstoneView;
 import net.minecraft.world.World;
-import net.minecraft.world.tick.TickPriority;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class ProGateBlock extends AbstractRedstoneGateBlock implements ImplBlockEntityProvider {
 
@@ -41,25 +33,25 @@ public class ProGateBlock extends AbstractRedstoneGateBlock implements ImplBlock
             var xDiff = pos2.getX() - pos.getX();
             var zDiff = pos2.getZ() - pos.getZ();
 
-            return !gateBlock.handler.wireConnectsTo(state2.get(FACING), Direction.fromVector(xDiff, 0, zDiff));
+            var blockEntity = world.getBlockEntity(pos2, ProGateBlockEntity.getBlockEntityType()).get();
+
+            return !gateBlock.handler.wireConnectsTo(blockEntity, state2.get(FACING), Direction.fromVector(xDiff, 0, zDiff));
         });
     }
 
-    public static final BooleanProperty INVERTED = Properties.INVERTED;
-
     public MapCodec<ProGateBlock> CODEC = StructEndecBuilder.of(
-            AbstractGateHandler.ENDEC.fieldOf("gate_handler", block -> block.handler),
+            GateHandler.ENDEC.fieldOf("gate_handler", block -> block.handler),
             Endec.ofCodec(AbstractBlock.Settings.CODEC).fieldOf("properties", AbstractBlock::getSettings),
             ProGateBlock::new
     ).mapCodec();
 
-    protected final AbstractGateHandler handler;
+    protected final GateHandler handler;
 
-    public ProGateBlock(AbstractGateHandler handler){
+    public ProGateBlock(GateHandler handler){
         this(handler, FabricBlockSettings.copy(Blocks.REPEATER));
     }
 
-    public ProGateBlock(AbstractGateHandler handler, Settings settings) {
+    public ProGateBlock(GateHandler handler, Settings settings) {
         super(settings);
 
         this.handler = handler;
@@ -121,8 +113,23 @@ public class ProGateBlock extends AbstractRedstoneGateBlock implements ImplBlock
     }
 
     @Override
+    public int getWeakRedstonePower(BlockState state, BlockView worldView, BlockPos pos, Direction direction) {
+        if(!(worldView instanceof RedstoneView redstoneView)) return 0;
+
+        WorldGateContext context = WorldGateContext.of(redstoneView, pos);
+
+        return context.stateStorage.getOutputPower(context.getSide(direction));
+    }
+
+    @Override
     protected int getPower(World world, BlockPos pos, BlockState state) {
-        return hasPower(world, pos, state) ? 15 : 0;
+        WorldGateContext context = WorldGateContext.of(world, pos);
+
+        if(hasPower(world, pos, state)){
+            return context.stateStorage.getOutputPower(context.getSide(context.getFacing()));
+        }
+
+        return 0;
     }
 
     @Override

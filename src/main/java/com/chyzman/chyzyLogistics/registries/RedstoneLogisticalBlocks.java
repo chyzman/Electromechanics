@@ -5,7 +5,8 @@ import com.chyzman.chyzyLogistics.block.SternCopperBlock;
 import com.chyzman.chyzyLogistics.block.detector.AdvancedDetectorBlock;
 import com.chyzman.chyzyLogistics.block.detector.DetectorBlock;
 import com.chyzman.chyzyLogistics.block.gate.*;
-import com.chyzman.chyzyLogistics.logic.SimpleGateHandler;
+import com.chyzman.chyzyLogistics.logic.DigitalGateHandlers;
+import com.chyzman.chyzyLogistics.logic.AnalogGateHandlers;
 import com.google.common.collect.ImmutableList;
 import io.wispforest.owo.registration.reflect.BlockRegistryContainer;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -32,23 +33,37 @@ public class RedstoneLogisticalBlocks implements BlockRegistryContainer {
 
     public static final Block LISTENER = new ListenerBlock(FabricBlockSettings.copy(Blocks.OBSERVER));
 
-    public static final Block GATE = new ProGateBlock(SimpleGateHandler.BASE); // new MonoGateBlock(GateType.GATE, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block GATE = new ProGateBlock(DigitalGateHandlers.BASE); // new MonoGateBlock(GateType.GATE, FabricBlockSettings.copy(Blocks.REPEATER));
 
-    public static final Block AND_GATE = new ProGateBlock(SimpleGateHandler.AND); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block AND_GATE = new ProGateBlock(DigitalGateHandlers.AND); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
 
-    public static final Block OR_GATE = new ProGateBlock(SimpleGateHandler.OR); //new BiGateBlock(BiGateType.OR, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block OR_GATE = new ProGateBlock(DigitalGateHandlers.OR); //new BiGateBlock(BiGateType.OR, FabricBlockSettings.copy(Blocks.REPEATER));
 
-    public static final Block XOR_GATE = new ProGateBlock(SimpleGateHandler.XOR); //new BiGateBlock(BiGateType.XOR, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block XOR_GATE = new ProGateBlock(DigitalGateHandlers.XOR); //new BiGateBlock(BiGateType.XOR, FabricBlockSettings.copy(Blocks.REPEATER));
 
     //--
 
-    public static final Block TRI_AND_GATE = new ProGateBlock(SimpleGateHandler.TRIPLE_AND); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block TRI_AND_GATE = new ProGateBlock(DigitalGateHandlers.TRIPLE_AND); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
 
-    public static final Block TRI_OR_GATE = new ProGateBlock(SimpleGateHandler.TRIPLE_OR); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block TRI_OR_GATE = new ProGateBlock(DigitalGateHandlers.TRIPLE_OR); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
 
-    public static final Block AND_THEN_OR_GATE = new ProGateBlock(SimpleGateHandler.AND_THEN_OR); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block AND_THEN_OR_GATE = new ProGateBlock(DigitalGateHandlers.AND_THEN_OR); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
 
-    public static final Block OR_THEN_AND_GATE = new ProGateBlock(SimpleGateHandler.OR_THEN_AND); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block OR_THEN_AND_GATE = new ProGateBlock(DigitalGateHandlers.OR_THEN_AND); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
+
+    //--
+
+    public static final Block ANALOG_GATE = new ProGateBlock(AnalogGateHandlers.GATE);
+
+    public static final Block ADDITION_GATE = new ProGateBlock(AnalogGateHandlers.ADDITION);
+
+    public static final Block SUBTRACTION_GATE = new ProGateBlock(AnalogGateHandlers.SUBTRACTION);
+
+    public static final Block MULTIPLICATION_GATE = new ProGateBlock(AnalogGateHandlers.MULTIPLICATION);
+
+    public static final Block DIVISION_GATE = new ProGateBlock(AnalogGateHandlers.DIVISION);
+
+    public static final Block MODULUS_GATE = new ProGateBlock(AnalogGateHandlers.MODULUS);
 
     //--
 

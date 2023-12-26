@@ -1,7 +1,7 @@
 package com.chyzman.chyzyLogistics.block.gate;
 
 import com.chyzman.chyzyLogistics.ChyzyLogistics;
-import com.chyzman.chyzyLogistics.logic.AbstractGateHandler;
+import com.chyzman.chyzyLogistics.logic.GateHandler;
 import com.chyzman.chyzyLogistics.logic.Side;
 import com.chyzman.chyzyLogistics.util.EndecUtils;
 import io.wispforest.owo.serialization.Endec;
@@ -44,7 +44,7 @@ public class ProGateBlockEntity extends BlockEntity implements GateStateStorage 
 
     //--
 
-    private final AbstractGateHandler handler;
+    private final GateHandler handler;
 
     private boolean hasChangesOccured = false;
 
@@ -53,7 +53,7 @@ public class ProGateBlockEntity extends BlockEntity implements GateStateStorage 
 
     private int mode = 0;
 
-    public ProGateBlockEntity(BlockPos pos, BlockState state, AbstractGateHandler handler) {
+    public ProGateBlockEntity(BlockPos pos, BlockState state, GateHandler handler) {
         super(getBlockEntityType(), pos, state);
 
         this.handler = handler;
