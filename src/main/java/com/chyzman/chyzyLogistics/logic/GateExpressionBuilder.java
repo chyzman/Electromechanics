@@ -1,6 +1,6 @@
-package com.chyzman.chyzyLogistics.logic.mode.expression;
+package com.chyzman.chyzyLogistics.logic;
 
-import com.chyzman.chyzyLogistics.logic.Side;
+import com.chyzman.chyzyLogistics.logic.api.Side;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 import java.util.ArrayList;

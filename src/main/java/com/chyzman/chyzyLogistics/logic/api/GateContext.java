@@ -1,4 +1,4 @@
-package com.chyzman.chyzyLogistics.logic;
+package com.chyzman.chyzyLogistics.logic.api;
 
 import com.chyzman.chyzyLogistics.block.gate.GateStateStorage;
 import net.minecraft.util.math.Direction;
@@ -7,9 +7,11 @@ public abstract class GateContext {
 
     private final SidesHelper sidesToDirections;
 
-    public final GateStateStorage stateStorage;
+    private final GateStateStorage stateStorage;
 
-    public final Direction facing;
+    private final Direction facing;
+
+    private boolean updateOutput = false;
 
     public GateContext(GateStateStorage stateStorage, Direction facing) {
         this.stateStorage = stateStorage;
@@ -20,6 +22,20 @@ public abstract class GateContext {
     }
 
     // --
+
+    public final GateContext toggleUpdateOutput(boolean value){
+        this.updateOutput = value;
+
+        return this;
+    }
+
+    public final boolean updateOutput(){
+        return this.updateOutput;
+    }
+
+    public final GateStateStorage storage(){
+        return this.stateStorage;
+    }
 
     public final Direction getFacing() {
         return this.facing;

@@ -171,7 +171,7 @@ public abstract class RedstoneWireBlockMixin {
             state = state.with(DIRECTION_TO_WIRE_CONNECTION_PROPERTY.get(direction), wireConnection);
         }
 
-        if(world instanceof WorldView worldView && worldView.isClient()) System.out.println(state.toString());
+        //if(world instanceof WorldView worldView && worldView.isClient()) System.out.println(state.toString());
 
         return state;
     }

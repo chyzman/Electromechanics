@@ -1,6 +1,8 @@
 package com.chyzman.chyzyLogistics.block.gate;
 
-import com.chyzman.chyzyLogistics.logic.Side;
+import com.chyzman.chyzyLogistics.logic.api.Side;
+
+import java.util.Map;
 
 public interface GateStateStorage {
 
@@ -27,4 +29,8 @@ public interface GateStateStorage {
     void setMode(int mode);
 
     int getMode();
+
+    //--
+
+
 }

@@ -1,14 +1,14 @@
-package com.chyzman.chyzyLogistics.logic;
+package com.chyzman.chyzyLogistics.logic.api;
 
 import com.chyzman.chyzyLogistics.block.gate.GateStateStorage;
-import com.chyzman.chyzyLogistics.block.gate.ProGateBlock;
 import com.chyzman.chyzyLogistics.block.gate.ProGateBlockEntity;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.RedstoneWireBlock;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.RedstoneView;
-import net.minecraft.world.World;
 
 public class WorldGateContext extends GateContext {
 
@@ -18,7 +18,7 @@ public class WorldGateContext extends GateContext {
     public BlockState state;
 
     protected WorldGateContext(RedstoneView world, BlockPos position, GateStateStorage stateStorage, BlockState state) {
-        super(stateStorage, state.get(Properties.HORIZONTAL_FACING));
+        super(stateStorage, state.get(Properties.HORIZONTAL_FACING).getOpposite());
 
         this.state = state;
         this.position = position;
@@ -36,8 +36,13 @@ public class WorldGateContext extends GateContext {
     }
 
     public int getEmittedRedstonePower(Direction direction) {
-        var dirOpp = direction.getOpposite();
-
-        return world.getEmittedRedstonePower(position.offset(dirOpp), dirOpp);
+        BlockPos blockPos = position.offset(direction);
+        int i = world.getEmittedRedstonePower(blockPos, direction);
+        if (i >= 15) {
+            return i;
+        } else {
+            BlockState blockState = world.getBlockState(blockPos);
+            return Math.max(i, (blockState.isOf(Blocks.REDSTONE_WIRE) || blockState.getBlock() instanceof RedstoneWireBlock) ? blockState.get(RedstoneWireBlock.POWER) : 0);
+        }
     }
 }

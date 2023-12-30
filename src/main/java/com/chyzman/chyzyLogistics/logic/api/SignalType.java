@@ -1,4 +1,4 @@
-package com.chyzman.chyzyLogistics.logic;
+package com.chyzman.chyzyLogistics.logic.api;
 
 import net.minecraft.util.math.MathHelper;
 

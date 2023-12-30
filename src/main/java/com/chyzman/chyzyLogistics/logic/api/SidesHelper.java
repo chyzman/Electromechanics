@@ -1,4 +1,4 @@
-package com.chyzman.chyzyLogistics.logic;
+package com.chyzman.chyzyLogistics.logic.api;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;

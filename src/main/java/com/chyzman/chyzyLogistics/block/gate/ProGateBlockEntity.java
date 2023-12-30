@@ -1,9 +1,10 @@
 package com.chyzman.chyzyLogistics.block.gate;
 
 import com.chyzman.chyzyLogistics.ChyzyLogistics;
-import com.chyzman.chyzyLogistics.logic.GateHandler;
-import com.chyzman.chyzyLogistics.logic.Side;
+import com.chyzman.chyzyLogistics.logic.api.handlers.GateHandler;
+import com.chyzman.chyzyLogistics.logic.api.Side;
 import com.chyzman.chyzyLogistics.util.EndecUtils;
+import com.chyzman.chyzyLogistics.util.GateMathUtils;
 import io.wispforest.owo.serialization.Endec;
 import io.wispforest.owo.serialization.endec.KeyedEndec;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
@@ -46,7 +47,7 @@ public class ProGateBlockEntity extends BlockEntity implements GateStateStorage 
 
     private final GateHandler handler;
 
-    private boolean hasChangesOccured = false;
+    private boolean hasChangesOccurred = false;
 
     private Map<Side, Integer> inputPowerLevel = new HashMap<>();
     private Map<Side, Integer> outputPowerLevel = new HashMap<>();
@@ -91,16 +92,20 @@ public class ProGateBlockEntity extends BlockEntity implements GateStateStorage 
     public void markDirty() {
         super.markDirty();
 
-        this.hasChangesOccured = true;
+        this.hasChangesOccurred = true;
     }
 
     //--
 
+    public void setHasChangesOccurred(boolean value){
+        this.hasChangesOccurred = value;
+    }
+
     @Override
     public boolean hasChangesOccurred(){
-        var hasChanged = this.hasChangesOccured;
+        var hasChanged = this.hasChangesOccurred;
 
-        if(hasChanged) this.hasChangesOccured = false;
+        this.setHasChangesOccurred(false);
 
         return hasChanged;
     }
@@ -148,9 +153,7 @@ public class ProGateBlockEntity extends BlockEntity implements GateStateStorage 
 
     @Override
     public int getOutputPower(Side side){
-        if(!outputPowerLevel.containsKey(side)) return 0;
-
-        return outputPowerLevel.get(side);
+        return GateMathUtils.getOutputPower(this.outputPowerLevel, side);
     }
 
     @Override
@@ -160,6 +163,6 @@ public class ProGateBlockEntity extends BlockEntity implements GateStateStorage 
 
     @Override
     public boolean isOutputtingPower(){
-        return outputPowerLevel.values().stream().anyMatch(integer -> integer > 0);
+        return GateMathUtils.isOutputtingPower(outputPowerLevel);
     }
 }

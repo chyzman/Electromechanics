@@ -51,6 +51,8 @@ public class RedstoneLogisticalBlocks implements BlockRegistryContainer {
 
     public static final Block OR_THEN_AND_GATE = new ProGateBlock(DigitalGateHandlers.OR_THEN_AND); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
 
+    public static final Block CROSS_GATE = new ProGateBlock(DigitalGateHandlers.CROSS);
+
     //--
 
     public static final Block ANALOG_GATE = new ProGateBlock(AnalogGateHandlers.GATE);
