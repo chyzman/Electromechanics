@@ -4,9 +4,12 @@ import com.chyzman.chyzyLogistics.ChyzyLogistics;
 import com.chyzman.chyzyLogistics.logic.api.handlers.GateHandler;
 import com.chyzman.chyzyLogistics.logic.api.Side;
 import com.chyzman.chyzyLogistics.util.EndecUtils;
-import com.chyzman.chyzyLogistics.util.GateMathUtils;
+import com.chyzman.chyzyLogistics.logic.GateMathUtils;
+import com.chyzman.chyzyLogistics.util.ImplMapCarrier;
 import io.wispforest.owo.serialization.Endec;
 import io.wispforest.owo.serialization.endec.KeyedEndec;
+import io.wispforest.owo.serialization.format.nbt.NbtEndec;
+import io.wispforest.owo.serialization.util.MapCarrier;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -43,6 +46,8 @@ public class ProGateBlockEntity extends BlockEntity implements GateStateStorage 
 
     public static final KeyedEndec<Integer> MODE = Endec.INT.keyed("Mode", 0);
 
+    public static final KeyedEndec<NbtCompound> DYNAMIC_DATA = NbtEndec.COMPOUND.keyed("DynamicData", NbtCompound::new);
+
     //--
 
     private final GateHandler handler;
@@ -54,7 +59,10 @@ public class ProGateBlockEntity extends BlockEntity implements GateStateStorage 
 
     private int mode = 0;
 
-    public ProGateBlockEntity(BlockPos pos, BlockState state, GateHandler handler) {
+    private final ImplMapCarrier<NbtCompound> dynamicData = new ImplMapCarrier<>(new NbtCompound())
+            .onChange(nbtCompound -> this.markDirty());
+
+    private ProGateBlockEntity(BlockPos pos, BlockState state, GateHandler handler) {
         super(getBlockEntityType(), pos, state);
 
         this.handler = handler;
@@ -65,7 +73,11 @@ public class ProGateBlockEntity extends BlockEntity implements GateStateStorage 
             throw new IllegalStateException("Unable to get the needed AbstractGateHandler from the BlockState");
         }
 
-        return new ProGateBlockEntity(pos, state, proGateBlock.handler);
+        var blockEntity = new ProGateBlockEntity(pos, state, proGateBlock.handler);
+
+        proGateBlock.handler.setupStorage(blockEntity);
+
+        return blockEntity;
     }
 
     @Override
@@ -76,6 +88,8 @@ public class ProGateBlockEntity extends BlockEntity implements GateStateStorage 
         this.outputPowerLevel = nbt.get(OUTPUT);
 
         this.mode = nbt.get(MODE);
+
+        this.dynamicData.setMapCarrier(nbt.get(DYNAMIC_DATA));
     }
 
     @Override
@@ -86,6 +100,8 @@ public class ProGateBlockEntity extends BlockEntity implements GateStateStorage 
         nbt.put(OUTPUT, this.outputPowerLevel);
 
         nbt.put(MODE, this.mode);
+
+        nbt.put(DYNAMIC_DATA, this.dynamicData.getMapCarrier());
     }
 
     @Override
@@ -164,5 +180,10 @@ public class ProGateBlockEntity extends BlockEntity implements GateStateStorage 
     @Override
     public boolean isOutputtingPower(){
         return GateMathUtils.isOutputtingPower(outputPowerLevel);
+    }
+
+    @Override
+    public <M extends MapCarrier> M dynamicStorage() {
+        return (M) this.dynamicData;
     }
 }

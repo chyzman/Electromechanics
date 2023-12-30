@@ -1,22 +1,23 @@
 package com.chyzman.chyzyLogistics.logic;
 
 import com.chyzman.chyzyLogistics.ChyzyLogistics;
-import com.chyzman.chyzyLogistics.logic.api.GateLogicFunction;
-import com.chyzman.chyzyLogistics.logic.api.IOConfiguration;
-import com.chyzman.chyzyLogistics.logic.api.Side;
-import com.chyzman.chyzyLogistics.logic.api.SignalType;
+import com.chyzman.chyzyLogistics.block.gate.GateStateStorage;
+import com.chyzman.chyzyLogistics.logic.api.*;
 import com.chyzman.chyzyLogistics.logic.api.handlers.GateHandler;
 import com.chyzman.chyzyLogistics.logic.api.handlers.MultiOutputGateHandler;
 import com.chyzman.chyzyLogistics.logic.api.handlers.SingleOutputGateHandler;
 import com.chyzman.chyzyLogistics.logic.api.mode.ExpressionModeHandler;
 import com.chyzman.chyzyLogistics.logic.api.mode.MultiExpressionModeHandler;
 import com.chyzman.chyzyLogistics.mixin.ExpressionBuilderAccessor;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.objecthunter.exp4j.operator.Operator;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.function.TriFunction;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -30,34 +31,16 @@ public class DigitalGateHandlers {
         }
     };
 
-    public static final GateHandler<?> BASE = monoGate(ChyzyLogistics.id("base"), (input) -> input);
+    public static final GateHandler BASE = monoGate(ChyzyLogistics.id("base"), (input) -> input);
 
-    public static final GateHandler<?> AND = biGate(ChyzyLogistics.id("and"), (right, left) -> (right * left));
-    public static final GateHandler<?> OR = biGate(ChyzyLogistics.id("or"), (right, left) -> (right + left));
-    public static final GateHandler<?> XOR = biGate(ChyzyLogistics.id("xor"), (right, left) -> (right ^ left));
+    public static final GateHandler AND = biGate(ChyzyLogistics.id("and"), (right, left) -> (right * left));
+    public static final GateHandler OR = biGate(ChyzyLogistics.id("or"), (right, left) -> (right + left));
+    public static final GateHandler XOR = biGate(ChyzyLogistics.id("xor"), (right, left) -> (right ^ left));
 
-    public static final GateHandler<?> TRIPLE_AND = triGateExpression(ChyzyLogistics.id("tri_and"), "r*b*l");
-    public static final GateHandler<?> TRIPLE_OR = triGate(ChyzyLogistics.id("tri_or"), (right, middle, left) -> (right + middle + left));
-    public static final GateHandler<?> AND_THEN_OR = triGate(ChyzyLogistics.id("and_then_or"), (right, middle, left) -> ((right * middle) + left));
-    public static final GateHandler<?> OR_THEN_AND = triGate(ChyzyLogistics.id("or_then_and"), (right, middle, left) -> ((right + middle) * left));
-
-    public static final GateHandler<?> CROSS = MultiOutputGateHandler.of(
-            ChyzyLogistics.id("cross"),
-            new IOConfiguration(List.of(Side.LEFT, Side.BACK), List.of(Side.RIGHT, Side.FRONT)),
-            new MultiExpressionModeHandler(SignalType.DIGITAL),
-            multiExpressionModeHandler -> {
-                multiExpressionModeHandler.add(consumer -> {
-                    consumer.accept(
-                            new IOConfiguration(Side.LEFT, Side.RIGHT),
-                            GateLogicFunction.of((left) -> left)
-                    );
-                    consumer.accept(
-                            new IOConfiguration(Side.BACK, Side.FRONT),
-                            GateLogicFunction.of((front) -> front)
-                    );
-                });
-            }
-    );
+    public static final GateHandler TRIPLE_AND = triGateExpression(ChyzyLogistics.id("tri_and"), "r*b*l");
+    public static final GateHandler TRIPLE_OR = triGate(ChyzyLogistics.id("tri_or"), (right, middle, left) -> (right + middle + left));
+    public static final GateHandler AND_THEN_OR = triGate(ChyzyLogistics.id("and_then_or"), (right, middle, left) -> ((right * middle) + left));
+    public static final GateHandler OR_THEN_AND = triGate(ChyzyLogistics.id("or_then_and"), (right, middle, left) -> ((right + middle) * left));
 
     public static SingleOutputGateHandler monoGate(Identifier id, Function<Integer, Integer> func){
         return SingleOutputGateHandler.of(id,
@@ -93,21 +76,21 @@ public class DigitalGateHandlers {
         return SingleOutputGateHandler.of(id,
                 IOConfigurations.MONO_TO_MONO,
                 new ExpressionModeHandler(SignalType.DIGITAL),
-                digitalExpressionInversion(new GateExpressionBuilder(expression).variable(Side.BACK)));
+                digitalExpressionInversion(new GateExpressionBuilder(expression).variable(IOConfigurations.MONO_TO_MONO.inputs())));
     }
 
     public static SingleOutputGateHandler biGateExpression(Identifier id, String expression){
         return SingleOutputGateHandler.of(id,
                 IOConfigurations.BI_TO_MONO,
                 new ExpressionModeHandler(SignalType.DIGITAL),
-                digitalExpressionInversion(new GateExpressionBuilder(expression).variable(Side.LEFT, Side.RIGHT)));
+                digitalExpressionInversion(new GateExpressionBuilder(expression).variable(IOConfigurations.BI_TO_MONO.inputs())));
     }
 
     public static SingleOutputGateHandler triGateExpression(Identifier id, String expression){
         return SingleOutputGateHandler.of(id,
                 IOConfigurations.TRI_TO_MONO,
                 new ExpressionModeHandler(SignalType.DIGITAL),
-                digitalExpressionInversion(new GateExpressionBuilder(expression).variable(Side.LEFT, Side.BACK, Side.RIGHT)));
+                digitalExpressionInversion(new GateExpressionBuilder(expression).variable(IOConfigurations.TRI_TO_MONO.inputs())));
     }
 
     private static Consumer<ExpressionModeHandler> digitalExpressionInversion(GateExpressionBuilder builder){

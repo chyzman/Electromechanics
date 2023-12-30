@@ -4,17 +4,21 @@ import com.chyzman.chyzyLogistics.logic.api.GateContext;
 import com.chyzman.chyzyLogistics.logic.api.IOConfiguration;
 import com.chyzman.chyzyLogistics.logic.api.Side;
 import com.chyzman.chyzyLogistics.logic.api.mode.ExpressionModeHandler;
+import com.chyzman.chyzyLogistics.logic.GateMathUtils;
 import net.minecraft.util.Identifier;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class SingleOutputGateHandler extends StaticIOGateHandler<ExpressionModeHandler> {
+public class SingleOutputGateHandler extends StaticIOGateHandler {
+
+    private final ExpressionModeHandler modeHandler;
 
     public SingleOutputGateHandler(Identifier id, List<Side> inputs, List<Side> outputs, ExpressionModeHandler modeHandler) {
-        super(id, inputs, outputs, modeHandler);
+        super(id, inputs, outputs, modeHandler.interactEvent(), modeHandler.getSetup());
+
+        this.modeHandler = modeHandler;
     }
 
     public static <H extends ExpressionModeHandler> SingleOutputGateHandler of(Identifier id, IOConfiguration configuration, H handler, Consumer<H> builder) {
@@ -24,24 +28,8 @@ public class SingleOutputGateHandler extends StaticIOGateHandler<ExpressionModeH
     }
 
     public Map<Side, Integer> calculateOutputData(GateContext context, Map<Side, Integer> inputData) {
-        var inputs = this.getInputs(context.storage());
+        var expression = modeHandler.getExpression(context.storage().getMode());
 
-        Integer[] integers = new Integer[inputData.size()];
-
-        for (int i = 0; i < inputs.size(); i++) {
-            var side = inputs.get(i);
-
-            integers[i] = this.getInputType(context, side).evaluateInput(inputData.get(side));
-        }
-
-        Integer outputPower = modeHandler.getExpression(context.storage().getMode()).apply(context, integers);
-
-        Map<Side, Integer> outputData = new HashMap<>();
-
-        for (Side output : getOutputs(context.storage())) {
-            outputData.put(output, getOutputType(context, output).evaluateOutput(outputPower));
-        }
-
-        return outputData;
+        return GateMathUtils.calculateSingleExpressionOutputData(this, expression, context, inputData);
     }
 }

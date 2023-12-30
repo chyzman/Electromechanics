@@ -8,6 +8,8 @@ import java.util.function.Function;
 
 public class EndecUtils {
 
+    public static Endec<Integer> POSITIVE_INT = Endec.INT.xmap(integer -> Math.max(0, integer), integer -> integer);
+
     public static <K, V> Endec<Map<K, V>> mapOf(Endec<V> valueEndec, Function<String, K> to, Function<K, String> from) {
         return Endec.of((serializer, map) -> {
             try (var mapState = serializer.map(valueEndec, map.size())) {

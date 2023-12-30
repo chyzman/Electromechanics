@@ -1,12 +1,15 @@
 package com.chyzman.chyzyLogistics.logic.api.mode;
 
+import com.chyzman.chyzyLogistics.block.gate.GateStateStorage;
+import com.chyzman.chyzyLogistics.logic.api.GateInteractEvent;
 import com.chyzman.chyzyLogistics.logic.api.GateLogicFunction;
 import com.chyzman.chyzyLogistics.logic.api.SignalType;
+import net.minecraft.util.ActionResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExpressionModeHandler extends StaticSignalTypeModeHandler {
+public class ExpressionModeHandler extends StaticSignalTypeModeHandler implements GateInteractEvent {
 
     private final List<GateLogicFunction> expressions = new ArrayList<>();
 
@@ -24,12 +27,24 @@ public class ExpressionModeHandler extends StaticSignalTypeModeHandler {
         return this;
     }
 
-    @Override
-    public int totalModes() {
-        return expressions.size();
-    }
-
     public GateLogicFunction getExpression(int mode){
         return expressions.get(mode);
+    }
+
+    // --
+
+    public GateInteractEvent interactEvent() {
+        return this;
+    }
+
+    @Override
+    public ActionResult interact(GateStateStorage storage) {
+        var nextMode = storage.getMode() + 1;
+
+        if(nextMode >= expressions.size()) nextMode = 0;
+
+        storage.setMode(nextMode);
+
+        return ActionResult.CONSUME;
     }
 }

@@ -1,5 +1,6 @@
-package com.chyzman.chyzyLogistics.logic.api;
+package com.chyzman.chyzyLogistics.logic;
 
+import com.chyzman.chyzyLogistics.logic.api.Side;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import net.minecraft.util.math.Direction;

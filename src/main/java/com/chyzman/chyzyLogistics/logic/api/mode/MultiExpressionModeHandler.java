@@ -1,8 +1,11 @@
 package com.chyzman.chyzyLogistics.logic.api.mode;
 
+import com.chyzman.chyzyLogistics.block.gate.GateStateStorage;
+import com.chyzman.chyzyLogistics.logic.api.GateInteractEvent;
 import com.chyzman.chyzyLogistics.logic.api.GateLogicFunction;
 import com.chyzman.chyzyLogistics.logic.api.IOConfiguration;
 import com.chyzman.chyzyLogistics.logic.api.SignalType;
+import net.minecraft.util.ActionResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +14,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-public class MultiExpressionModeHandler extends StaticSignalTypeModeHandler {
+public class MultiExpressionModeHandler extends StaticSignalTypeModeHandler implements GateInteractEvent {
 
     List<Map<IOConfiguration, GateLogicFunction>> expressions = new ArrayList<>();
 
@@ -39,8 +42,20 @@ public class MultiExpressionModeHandler extends StaticSignalTypeModeHandler {
         return expressions.get(mode);
     }
 
+    // --
+
+    public GateInteractEvent interactEvent() {
+        return this;
+    }
+
     @Override
-    public int totalModes() {
-        return expressions.size();
+    public ActionResult interact(GateStateStorage storage) {
+        var nextMode = storage.getMode() + 1;
+
+        if(nextMode >= expressions.size()) nextMode = 0;
+
+        storage.setMode(nextMode);
+
+        return ActionResult.CONSUME;
     }
 }

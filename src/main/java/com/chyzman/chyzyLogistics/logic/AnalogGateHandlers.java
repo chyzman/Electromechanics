@@ -14,7 +14,7 @@ import java.util.function.Function;
 
 public class AnalogGateHandlers {
 
-    public static GateHandler<?> GATE = SingleOutputGateHandler.of(ChyzyLogistics.id("repeater"),
+    public static GateHandler GATE = SingleOutputGateHandler.of(ChyzyLogistics.id("repeater"),
             IOConfigurations.MONO_TO_MONO,
             new ExpressionModeHandler(SignalType.ANALOG),
             handler -> {
@@ -23,12 +23,12 @@ public class AnalogGateHandlers {
             }
     );
 
-    public static GateHandler<?> ADDITION = biGate(ChyzyLogistics.id("addition"), (left, right) -> left + right);
-    public static GateHandler<?> SUBTRACTION = biGate(ChyzyLogistics.id("subtraction"), (left, right) -> left - right);
-    public static GateHandler<?> MULTIPLICATION = biGate(ChyzyLogistics.id("multiplication"), (left, right) -> left * right);
-    public static GateHandler<?> DIVISION = biGate(ChyzyLogistics.id("division"), (left, right) -> left / right);
+    public static GateHandler ADDITION = biGate(ChyzyLogistics.id("addition"), (left, right) -> left + right);
+    public static GateHandler SUBTRACTION = biGate(ChyzyLogistics.id("subtraction"), (left, right) -> left - right);
+    public static GateHandler MULTIPLICATION = biGate(ChyzyLogistics.id("multiplication"), (left, right) -> left * right);
+    public static GateHandler DIVISION = biGate(ChyzyLogistics.id("division"), (left, right) -> left / right);
 
-    public static GateHandler<?> MODULUS = SingleOutputGateHandler.of(ChyzyLogistics.id("modulus"),
+    public static GateHandler MODULUS = SingleOutputGateHandler.of(ChyzyLogistics.id("modulus"),
             IOConfigurations.BI_TO_MONO,
             new ExpressionModeHandler(SignalType.ANALOG),
             handler -> handler.add((context, integers) -> {

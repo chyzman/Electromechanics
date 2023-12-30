@@ -1,6 +1,7 @@
 package com.chyzman.chyzyLogistics.logic.api;
 
 import com.chyzman.chyzyLogistics.block.gate.GateStateStorage;
+import com.chyzman.chyzyLogistics.logic.SidesHelper;
 import net.minecraft.util.math.Direction;
 
 public abstract class GateContext {

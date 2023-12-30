@@ -50,13 +50,13 @@ public class ProGateBlock extends AbstractRedstoneGateBlock implements ImplBlock
             ProGateBlock::new
     ).mapCodec();
 
-    protected final GateHandler<?> handler;
+    protected final GateHandler handler;
 
-    public ProGateBlock(GateHandler<?> handler){
+    public ProGateBlock(GateHandler handler){
         this(handler, FabricBlockSettings.copy(Blocks.REPEATER));
     }
 
-    public ProGateBlock(GateHandler<?> handler, Settings settings) {
+    public ProGateBlock(GateHandler handler, Settings settings) {
         super(settings);
 
         this.handler = handler;
@@ -160,7 +160,11 @@ public class ProGateBlock extends AbstractRedstoneGateBlock implements ImplBlock
 
         var context = WorldGateContext.of(world, pos);
 
-        handler.interactWithGate(context);
+        var result = handler.interactWithGate(context);
+
+        if(result == ActionResult.SUCCESS){
+            world.updateNeighborsAlways(pos, state.getBlock());
+        }
 
         world.playSound(player, pos, SoundEvents.BLOCK_COMPARATOR_CLICK, SoundCategory.BLOCKS, 0.3F, context.storage().getMode() == 1 ? 0.55F : 0.5F);
 

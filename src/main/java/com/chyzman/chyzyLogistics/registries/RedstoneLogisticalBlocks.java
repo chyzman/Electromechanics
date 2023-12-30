@@ -7,6 +7,7 @@ import com.chyzman.chyzyLogistics.block.detector.DetectorBlock;
 import com.chyzman.chyzyLogistics.block.gate.*;
 import com.chyzman.chyzyLogistics.logic.DigitalGateHandlers;
 import com.chyzman.chyzyLogistics.logic.AnalogGateHandlers;
+import com.chyzman.chyzyLogistics.logic.DirectionGateHandlers;
 import com.google.common.collect.ImmutableList;
 import io.wispforest.owo.registration.reflect.BlockRegistryContainer;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -51,7 +52,9 @@ public class RedstoneLogisticalBlocks implements BlockRegistryContainer {
 
     public static final Block OR_THEN_AND_GATE = new ProGateBlock(DigitalGateHandlers.OR_THEN_AND); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
 
-    public static final Block CROSS_GATE = new ProGateBlock(DigitalGateHandlers.CROSS);
+    public static final Block CROSS_GATE = new ProGateBlock(DirectionGateHandlers.CROSS);
+
+    public static final Block DIRECTABLE_GATE = new ProGateBlock(DirectionGateHandlers.DIRECTABLE);
 
     //--
 

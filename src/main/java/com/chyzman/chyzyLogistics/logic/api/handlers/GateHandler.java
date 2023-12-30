@@ -3,66 +3,91 @@ package com.chyzman.chyzyLogistics.logic.api.handlers;
 import com.chyzman.chyzyLogistics.block.gate.GateStateStorage;
 import com.chyzman.chyzyLogistics.logic.api.GateContext;
 import com.chyzman.chyzyLogistics.logic.api.Side;
-import com.chyzman.chyzyLogistics.logic.api.SidesHelper;
+import com.chyzman.chyzyLogistics.logic.SidesHelper;
 import com.chyzman.chyzyLogistics.logic.api.SignalType;
-import com.chyzman.chyzyLogistics.logic.api.mode.ModeHandler;
-import com.chyzman.chyzyLogistics.util.GateMathUtils;
+import com.chyzman.chyzyLogistics.logic.api.GateInteractEvent;
+import com.chyzman.chyzyLogistics.logic.GateMathUtils;
+import com.chyzman.chyzyLogistics.logic.api.SetupDynamicStorage;
 import io.wispforest.owo.serialization.Endec;
 import io.wispforest.owo.serialization.endec.BuiltInEndecs;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
+import org.apache.commons.lang3.function.TriFunction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 
-public abstract class GateHandler<M extends ModeHandler> {
+public abstract class GateHandler {
 
-    public static final Map<Identifier, GateHandler<?>> HANDLERS = new HashMap<>();
+    public static final Map<Identifier, GateHandler> HANDLERS = new HashMap<>();
 
-    public static final Endec<GateHandler<?>> ENDEC = BuiltInEndecs.IDENTIFIER.xmap(HANDLERS::get, GateHandler::getId);
+    public static final Endec<GateHandler> ENDEC = BuiltInEndecs.IDENTIFIER.xmap(HANDLERS::get, GateHandler::getId);
+
+    // --
 
     private final Identifier id;
 
-    protected final M modeHandler;
+    private final GateInteractEvent interactEvent;
+    private final SetupDynamicStorage setupEvent;
 
-    public GateHandler(Identifier id, M modeHandler){
+    public GateHandler(Identifier id, GateInteractEvent interactEvent, SetupDynamicStorage setupEvent){
         if(HANDLERS.containsKey(id)){
             throw new IllegalStateException("Unable to add created AbstractGateHandler due to a existing Identifier being registered! [Id: " + id + "]");
         }
 
         this.id = id;
 
-        this.modeHandler = modeHandler;
+        this.interactEvent = interactEvent;
+        this.setupEvent = setupEvent;
+    }
+
+    public static GateHandler of(Identifier id, GateInteractEvent interactEvent, SetupDynamicStorage setupEvent, TriFunction<GateHandler, GateContext, Map<Side, Integer>, Map<Side, Integer>> outputFunc){
+        return new GateHandler(id, interactEvent, setupEvent) {
+            @Override
+            protected Map<Side, Integer> calculateOutputData(GateContext context, Map<Side, Integer> inputData) {
+                return outputFunc.apply(this, context, inputData);
+            }
+        };
     }
 
     @Nullable
-    public static GateHandler<?> getHandler(Identifier id){
+    public static GateHandler getHandler(Identifier id){
         return HANDLERS.get(id);
     }
 
     // --
 
-    public abstract List<Side> getInputs(GateStateStorage stateStorage);
-
-    public abstract List<Side> getOutputs(GateStateStorage stateStorage);
-
-    public SignalType getInputType(GateContext context, Side side){
-        return this.modeHandler.getInputType(context.storage().getMode(), side);
+    public ActionResult interactWithGate(GateContext context){
+        return interactEvent.interact(context.storage());
     }
 
-    public SignalType getOutputType(GateContext context, Side side){
-        return this.modeHandler.getOutputType(context.storage().getMode(), side);
+    public void setupStorage(GateStateStorage storage){
+        setupEvent.setup(storage);
     }
 
-    public void interactWithGate(GateContext context){
-        this.modeHandler.handleModeChange(context.storage());
+    public List<Side> getInputs(GateStateStorage stateStorage){
+        return stateStorage.dynamicStorage().get(GateStateStorage.INPUTS);
+    }
+
+    public List<Side> getOutputs(GateStateStorage stateStorage){
+        return stateStorage.dynamicStorage().get(GateStateStorage.OUTPUTS);
+    }
+
+    public SignalType getSideSignalType(GateContext context, Side side){
+        var config = context.storage().dynamicStorage().get(GateStateStorage.SIGNAL_CONFIGURATION);
+
+        var isInput = getInputs(context.storage()).contains(side);
+
+        return config.getSideSignalType(side, isInput);
     }
 
     public int getUpdateDelay(GateContext context){
-        return this.modeHandler.getUpdateDelay(context.storage().getMode());
+        return context.storage().dynamicStorage().get(GateStateStorage.UPDATE_DELAY);
     }
 
     // --
@@ -111,7 +136,9 @@ public abstract class GateHandler<M extends ModeHandler> {
         return changedOutputs;
     }
 
-    private Map<Side, Integer> gatherOutputData(GateContext context){
+    //--
+
+    protected Map<Side, Integer> gatherInputData(GateContext context){
         Map<Side, Integer> inputData = new HashMap<>();
 
         for (Side input : getInputs(context.storage())) {
@@ -122,6 +149,12 @@ public abstract class GateHandler<M extends ModeHandler> {
             inputData.put(input, inputAmount);
         }
 
+        return inputData;
+    }
+
+    protected Map<Side, Integer> gatherOutputData(GateContext context){
+        Map<Side, Integer> inputData = gatherInputData(context);
+
         var map = this.calculateOutputData(context, inputData);
 
         if(context.updateOutput()){
@@ -131,7 +164,7 @@ public abstract class GateHandler<M extends ModeHandler> {
         return map;
     }
 
-    public abstract Map<Side, Integer> calculateOutputData(GateContext context, Map<Side, Integer> inputData);
+    protected abstract Map<Side, Integer> calculateOutputData(GateContext context, Map<Side, Integer> inputData);
 
     // --
 
