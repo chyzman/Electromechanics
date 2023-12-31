@@ -4,7 +4,7 @@
 	"textures": {
 		"slab": "block/smooth_stone",
 		"unlit": "block/redstone_torch_off",
-		"particle": "chyzylogistics:block/gate/board/bi/off"
+		"particle": "electromechanics:block/gate/board/bi/off"
 	},
 	"elements": [
 		{

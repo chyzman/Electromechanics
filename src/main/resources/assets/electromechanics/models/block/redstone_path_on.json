@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "chyzylogistics:block/redstone_path_on",
-		"particle": "chyzylogistics:block/redstone_path_on"
+		"0": "electromechanics:block/redstone_path_on",
+		"particle": "electromechanics:block/redstone_path_on"
 	},
 	"elements": [
 		{

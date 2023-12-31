@@ -1,5 +1,5 @@
 {
-  "parent": "chyzylogistics:block/gate/board/base",
+  "parent": "electromechanics:block/gate/board/base",
   "display": {
     "thirdperson_righthand": {
       "rotation": [75, 45, 0],

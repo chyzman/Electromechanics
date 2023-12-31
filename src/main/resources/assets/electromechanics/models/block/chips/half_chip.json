@@ -2,9 +2,9 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"1": "chyzylogistics:block/board_half",
-		"3": "chyzylogistics:block/pin",
-		"particle": "chyzylogistics:block/board_half"
+		"1": "electromechanics:block/board_half",
+		"3": "electromechanics:block/pin",
+		"particle": "electromechanics:block/board_half"
 	},
 	"elements": [
 		{

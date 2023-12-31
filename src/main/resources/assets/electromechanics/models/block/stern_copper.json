@@ -4,7 +4,7 @@
     "bottom": "minecraft:block/copper_block",
     "side": "minecraft:block/copper_block",
     "top": "minecraft:block/copper_block",
-    "front": "chyzylogistics:block/stern_copper/front",
+    "front": "electromechanics:block/stern_copper/front",
     "particle": "minecraft:block/copper_block"
   }
 }

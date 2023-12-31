@@ -3,7 +3,7 @@
   "ambientocclusion": false,
   "textures": {
     "1": "block/smooth_stone",
-    "particle": "chyzylogistics:block/gate/board/base_with_arrow"
+    "particle": "electromechanics:block/gate/board/base_with_arrow"
   },
   "elements": [
     {

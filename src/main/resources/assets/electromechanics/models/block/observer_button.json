@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/button",
   "textures": {
-    "texture": "chyzylogistics:block/gate/board/base"
+    "texture": "electromechanics:block/gate/board/base"
   }
 }

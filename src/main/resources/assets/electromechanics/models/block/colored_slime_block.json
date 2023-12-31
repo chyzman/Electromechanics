@@ -1,8 +1,8 @@
 {
     "parent": "block/block",
     "textures": {
-        "particle": "chyzylogistics:block/slime_block_gray",
-        "texture": "chyzylogistics:block/slime_block_gray"
+        "particle": "electromechanics:block/slime_block_gray",
+        "texture": "electromechanics:block/slime_block_gray"
     },
     "elements": [
         {   "from": [ 3, 3, 3 ],

@@ -1,10 +1,10 @@
 {
   "parent": "minecraft:block/observer",
   "textures": {
-    "bottom": "chyzylogistics:block/advanced_detector/back",
-    "side": "chyzylogistics:block/advanced_detector/side",
-    "top": "chyzylogistics:block/advanced_detector/top",
-    "front": "chyzylogistics:block/advanced_detector/front",
-    "particle": "chyzylogistics:block/advanced_detector/front"
+    "bottom": "electromechanics:block/advanced_detector/back",
+    "side": "electromechanics:block/advanced_detector/side",
+    "top": "electromechanics:block/advanced_detector/top",
+    "front": "electromechanics:block/advanced_detector/front",
+    "particle": "electromechanics:block/advanced_detector/front"
   }
 }

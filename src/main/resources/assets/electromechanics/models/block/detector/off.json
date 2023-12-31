@@ -1,10 +1,10 @@
 {
   "parent": "minecraft:block/observer",
   "textures": {
-    "bottom": "chyzylogistics:block/detector/back",
-    "side": "chyzylogistics:block/detector/side",
-    "top": "chyzylogistics:block/detector/top",
-    "front": "chyzylogistics:block/detector/front",
-    "particle": "chyzylogistics:block/detector/front"
+    "bottom": "electromechanics:block/detector/back",
+    "side": "electromechanics:block/detector/side",
+    "top": "electromechanics:block/detector/top",
+    "front": "electromechanics:block/detector/front",
+    "particle": "electromechanics:block/detector/front"
   }
 }

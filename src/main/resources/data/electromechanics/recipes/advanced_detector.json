@@ -12,7 +12,7 @@
       "item": "minecraft:comparator"
     },
     "D": {
-      "item": "chyzylogistics:detector"
+      "item": "electromechanics:detector"
     }
   },
   "pattern": [
@@ -21,6 +21,6 @@
     "III"
   ],
   "result": {
-    "item": "chyzylogistics:advanced_detector"
+    "item": "electromechanics:advanced_detector"
   }
 }

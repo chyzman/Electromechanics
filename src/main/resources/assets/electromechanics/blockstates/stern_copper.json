@@ -1,21 +1,21 @@
 {
   "variants": {
     "facing=east": {
-      "model": "chyzylogistics:block/stern_copper",
+      "model": "electromechanics:block/stern_copper",
       "uvlock": true,
       "y": 90
     },
     "facing=north": {
-      "model": "chyzylogistics:block/stern_copper",
+      "model": "electromechanics:block/stern_copper",
       "uvlock": true
     },
     "facing=south": {
-      "model": "chyzylogistics:block/stern_copper",
+      "model": "electromechanics:block/stern_copper",
       "uvlock": true,
       "y": 180
     },
     "facing=west": {
-      "model": "chyzylogistics:block/stern_copper",
+      "model": "electromechanics:block/stern_copper",
       "uvlock": true,
       "y": 270
     }

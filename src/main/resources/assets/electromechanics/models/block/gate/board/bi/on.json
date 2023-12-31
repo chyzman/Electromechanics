@@ -1,6 +1,6 @@
 {
-  "parent": "chyzylogistics:block/gate/board/base",
+  "parent": "electromechanics:block/gate/board/base",
   "textures" : {
-    "particle": "chyzylogistics:block/gate/board/bi/on"
+    "particle": "electromechanics:block/gate/board/bi/on"
   }
 }

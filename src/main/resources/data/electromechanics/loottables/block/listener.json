@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "chyzylogistics:listener"
+          "name": "electromechanics:listener"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "chyzylogistics:blocks/listener"
+  "random_sequence": "electromechanics:blocks/listener"
 }

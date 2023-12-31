@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "chyzylogistics:block/colored_slime_block"
+      "model": "electromechanics:block/colored_slime_block"
     }
   }
 }

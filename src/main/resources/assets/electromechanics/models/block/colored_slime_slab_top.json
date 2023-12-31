@@ -1,6 +1,6 @@
 {
-  "parent": "chyzylogistics:block/slime_slab_top",
+  "parent": "electromechanics:block/slime_slab_top",
   "textures": {
-    "texture": "chyzylogistics:block/slime_block_gray"
+    "texture": "electromechanics:block/slime_block_gray"
   }
 }

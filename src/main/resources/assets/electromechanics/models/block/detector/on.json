@@ -1,6 +1,6 @@
 {
-  "parent": "chyzylogistics:block/detector/off",
+  "parent": "electromechanics:block/detector/off",
   "textures": {
-    "bottom": "chyzylogistics:block/detector/back_on"
+    "bottom": "electromechanics:block/detector/back_on"
   }
 }

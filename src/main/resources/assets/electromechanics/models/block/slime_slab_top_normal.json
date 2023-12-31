@@ -1,5 +1,5 @@
 {
-  "parent": "chyzylogistics:block/slime_slab_top",
+  "parent": "electromechanics:block/slime_slab_top",
   "textures": {
     "texture": "minecraft:block/slime_block"
   }
