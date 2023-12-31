@@ -70,6 +70,8 @@ public class RedstoneLogisticalBlocks implements BlockRegistryContainer {
 
     public static final Block MODULUS_GATE = new ProGateBlock(AnalogGateHandlers.MODULUS);
 
+    public static final Block COUNTER_GATE = new ProGateBlock(AnalogGateHandlers.COUNTER);
+
     //--
 
     public static final Block T_FLIP_FLOP = new LatchGateBlock(LatchGateType.T_FLIP_FLOP, FabricBlockSettings.copy(Blocks.REPEATER));

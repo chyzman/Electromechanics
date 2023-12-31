@@ -17,6 +17,10 @@ public class ExpressionModeHandler extends StaticSignalTypeModeHandler implement
         super(signalType);
     }
 
+    public ExpressionModeHandler(SignalType inputSignalType, SignalType outputSignalType) {
+        super(inputSignalType, outputSignalType);
+    }
+
     public static ExpressionModeHandler of(SignalType signalType, GateLogicFunction expression){
         return new ExpressionModeHandler(signalType).add(expression);
     }
