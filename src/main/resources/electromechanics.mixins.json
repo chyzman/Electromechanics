@@ -1,0 +1,28 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.chyzman.electromechanics.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "plugin": "com.chyzman.electromechanics.mixin.ImplMixinConfigPlugin",
+  "mixins": [
+    "AbstractRedstoneGateBlockMixin",
+    "BlockEntityAccessor",
+    "BlockEntityTypeAccessor",
+    "ExpressionBuilderAccessor",
+    "FabricItemGroupEntriesMixin",
+    "ItemGroupMixin",
+    "Lithium_RedstoneWireBlockMixin",
+    "ObserverBlockAccessor",
+    "PistonHandlerMixin",
+    "RedstoneViewMixin",
+    "RedstoneWireBlockAccessor",
+    "RedstoneWireBlockMixin"
+  ],
+  "client": [
+    "ModelLoaderAccessor",
+    "client.TranslationStorageMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

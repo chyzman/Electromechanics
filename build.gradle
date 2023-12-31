@@ -70,7 +70,7 @@ java {
 
 
 loom {
-    accessWidenerPath = file("src/main/resources/chyzylogistics.accesswidener")
+    accessWidenerPath = file("src/main/resources/electromechanics.accesswidener")
 
     runs {
         client_mixin {
