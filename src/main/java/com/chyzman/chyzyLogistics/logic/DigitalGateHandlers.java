@@ -9,6 +9,8 @@ import com.chyzman.chyzyLogistics.logic.api.handlers.SingleOutputGateHandler;
 import com.chyzman.chyzyLogistics.logic.api.mode.ExpressionModeHandler;
 import com.chyzman.chyzyLogistics.logic.api.mode.MultiExpressionModeHandler;
 import com.chyzman.chyzyLogistics.mixin.ExpressionBuilderAccessor;
+import io.wispforest.owo.serialization.Endec;
+import io.wispforest.owo.serialization.endec.KeyedEndec;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.objecthunter.exp4j.operator.Operator;
@@ -41,6 +43,38 @@ public class DigitalGateHandlers {
     public static final GateHandler TRIPLE_OR = triGate(ChyzyLogistics.id("tri_or"), (right, middle, left) -> (right + middle + left));
     public static final GateHandler AND_THEN_OR = triGate(ChyzyLogistics.id("and_then_or"), (right, middle, left) -> ((right * middle) + left));
     public static final GateHandler OR_THEN_AND = triGate(ChyzyLogistics.id("or_then_and"), (right, middle, left) -> ((right + middle) * left));
+
+    private static final KeyedEndec<Boolean> IS_FLOPPED = Endec.BOOLEAN.keyed("IsFlopped", false);
+    private static final KeyedEndec<Boolean> FLOP_LOCK = Endec.BOOLEAN.keyed("FlopLock", false);
+
+    public static GateHandler T_FLIP_FLOP = SingleOutputGateHandler.of(
+            ChyzyLogistics.id("t_flip_flop"),
+            IOConfigurations.MONO_TO_MONO,
+            new ExpressionModeHandler(SignalType.DIGITAL, SignalType.DIGITAL),
+            handler -> {
+                handler.add((context, integers) -> {
+                    var map = context.storage().dynamicStorage();
+
+                    var isFlopped = map.get(IS_FLOPPED);
+                    var flopLock = map.get(FLOP_LOCK);
+
+                    var powered = integers[0] > 0;
+
+                    if(powered){
+                        if(flopLock) return BooleanUtils.toInteger(isFlopped);
+
+                        isFlopped = !isFlopped;
+
+                        map.put(IS_FLOPPED, isFlopped);
+                        map.put(FLOP_LOCK, true);
+                    } else {
+                        map.put(FLOP_LOCK, false);
+                    }
+
+                    return BooleanUtils.toInteger(isFlopped);
+                });
+            }
+    );
 
     public static SingleOutputGateHandler monoGate(Identifier id, Function<Integer, Integer> func){
         return SingleOutputGateHandler.of(id,

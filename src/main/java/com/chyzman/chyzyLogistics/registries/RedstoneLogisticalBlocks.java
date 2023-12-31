@@ -74,7 +74,7 @@ public class RedstoneLogisticalBlocks implements BlockRegistryContainer {
 
     //--
 
-    public static final Block T_FLIP_FLOP = new LatchGateBlock(LatchGateType.T_FLIP_FLOP, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block T_FLIP_FLOP = new ProGateBlock(DigitalGateHandlers.T_FLIP_FLOP);
 
     public static final Block BOARD = new BoardBlock(FabricBlockSettings.copy(Blocks.REPEATER));
 

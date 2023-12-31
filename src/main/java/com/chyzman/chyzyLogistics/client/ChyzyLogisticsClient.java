@@ -2,23 +2,37 @@ package com.chyzman.chyzyLogistics.client;
 
 import com.chyzman.chyzyLogistics.ChyzyLogistics;
 import com.chyzman.chyzyLogistics.block.gate.GateBlock;
+import com.chyzman.chyzyLogistics.block.gate.ProGateBlockEntity;
 import com.chyzman.chyzyLogistics.block.redstone.RedstoneEvents;
+import com.chyzman.chyzyLogistics.client.be.ProGateBlockEntityRender;
 import com.chyzman.chyzyLogistics.client.utils.LangUtils;
 import com.chyzman.chyzyLogistics.client.utils.TranslationInjectionEvent;
+import com.chyzman.chyzyLogistics.mixin.BlockEntityTypeAccessor;
 import com.chyzman.chyzyLogistics.registries.RedstoneWires;
 import com.chyzman.chyzyLogistics.registries.SlimeBlocks;
 import com.chyzman.chyzyLogistics.util.Colored;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
+import net.fabricmc.fabric.api.client.model.loading.v1.BlockStateResolver;
+import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.client.color.item.ItemColorProvider;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
+import net.minecraft.client.render.model.json.JsonUnbakedModel;
+import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChyzyLogisticsClient implements ClientModInitializer {
 
@@ -28,6 +42,10 @@ public class ChyzyLogisticsClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ClientEventListeners.init();
+
+        GateModelLoader.init();
+
+        BlockEntityRendererFactories.register(ProGateBlockEntity.getBlockEntityType(), ProGateBlockEntityRender::new);
 
         ColoredVariantsModelLoader.init();
 

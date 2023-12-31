@@ -54,6 +54,8 @@ public class ProGateBlock extends AbstractRedstoneGateBlock implements ImplBlock
 
     public ProGateBlock(GateHandler handler){
         this(handler, FabricBlockSettings.copy(Blocks.REPEATER));
+
+        ProGateBlockEntity.GATE_TYPE_BUILDER.addBlock(this);
     }
 
     public ProGateBlock(GateHandler handler, Settings settings) {
@@ -106,7 +108,7 @@ public class ProGateBlock extends AbstractRedstoneGateBlock implements ImplBlock
             context.toggleUpdateOutput(true);
 
             for (Side changedOutput : this.handler.changedOutputs(context)) {
-                System.out.println(changedOutput);
+                //System.out.println(changedOutput);
 
                 var pos2 = pos.offset(context.getDirection(changedOutput));
 
