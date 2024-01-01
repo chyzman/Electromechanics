@@ -6,6 +6,7 @@ import com.chyzman.electromechanics.logic.api.Side;
 import com.chyzman.electromechanics.util.EndecUtils;
 import com.chyzman.electromechanics.logic.GateMathUtils;
 import com.chyzman.electromechanics.util.ImplMapCarrier;
+import io.wispforest.owo.ops.WorldOps;
 import io.wispforest.owo.serialization.Endec;
 import io.wispforest.owo.serialization.endec.KeyedEndec;
 import io.wispforest.owo.serialization.format.nbt.NbtEndec;
@@ -15,6 +16,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.math.BlockPos;
@@ -80,6 +82,24 @@ public class ProGateBlockEntity extends BlockEntity implements GateStateStorage 
         return blockEntity;
     }
 
+    public GateHandler getHandler(){
+        return this.handler;
+    }
+
+    @Override
+    public BlockEntityUpdateS2CPacket toUpdatePacket() {
+        return BlockEntityUpdateS2CPacket.create(this);
+    }
+
+    @Override
+    public NbtCompound toInitialChunkDataNbt() {
+        var nbt = super.toInitialChunkDataNbt();
+
+        writeNbt(nbt);
+
+        return nbt;
+    }
+
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
@@ -109,6 +129,8 @@ public class ProGateBlockEntity extends BlockEntity implements GateStateStorage 
         super.markDirty();
 
         this.hasChangesOccurred = true;
+
+        WorldOps.updateIfOnServer(this.world, this.pos);
     }
 
     //--

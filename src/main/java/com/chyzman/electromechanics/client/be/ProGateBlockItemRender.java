@@ -24,9 +24,11 @@ public class ProGateBlockItemRender implements BuiltinItemRendererRegistry.Dynam
 
         if(nbt == null) return;
 
-        BlockEntity blockEntity = BlockEntity.createFromNbt(BlockPos.ORIGIN, blockItem.getBlock().getDefaultState(), nbt);
+        BlockEntity blockEntity = BlockEntity.createFromNbt(BlockPos.ORIGIN, blockItem.getBlock().getDefaultState(), nbt.getCompound("BlockEntityTag"));
 
         if(blockEntity == null) return;
+
+        blockEntity.setWorld(MinecraftClient.getInstance().world);
 
         render.renderEntity(blockEntity, matrices, vertexConsumers, light, overlay);
     }

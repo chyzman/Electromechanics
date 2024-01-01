@@ -89,10 +89,10 @@ public abstract class GateHandler {
         return stateStorage.dynamicStorage().get(GateStateStorage.OUTPUTS);
     }
 
-    public SignalType getSideSignalType(GateContext context, Side side){
-        var config = context.storage().dynamicStorage().get(GateStateStorage.SIGNAL_CONFIGURATION);
+    public SignalType getSideSignalType(GateStateStorage storage, Side side){
+        var config = storage.dynamicStorage().get(GateStateStorage.SIGNAL_CONFIGURATION);
 
-        var isInput = getInputs(context.storage()).contains(side);
+        var isInput = getInputs(storage).contains(side);
 
         return config.getSideSignalType(side, isInput);
     }

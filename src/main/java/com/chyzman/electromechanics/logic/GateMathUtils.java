@@ -35,7 +35,7 @@ public class GateMathUtils {
         for (int i = 0; i < inputs.size(); i++) {
             var side = inputs.get(i);
 
-            integers[i] = handler.getSideSignalType(context, side).evaluateInput(inputData.get(side));
+            integers[i] = handler.getSideSignalType(context.storage(), side).evaluateInput(inputData.get(side));
         }
 
         Integer outputPower = function.apply(context, integers);
@@ -43,7 +43,7 @@ public class GateMathUtils {
         Map<Side, Integer> outputData = new HashMap<>();
 
         for (Side output : handler.getOutputs(context.storage())) {
-            outputData.put(output, handler.getSideSignalType(context, output).evaluateOutput(outputPower));
+            outputData.put(output, handler.getSideSignalType(context.storage(), output).evaluateOutput(outputPower));
         }
 
         return outputData;
@@ -62,13 +62,13 @@ public class GateMathUtils {
             for (int i = 0; i < inputs.size(); i++) {
                 var side = inputs.get(i);
 
-                integers[i] = handler.getSideSignalType(context, side).evaluateInput(inputData.get(side));
+                integers[i] = handler.getSideSignalType(context.storage(), side).evaluateInput(inputData.get(side));
             }
 
             Integer outputPower = entry.getValue().apply(context, integers);
 
             for (Side output : ioConfig.outputs()) {
-                outputData.put(output, handler.getSideSignalType(context, output).evaluateOutput(outputPower));
+                outputData.put(output, handler.getSideSignalType(context.storage(), output).evaluateOutput(outputPower));
             }
         }
 
