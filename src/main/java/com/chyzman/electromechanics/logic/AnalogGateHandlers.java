@@ -16,18 +16,18 @@ import java.util.function.Function;
 
 public class AnalogGateHandlers {
 
-    public static GateHandler GATE = SingleOutputGateHandler.of(ElectromechanicsLogistics.id("repeater"),
+    public static GateHandler GATE = SingleOutputGateHandler.of(ElectromechanicsLogistics.id("analog_gate"),
             IOConfigurations.MONO_TO_MONO,
             new ExpressionModeHandler(SignalType.ANALOG),
             handler -> {
                 handler.add((context, integers) -> integers[0])
                         .add((context, integers) -> 15 - integers[0]);
             }
-    );
+    ).displaySymbol("0-15");
 
     public static GateHandler ADDITION = biGate(ElectromechanicsLogistics.id("addition"), (left, right) -> left + right).displaySymbol("+");
     public static GateHandler SUBTRACTION = biGate(ElectromechanicsLogistics.id("subtraction"), (left, right) -> left - right).displaySymbol("-");
-    public static GateHandler MULTIPLICATION = biGate(ElectromechanicsLogistics.id("multiplication"), (left, right) -> left * right).displaySymbol("*");
+    public static GateHandler MULTIPLICATION = biGate(ElectromechanicsLogistics.id("multiplication"), (left, right) -> left * right).displaySymbol("x");
     public static GateHandler DIVISION = biGate(ElectromechanicsLogistics.id("division"), (left, right) -> left / right).displaySymbol("/");
 
     public static GateHandler MODULUS = SingleOutputGateHandler.of(ElectromechanicsLogistics.id("modulus"),

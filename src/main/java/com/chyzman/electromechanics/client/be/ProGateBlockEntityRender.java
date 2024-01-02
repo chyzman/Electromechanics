@@ -7,6 +7,8 @@ import com.chyzman.electromechanics.client.GateModelLoader;
 import com.chyzman.electromechanics.logic.SidesHelper;
 import com.chyzman.electromechanics.logic.api.Side;
 import com.chyzman.electromechanics.logic.api.SignalType;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -91,7 +93,11 @@ public class ProGateBlockEntityRender implements BlockEntityRenderer<ProGateBloc
                     ? GateModelLoader.REDSTONE_PATH_OFF
                     : GateModelLoader.REDSTONE_PATH_ON;
 
-            renderPath(pathModel, sideHelper.getDirection(output), matrices, renderContext::render);
+            var dirSide = sideHelper.getDirection(output);
+
+            renderPath(pathModel, dirSide, matrices, renderContext::render);
+
+            renderSideType(Blocks.ORANGE_CONCRETE, dirSide, matrices, renderContext);
         }
 
         for (Side input : inputs) {
@@ -103,7 +109,11 @@ public class ProGateBlockEntityRender implements BlockEntityRenderer<ProGateBloc
                     ? GateModelLoader.REDSTONE_PATH_OFF
                     : GateModelLoader.REDSTONE_PATH_ON;
 
-            renderPath(pathModel, sideHelper.getDirection(input), matrices, renderContext::render);
+            var dirSide = sideHelper.getDirection(input);
+
+            renderPath(pathModel, dirSide, matrices, renderContext::render);
+
+            renderSideType(Blocks.BLUE_CONCRETE, dirSide, matrices, renderContext);
         }
 
         matrices.pop();
@@ -151,80 +161,56 @@ public class ProGateBlockEntityRender implements BlockEntityRenderer<ProGateBloc
         matrices.push();
 
         var text = Text.of(handler.displaySymbol());
-
         var textRenderer = MinecraftClient.getInstance().textRenderer;
 
-        //matrices.translate(0, 0.2, 0);
+        {
+            var scale = 1/40f;
 
-        //matrices.translate(0.52, 0, 0.52);
+            matrices.scale(scale, scale, scale);
 
-        var scale = 1/40f;
+            matrices.translate(0, 6, 0);
 
-        matrices.scale(scale, scale, scale);
+            var textWidth = textRenderer.getWidth(text);
+            var textHeight = textRenderer.fontHeight;
 
-        matrices.translate(0, 8, 0);
+            float xOffset = 1.5f;
+            float zOffset = 1f;
 
+            if(direction == Direction.SOUTH){
+                xOffset = -0.5f;
+                zOffset = -1f;
+            } else if(direction == Direction.EAST){
+                xOffset = -0.5f;
+                //zOffset = 1f;
+            } else if(direction == Direction.WEST){
+                //xOffset = 1.5f;
+                zOffset = -1f;
+            }
 
-        //matrices.translate(0, 15, 0);
+            var scaleFactor = 0.5f;
 
-        //matrices.translate(textRenderer.getWidth(text), 0, 9);
+            if(chipModel == GateModelLoader.FULL_CHIP){
+                scaleFactor = Math.min(12f / textWidth, 0.95f);
+            } else {
+                scaleFactor = Math.min(8f / textWidth, 0.75f);// ;
+            }
 
-        //matrices.translate(0, 0, 9 / 2);
+            matrices.translate(20, 0, 20);
 
-        //matrices.translate(16, 0, 16);
+            matrices.scale(scaleFactor, 1, scaleFactor);
 
-        //matrices.translate(0, 10, 0);
+            matrices.translate(-((textWidth / 2f) + xOffset /*+ 2*/), 0, 0);
 
-        //matrices.translate(22, -6, 22);
+            matrices.translate(0, 0, -((textHeight / 2f) + zOffset));
 
-        //matrices.translate(0.5F, 0.5F, 0.5F);
-        //matrices.multiply(RotationAxis.NEGATIVE_Z.rotationDegrees(180));
-        //matrices.multiply(RotationAxis.NEGATIVE_X.rotationDegrees(90));
+            matrices.translate(0.5F, 0.5F, 0.5F);
+            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90));
+            matrices.translate(-0.5F, -0.5F, -0.5F);
 
-        //matrices.translate(0.5F, 0.5F, 0.5F);
-        var pos = entity.getPos();
-
-        //matrices.translate(20,0, 20);
-
-        var vec = direction.getVector();
-
-        var value = direction.getDirection().offset();
-
-        //matrices.translate((textRenderer.getWidth(text)), 0, (9));
-//        if(direction.getAxis() == Direction.Axis.Z){
-//            matrices.translate(0, 0, vec.getX() * (textRenderer.getWidth(text)));
-//        } else {
-//            matrices.translate((textRenderer.getWidth(text)), 0, (textRenderer.getWidth(text)));
-//            //matrices.translate((9), 0, (textRenderer.getWidth(text)));
-//        }
-
-        matrices.translate(16, 0, 16);
-        //matrices.translate(8, 0, 8);
-
-        //matrices.translate(-(textRenderer.getWidth(text) / 4), 0, 0);
-
-        matrices.translate(0.5F, 0.5, 0.5F);
-        matrices.multiply(direction.getRotationQuaternion());
-        matrices.translate(-0.5F, -0.5, -0.5F);
-
-        matrices.translate(0.5F, 0.5F, 0.5F);
-        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(-direction.asRotation()));
-        matrices.translate(-0.5F, -0.5F, -0.5F);
-
-
-        matrices.translate(0.5F, 0.5F, 0.5F);
-        matrices.multiply(RotationAxis.NEGATIVE_Z.rotationDegrees(-direction.asRotation()));
-        matrices.translate(-0.5F, -0.5F, -0.5F);
-
-        //matrices.multiply(direction.getRotationQuaternion());
-
-        //matrices.translate(textRenderer.getWidth(text) / 2f, 0, 9 / 2f);
-        //matrices.translate(16, 0, 16);
-
-
-        //matrices.translate(-0.5F, -0.5F, -0.5F);
-//
-
+            matrices.translate(0.5F, 0.5F, 0.5F);
+            matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(direction.asRotation()), (textWidth / 2), (textHeight / 2), 0);
+            matrices.translate(-0.5F, -0.5F, -0.5F);
+        }
 
         textRenderer.draw(
                 text,
@@ -234,8 +220,8 @@ public class ProGateBlockEntityRender implements BlockEntityRenderer<ProGateBloc
                 false,
                 matrices.peek().getPositionMatrix(),
                 vertexConsumers,
-                TextRenderer.TextLayerType.NORMAL,
-                0,
+                TextRenderer.TextLayerType.POLYGON_OFFSET,
+                0,//Colors.RED,
                 light
         );
 
@@ -257,12 +243,36 @@ public class ProGateBlockEntityRender implements BlockEntityRenderer<ProGateBloc
 
         matrices.translate(offset, 0, 0.5);
 
-        matrices.scale(0.99f,1, 0.99f);
+        matrices.scale(1.01f,1, 1.01f);
 
         matrices.scale(0.5f, 1, 1);
         matrices.translate(0.06f, 0, 0);
 
         consumer.accept(id);
+
+        matrices.pop();
+    }
+
+    public void renderSideType(Block block, Direction direction, MatrixStack matrices, ModelRenderContext context){
+        var model = context.renderManager.getModel(block.getDefaultState());
+
+        var player = MinecraftClient.getInstance().player;
+
+        if(player == null || !player.shouldCancelInteraction()) return;
+
+        matrices.push();
+
+        matrices.translate(0.5F, 0.5F, 0.5F);
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-direction.asRotation()));
+        matrices.translate(-0.5F, -0.5F, -0.5F);
+
+        matrices.translate(0.5 - 0.05, 0, 0.5);
+        matrices.translate(0, -0.15, 0.38);
+
+        matrices.scale(0.1f, 0.1f, 0.1f);
+        matrices.translate(0, 2, 0);
+
+        context.render(model);
 
         matrices.pop();
     }

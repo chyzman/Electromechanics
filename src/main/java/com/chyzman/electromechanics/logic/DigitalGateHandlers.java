@@ -26,7 +26,7 @@ public class DigitalGateHandlers {
         }
     };
 
-    public static final GateHandler BASE = monoGate(ElectromechanicsLogistics.id("base"), (input) -> input).displaySymbol("");
+    public static final GateHandler REPEATER = monoGate(ElectromechanicsLogistics.id("repeater"), (input) -> input).displaySymbol("0-1");
 
     public static final GateHandler AND = biGate(ElectromechanicsLogistics.id("and"), (right, left) -> (right * left)).displaySymbol("&&");
     public static final GateHandler OR = biGate(ElectromechanicsLogistics.id("or"), (right, left) -> (right + left)).displaySymbol("||");
@@ -67,7 +67,7 @@ public class DigitalGateHandlers {
                     return BooleanUtils.toInteger(isFlopped);
                 });
             }
-    ).displaySymbol("T-F-F");
+    ).displaySymbol("TFF");
 
     public static SingleOutputGateHandler monoGate(Identifier id, Function<Integer, Integer> func){
         return SingleOutputGateHandler.of(id,

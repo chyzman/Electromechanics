@@ -35,7 +35,7 @@ public class RedstoneLogisticalBlocks implements BlockRegistryContainer {
 
     public static final Block LISTENER = new ListenerBlock(FabricBlockSettings.copy(Blocks.OBSERVER));
 
-    public static final Block GATE = new ProGateBlock(DigitalGateHandlers.BASE); // new MonoGateBlock(GateType.GATE, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block GATE = new ProGateBlock(DigitalGateHandlers.REPEATER); // new MonoGateBlock(GateType.GATE, FabricBlockSettings.copy(Blocks.REPEATER));
 
     public static final Block AND_GATE = new ProGateBlock(DigitalGateHandlers.AND); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
 

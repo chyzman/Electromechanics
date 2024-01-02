@@ -48,7 +48,7 @@ public class DirectionGateHandlers {
             (handler, context, inputData) -> {
                 return GateMathUtils.calculateSingleExpressionOutputData(handler, (context1, integers) -> integers[0], context, inputData);
             }
-    );
+    ).displaySymbol("⤷");
 
     private static void setOutput(GateStateStorage storage, int mode){
         var map = storage.dynamicStorage();
@@ -112,6 +112,6 @@ public class DirectionGateHandlers {
 
                 return GateMathUtils.calculateMultiExpressionOutputData(handler, expressions, context, inputData);
             }
-    );
+    ).displaySymbol("⤧");
 
 }
