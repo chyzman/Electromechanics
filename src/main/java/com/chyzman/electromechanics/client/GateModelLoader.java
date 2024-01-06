@@ -1,7 +1,7 @@
 package com.chyzman.electromechanics.client;
 
 import com.chyzman.electromechanics.ElectromechanicsLogistics;
-import com.chyzman.electromechanics.block.gate.ProGateBlockEntity;
+import com.chyzman.electromechanics.block.gate.GateBlockEntity;
 import com.chyzman.electromechanics.mixin.BlockEntityTypeAccessor;
 import net.fabricmc.fabric.api.client.model.loading.v1.BlockStateResolver;
 import net.fabricmc.fabric.api.client.model.loading.v1.DelegatingUnbakedModel;
@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GateModelLoader implements ModelResolver {
+
+    public static final Identifier REDSTONE_PATH_GRAY = ElectromechanicsLogistics.id("block/redstone_path_gray");
 
     public static final Identifier REDSTONE_PATH_OFF = ElectromechanicsLogistics.id("block/redstone_path_off");
     public static final Identifier REDSTONE_PATH_ON = ElectromechanicsLogistics.id("block/redstone_path_on");
@@ -36,7 +38,7 @@ public class GateModelLoader implements ModelResolver {
             pluginContext.addModels(ElectromechanicsLogistics.id("block/gate/board/base"));
             pluginContext.addModels(ITEM_MODEL_ID);
 
-            pluginContext.addModels(REDSTONE_PATH_OFF, REDSTONE_PATH_ON);
+            pluginContext.addModels(REDSTONE_PATH_GRAY, REDSTONE_PATH_OFF, REDSTONE_PATH_ON);
 
             pluginContext.addModels(FULL_CHIP, HALF_CHIP, QUARTER_CHIP);
 
@@ -48,7 +50,7 @@ public class GateModelLoader implements ModelResolver {
                 }
             };
 
-            for (Block block : ((BlockEntityTypeAccessor) ProGateBlockEntity.getBlockEntityType()).getBlocks()) {
+            for (Block block : ((BlockEntityTypeAccessor) GateBlockEntity.getBlockEntityType()).getBlocks()) {
                 pluginContext.registerBlockStateResolver(block, resolver);
 
                 gateItems.add(Registries.ITEM.getId(block.asItem()));

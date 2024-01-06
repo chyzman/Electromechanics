@@ -1,22 +1,20 @@
 package com.chyzman.electromechanics.client.be;
 
 import com.chyzman.electromechanics.ElectromechanicsLogistics;
-import com.chyzman.electromechanics.block.gate.ProGateBlock;
-import com.chyzman.electromechanics.block.gate.ProGateBlockEntity;
+import com.chyzman.electromechanics.block.gate.GateBlockEntity;
 import com.chyzman.electromechanics.client.GateModelLoader;
-import com.chyzman.electromechanics.logic.SidesHelper;
-import com.chyzman.electromechanics.logic.api.Side;
-import com.chyzman.electromechanics.logic.api.SignalType;
+import com.chyzman.electromechanics.logic.api.configuration.SideOrientationHelper;
+import com.chyzman.electromechanics.logic.api.configuration.Side;
+import com.chyzman.electromechanics.logic.api.configuration.SignalType;
+import com.chyzman.electromechanics.mixin.RedstoneWireBlockAccessor;
+import com.chyzman.electromechanics.registries.RedstoneWires;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.RedstoneWireBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.model.Model;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderLayers;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
@@ -27,21 +25,18 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.Colors;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.RotationAxis;
+import net.minecraft.util.math.*;
 
-import java.util.function.Consumer;
-
-public class ProGateBlockEntityRender implements BlockEntityRenderer<ProGateBlockEntity> {
+public class GateBlockEntityRender implements BlockEntityRenderer<GateBlockEntity> {
 
     private final BlockRenderManager manager;
 
-    public ProGateBlockEntityRender(BlockEntityRendererFactory.Context ctx) {
+    public GateBlockEntityRender(BlockEntityRendererFactory.Context ctx) {
         this.manager = ctx.getRenderManager();
     }
 
     @Override
-    public void render(ProGateBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+    public void render(GateBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         var modelManager = MinecraftClient.getInstance().getBakedModelManager();
 
         var model = modelManager.getModel(ElectromechanicsLogistics.id("block/gate/board/base"));
@@ -52,6 +47,7 @@ public class ProGateBlockEntityRender implements BlockEntityRenderer<ProGateBloc
 
         var handler = entity.getHandler();
 
+        var pos = entity.getPos();
         var state = entity.getCachedState();
 
         var direction = state.get(Properties.HORIZONTAL_FACING);
@@ -59,7 +55,7 @@ public class ProGateBlockEntityRender implements BlockEntityRenderer<ProGateBloc
         RenderLayer renderLayer = RenderLayers.getMovingBlockLayer(state);
         VertexConsumer vertexConsumer = vertexConsumers.getBuffer(renderLayer);
 
-        var renderContext = new ModelRenderContext(manager, modelManager, entity, matrices, vertexConsumer, overlay);
+        var renderContext = new ModelRenderContext(manager, modelManager, entity, matrices, vertexConsumer, overlay, overlay);
 
         matrices.push();
 
@@ -77,7 +73,7 @@ public class ProGateBlockEntityRender implements BlockEntityRenderer<ProGateBloc
 
         matrices.translate(0, 0.008, 0);
 
-        var sideHelper = new SidesHelper(direction.getOpposite());
+        var sideHelper = new SideOrientationHelper(direction.getOpposite());
 
         var outputs = handler.getOutputs(entity);
         var inputs = handler.getInputs(entity);
@@ -89,13 +85,14 @@ public class ProGateBlockEntityRender implements BlockEntityRenderer<ProGateBloc
 
             if(signalType == SignalType.ANALOG) fullDigital = false;
 
-            var pathModel = entity.getOutputPower(output) <= 0
-                    ? GateModelLoader.REDSTONE_PATH_OFF
-                    : GateModelLoader.REDSTONE_PATH_ON;
+            var pathModel = GateModelLoader.REDSTONE_PATH_GRAY;
+//                    entity.getOutputPower(output) <= 0
+//                    ? GateModelLoader.REDSTONE_PATH_OFF
+//                    : GateModelLoader.REDSTONE_PATH_ON;
 
             var dirSide = sideHelper.getDirection(output);
 
-            renderPath(pathModel, dirSide, matrices, renderContext::render);
+            renderPath(pathModel, getColor(entity.getOutputPower(output), signalType, pos, dirSide), dirSide, matrices, renderContext);
 
             renderSideType(Blocks.ORANGE_CONCRETE, dirSide, matrices, renderContext);
         }
@@ -105,13 +102,14 @@ public class ProGateBlockEntityRender implements BlockEntityRenderer<ProGateBloc
 
             if(signalType == SignalType.ANALOG) fullDigital = false;
 
-            var pathModel = entity.getInputPower(input) <= 0
-                    ? GateModelLoader.REDSTONE_PATH_OFF
-                    : GateModelLoader.REDSTONE_PATH_ON;
+            var pathModel = GateModelLoader.REDSTONE_PATH_GRAY;
+//                    entity.getInputPower(input) <= 0
+//                    ? GateModelLoader.REDSTONE_PATH_OFF
+//                    : GateModelLoader.REDSTONE_PATH_ON;
 
             var dirSide = sideHelper.getDirection(input);
 
-            renderPath(pathModel, dirSide, matrices, renderContext::render);
+            renderPath(pathModel, getColor(entity.getInputPower(input), signalType, pos, dirSide), dirSide, matrices, renderContext);
 
             renderSideType(Blocks.BLUE_CONCRETE, dirSide, matrices, renderContext);
         }
@@ -130,7 +128,7 @@ public class ProGateBlockEntityRender implements BlockEntityRenderer<ProGateBloc
 
         Side targetOutput;
 
-        if(outputs.size() == 0){
+        if(outputs.size() == 0 || outputs.size() == 2){
             targetOutput = sideHelper.getSide(direction);
         } else if(outputs.size() == 3) {
             targetOutput = outputs.get(1);
@@ -232,7 +230,27 @@ public class ProGateBlockEntityRender implements BlockEntityRenderer<ProGateBloc
 
     }
 
-    public void renderPath(Identifier id, Direction direction, MatrixStack matrices, Consumer<Identifier> consumer){
+    public Vec3d getColor(int power, SignalType type, BlockPos pos, Direction direction){
+        var world = MinecraftClient.getInstance().world;
+
+        var blockState = world.getBlockState(pos.offset(direction));
+
+        var colorArray = RedstoneWires.getColorArray(blockState.getBlock());
+
+        if(colorArray == null){
+            colorArray = RedstoneWireBlockAccessor.chyzy$getCOLORS();
+        }
+
+        if(blockState.getBlock() instanceof RedstoneWireBlock){
+            power = blockState.get(Properties.POWER);
+
+            if(type == SignalType.DIGITAL && power > 1) power = 15;
+        }
+
+        return colorArray[power];
+    }
+
+    public void renderPath(Identifier id, Vec3d color, Direction direction, MatrixStack matrices, ModelRenderContext context){
         float offset = 0.5f - 0.0620f;
 
         matrices.push();
@@ -248,7 +266,7 @@ public class ProGateBlockEntityRender implements BlockEntityRenderer<ProGateBloc
         matrices.scale(0.5f, 1, 1);
         matrices.translate(0.06f, 0, 0);
 
-        consumer.accept(id);
+        context.renderWithColor(id, (float) color.getX(), (float) color.getY(), (float) color.getZ());
 
         matrices.pop();
     }
@@ -287,9 +305,11 @@ public class ProGateBlockEntityRender implements BlockEntityRenderer<ProGateBloc
         private final BlockEntity blockEntity;
 
         private final long seed;
+
+        private final int light;
         private final int overlay;
 
-        public ModelRenderContext(BlockRenderManager renderManager, BakedModelManager modelManager, BlockEntity blockEntity, MatrixStack matrices, VertexConsumer vertexConsumer, int overlay){
+        public ModelRenderContext(BlockRenderManager renderManager, BakedModelManager modelManager, BlockEntity blockEntity, MatrixStack matrices, VertexConsumer vertexConsumer, int light, int overlay){
             this.renderManager = renderManager;
             this.modelManager = modelManager;
 
@@ -300,6 +320,8 @@ public class ProGateBlockEntityRender implements BlockEntityRenderer<ProGateBloc
 
             this.seed = blockEntity.getCachedState()
                     .getRenderingSeed(blockEntity.getPos());
+
+            this.light = light;
             this.overlay = overlay;
         }
 
@@ -317,6 +339,22 @@ public class ProGateBlockEntityRender implements BlockEntityRenderer<ProGateBloc
             var random = world.getRandom();
 
             renderManager.getModelRenderer().render(world, model, state, pos, matrices, vertexConsumer, false, random, seed, overlay);
+        }
+
+        public void renderWithColor(Identifier id, float red, float green, float blue){
+            var model = modelManager.getModel(id);
+
+            renderWithColor(model, red, green, blue);
+        }
+
+        public void renderWithColor(BakedModel model, float red, float green, float blue){
+            var world = blockEntity.getWorld();
+            var pos = blockEntity.getPos();
+            var state = blockEntity.getCachedState();
+
+            var light = WorldRenderer.getLightmapCoordinates(world, state, pos);
+
+             renderManager.getModelRenderer().render(matrices.peek(), vertexConsumer, state, model, red, green, blue, light, overlay);
         }
     }
 }

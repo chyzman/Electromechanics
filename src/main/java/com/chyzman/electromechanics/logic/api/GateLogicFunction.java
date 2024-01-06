@@ -1,5 +1,6 @@
 package com.chyzman.electromechanics.logic.api;
 
+import com.chyzman.electromechanics.logic.api.state.GateContext;
 import org.apache.commons.lang3.function.TriFunction;
 
 import java.util.function.BiFunction;

@@ -1,10 +1,10 @@
 package com.chyzman.electromechanics.block.gate;
 
 import com.chyzman.electromechanics.ElectromechanicsLogistics;
-import com.chyzman.electromechanics.logic.api.handlers.GateHandler;
-import com.chyzman.electromechanics.logic.api.Side;
+import com.chyzman.electromechanics.logic.api.state.GateStateStorage;
+import com.chyzman.electromechanics.logic.api.GateHandler;
+import com.chyzman.electromechanics.logic.api.configuration.Side;
 import com.chyzman.electromechanics.util.EndecUtils;
-import com.chyzman.electromechanics.logic.GateMathUtils;
 import com.chyzman.electromechanics.util.ImplMapCarrier;
 import io.wispforest.owo.ops.WorldOps;
 import io.wispforest.owo.serialization.Endec;
@@ -24,14 +24,14 @@ import net.minecraft.util.math.BlockPos;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ProGateBlockEntity extends BlockEntity implements GateStateStorage {
+public class GateBlockEntity extends BlockEntity implements GateStateStorage {
 
-    private static BlockEntityType<ProGateBlockEntity> GATE_TYPE = null;
+    private static BlockEntityType<GateBlockEntity> GATE_TYPE = null;
 
-    protected static final FabricBlockEntityTypeBuilder<ProGateBlockEntity> GATE_TYPE_BUILDER =
-            FabricBlockEntityTypeBuilder.create(ProGateBlockEntity::createBlockEntity);
+    protected static final FabricBlockEntityTypeBuilder<GateBlockEntity> GATE_TYPE_BUILDER =
+            FabricBlockEntityTypeBuilder.create(GateBlockEntity::createBlockEntity);
 
-    public static BlockEntityType<ProGateBlockEntity> getBlockEntityType(){
+    public static BlockEntityType<GateBlockEntity> getBlockEntityType(){
         if(GATE_TYPE == null){
             GATE_TYPE = Registry.register(Registries.BLOCK_ENTITY_TYPE, ElectromechanicsLogistics.id("pro_gate"), GATE_TYPE_BUILDER.build());
         }
@@ -64,18 +64,18 @@ public class ProGateBlockEntity extends BlockEntity implements GateStateStorage 
     private final ImplMapCarrier<NbtCompound> dynamicData = new ImplMapCarrier<>(new NbtCompound())
             .onChange(nbtCompound -> this.markDirty());
 
-    private ProGateBlockEntity(BlockPos pos, BlockState state, GateHandler handler) {
+    private GateBlockEntity(BlockPos pos, BlockState state, GateHandler handler) {
         super(getBlockEntityType(), pos, state);
 
         this.handler = handler;
     }
 
-    public static ProGateBlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        if(!(state.getBlock() instanceof ProGateBlock proGateBlock)){
+    public static GateBlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        if(!(state.getBlock() instanceof GateBlock proGateBlock)){
             throw new IllegalStateException("Unable to get the needed AbstractGateHandler from the BlockState");
         }
 
-        var blockEntity = new ProGateBlockEntity(pos, state, proGateBlock.handler);
+        var blockEntity = new GateBlockEntity(pos, state, proGateBlock.handler);
 
         proGateBlock.handler.setupStorage(blockEntity);
 
@@ -191,7 +191,7 @@ public class ProGateBlockEntity extends BlockEntity implements GateStateStorage 
 
     @Override
     public int getOutputPower(Side side){
-        return GateMathUtils.getOutputPower(this.outputPowerLevel, side);
+        return this.outputPowerLevel.getOrDefault(side, 0);
     }
 
     @Override
@@ -201,7 +201,7 @@ public class ProGateBlockEntity extends BlockEntity implements GateStateStorage 
 
     @Override
     public boolean isOutputtingPower(){
-        return GateMathUtils.isOutputtingPower(outputPowerLevel);
+        return outputPowerLevel.values().stream().anyMatch(integer -> integer > 0);
     }
 
     @Override

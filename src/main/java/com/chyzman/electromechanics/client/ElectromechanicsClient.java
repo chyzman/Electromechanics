@@ -2,14 +2,13 @@ package com.chyzman.electromechanics.client;
 
 import com.chyzman.electromechanics.ElectromechanicsLogistics;
 import com.chyzman.electromechanics.block.gate.GateBlock;
-import com.chyzman.electromechanics.block.gate.ProGateBlock;
-import com.chyzman.electromechanics.block.gate.ProGateBlockEntity;
+import com.chyzman.electromechanics.block.gate.GateBlockEntity;
 import com.chyzman.electromechanics.block.redstone.RedstoneEvents;
-import com.chyzman.electromechanics.client.be.ProGateBlockEntityRender;
-import com.chyzman.electromechanics.client.be.ProGateBlockItemRender;
+import com.chyzman.electromechanics.client.be.GateBlockEntityRender;
+import com.chyzman.electromechanics.client.be.GateBlockItemRender;
 import com.chyzman.electromechanics.client.utils.LangUtils;
 import com.chyzman.electromechanics.client.utils.TranslationInjectionEvent;
-import com.chyzman.electromechanics.item.ProGateBlockItem;
+import com.chyzman.electromechanics.item.GateBlockItem;
 import com.chyzman.electromechanics.registries.RedstoneLogisticalBlocks;
 import com.chyzman.electromechanics.registries.RedstoneWires;
 import com.chyzman.electromechanics.registries.SlimeBlocks;
@@ -40,12 +39,14 @@ public class ElectromechanicsClient implements ClientModInitializer {
 
         GateModelLoader.init();
 
-        BlockEntityRendererFactories.register(ProGateBlockEntity.getBlockEntityType(), ProGateBlockEntityRender::new);
+        BlockEntityRendererFactories.register(GateBlockEntity.getBlockEntityType(), GateBlockEntityRender::new);
 
         for (Item item : RedstoneLogisticalBlocks.getBlockItems()) {
-            if(!(item instanceof ProGateBlockItem blockItem)) continue;
+            if(!(item instanceof GateBlockItem blockItem)) continue;
 
-            BuiltinItemRendererRegistry.INSTANCE.register(blockItem, new ProGateBlockItemRender());
+            BuiltinItemRendererRegistry.INSTANCE.register(blockItem, new GateBlockItemRender());
+
+            BlockRenderLayerMap.INSTANCE.putBlock(blockItem.getBlock(), CUTOUT);
         }
 
         ColoredVariantsModelLoader.init();
@@ -104,15 +105,9 @@ public class ElectromechanicsClient implements ClientModInitializer {
 
                 var block = blockItem.getBlock();
 
-                if(!(block instanceof ProGateBlock)) continue;
+                if(!(block instanceof GateBlock)) continue;
 
                 helper.addBlock(blockItem.getBlock());
-            }
-        });
-
-        Registries.BLOCK.forEach(block -> {
-            if (block instanceof GateBlock) {
-                BlockRenderLayerMap.INSTANCE.putBlock(block, RenderLayer.getCutout());
             }
         });
     }

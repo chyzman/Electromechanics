@@ -1,6 +1,6 @@
 package com.chyzman.electromechanics.client.be;
 
-import com.chyzman.electromechanics.item.ProGateBlockItem;
+import com.chyzman.electromechanics.item.GateBlockItem;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
@@ -10,7 +10,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 
-public class ProGateBlockItemRender implements BuiltinItemRendererRegistry.DynamicItemRenderer {
+public class GateBlockItemRender implements BuiltinItemRendererRegistry.DynamicItemRenderer {
 
     @Override
     public void render(ItemStack stack, ModelTransformationMode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
@@ -18,7 +18,7 @@ public class ProGateBlockItemRender implements BuiltinItemRendererRegistry.Dynam
 
         var item = stack.getItem();
 
-        if(!(item instanceof ProGateBlockItem blockItem)) return;
+        if(!(item instanceof GateBlockItem blockItem)) return;
 
         var nbt = stack.getNbt();
 

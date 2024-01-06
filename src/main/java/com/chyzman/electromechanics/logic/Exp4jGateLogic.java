@@ -1,8 +1,8 @@
 package com.chyzman.electromechanics.logic;
 
-import com.chyzman.electromechanics.logic.api.GateContext;
+import com.chyzman.electromechanics.logic.api.state.GateContext;
 import com.chyzman.electromechanics.logic.api.GateLogicFunction;
-import com.chyzman.electromechanics.logic.api.Side;
+import com.chyzman.electromechanics.logic.api.configuration.Side;
 import net.objecthunter.exp4j.Expression;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.chyzman.electromechanics.logic;
 
-import com.chyzman.electromechanics.logic.api.Side;
+import com.chyzman.electromechanics.logic.api.configuration.Side;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 import java.util.ArrayList;

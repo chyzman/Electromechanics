@@ -5,7 +5,7 @@ import com.chyzman.electromechanics.block.SternCopperBlock;
 import com.chyzman.electromechanics.block.detector.AdvancedDetectorBlock;
 import com.chyzman.electromechanics.block.detector.DetectorBlock;
 import com.chyzman.electromechanics.block.gate.*;
-import com.chyzman.electromechanics.item.ProGateBlockItem;
+import com.chyzman.electromechanics.item.GateBlockItem;
 import com.chyzman.electromechanics.logic.DigitalGateHandlers;
 import com.chyzman.electromechanics.logic.AnalogGateHandlers;
 import com.chyzman.electromechanics.logic.DirectionGateHandlers;
@@ -35,47 +35,47 @@ public class RedstoneLogisticalBlocks implements BlockRegistryContainer {
 
     public static final Block LISTENER = new ListenerBlock(FabricBlockSettings.copy(Blocks.OBSERVER));
 
-    public static final Block GATE = new ProGateBlock(DigitalGateHandlers.REPEATER); // new MonoGateBlock(GateType.GATE, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block GATE = new GateBlock(DigitalGateHandlers.REPEATER); // new MonoGateBlock(GateType.GATE, FabricBlockSettings.copy(Blocks.REPEATER));
 
-    public static final Block AND_GATE = new ProGateBlock(DigitalGateHandlers.AND); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block AND_GATE = new GateBlock(DigitalGateHandlers.AND); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
 
-    public static final Block OR_GATE = new ProGateBlock(DigitalGateHandlers.OR); //new BiGateBlock(BiGateType.OR, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block OR_GATE = new GateBlock(DigitalGateHandlers.OR); //new BiGateBlock(BiGateType.OR, FabricBlockSettings.copy(Blocks.REPEATER));
 
-    public static final Block XOR_GATE = new ProGateBlock(DigitalGateHandlers.XOR); //new BiGateBlock(BiGateType.XOR, FabricBlockSettings.copy(Blocks.REPEATER));
-
-    //--
-
-    public static final Block TRI_AND_GATE = new ProGateBlock(DigitalGateHandlers.TRIPLE_AND); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
-
-    public static final Block TRI_OR_GATE = new ProGateBlock(DigitalGateHandlers.TRIPLE_OR); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
-
-    public static final Block AND_THEN_OR_GATE = new ProGateBlock(DigitalGateHandlers.AND_THEN_OR); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
-
-    public static final Block OR_THEN_AND_GATE = new ProGateBlock(DigitalGateHandlers.OR_THEN_AND); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
-
-    public static final Block CROSS_GATE = new ProGateBlock(DirectionGateHandlers.CROSS);
-
-    public static final Block DIRECTABLE_GATE = new ProGateBlock(DirectionGateHandlers.DIRECTABLE);
+    public static final Block XOR_GATE = new GateBlock(DigitalGateHandlers.XOR); //new BiGateBlock(BiGateType.XOR, FabricBlockSettings.copy(Blocks.REPEATER));
 
     //--
 
-    public static final Block ANALOG_GATE = new ProGateBlock(AnalogGateHandlers.GATE);
+    public static final Block TRI_AND_GATE = new GateBlock(DigitalGateHandlers.TRIPLE_AND); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
 
-    public static final Block ADDITION_GATE = new ProGateBlock(AnalogGateHandlers.ADDITION);
+    public static final Block TRI_OR_GATE = new GateBlock(DigitalGateHandlers.TRIPLE_OR); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
 
-    public static final Block SUBTRACTION_GATE = new ProGateBlock(AnalogGateHandlers.SUBTRACTION);
+    public static final Block AND_THEN_OR_GATE = new GateBlock(DigitalGateHandlers.AND_THEN_OR); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
 
-    public static final Block MULTIPLICATION_GATE = new ProGateBlock(AnalogGateHandlers.MULTIPLICATION);
+    public static final Block OR_THEN_AND_GATE = new GateBlock(DigitalGateHandlers.OR_THEN_AND); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
 
-    public static final Block DIVISION_GATE = new ProGateBlock(AnalogGateHandlers.DIVISION);
+    public static final Block CROSS_GATE = new GateBlock(DirectionGateHandlers.CROSS);
 
-    public static final Block MODULUS_GATE = new ProGateBlock(AnalogGateHandlers.MODULUS);
-
-    public static final Block COUNTER_GATE = new ProGateBlock(AnalogGateHandlers.COUNTER);
+    public static final Block DIRECTABLE_GATE = new GateBlock(DirectionGateHandlers.DIRECTABLE);
 
     //--
 
-    public static final Block T_FLIP_FLOP = new ProGateBlock(DigitalGateHandlers.T_FLIP_FLOP);
+    public static final Block ANALOG_GATE = new GateBlock(AnalogGateHandlers.GATE);
+
+    public static final Block ADDITION_GATE = new GateBlock(AnalogGateHandlers.ADDITION);
+
+    public static final Block SUBTRACTION_GATE = new GateBlock(AnalogGateHandlers.SUBTRACTION);
+
+    public static final Block MULTIPLICATION_GATE = new GateBlock(AnalogGateHandlers.MULTIPLICATION);
+
+    public static final Block DIVISION_GATE = new GateBlock(AnalogGateHandlers.DIVISION);
+
+    public static final Block MODULUS_GATE = new GateBlock(AnalogGateHandlers.MODULUS);
+
+    public static final Block COUNTER_GATE = new GateBlock(AnalogGateHandlers.COUNTER);
+
+    //--
+
+    public static final Block T_FLIP_FLOP = new GateBlock(DigitalGateHandlers.T_FLIP_FLOP);
 
     public static final Block BOARD = new BoardBlock(FabricBlockSettings.copy(Blocks.REPEATER));
 
@@ -106,8 +106,8 @@ public class RedstoneLogisticalBlocks implements BlockRegistryContainer {
     public BlockItem createBlockItem(Block block, String identifier) {
         BlockItem item;
 
-        if(block instanceof ProGateBlock){
-            item = new ProGateBlockItem(block, new Item.Settings());
+        if(block instanceof GateBlock){
+            item = new GateBlockItem(block, new Item.Settings());
         } else {
             item = BlockRegistryContainer.super.createBlockItem(block, identifier);
         }

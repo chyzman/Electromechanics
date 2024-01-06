@@ -1,7 +1,7 @@
 package com.chyzman.electromechanics.logic;
 
-import com.chyzman.electromechanics.logic.api.IOConfiguration;
-import com.chyzman.electromechanics.logic.api.Side;
+import com.chyzman.electromechanics.logic.api.configuration.IOConfiguration;
+import com.chyzman.electromechanics.logic.api.configuration.Side;
 
 import java.util.List;
 

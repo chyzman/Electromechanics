@@ -1,11 +1,11 @@
 package com.chyzman.electromechanics.logic.api.mode;
 
-import com.chyzman.electromechanics.block.gate.GateStateStorage;
-import com.chyzman.electromechanics.logic.api.SetupDynamicStorage;
-import com.chyzman.electromechanics.logic.api.SignalConfiguration;
-import com.chyzman.electromechanics.logic.api.SignalType;
+import com.chyzman.electromechanics.logic.api.state.GateStateStorage;
+import com.chyzman.electromechanics.logic.api.GateSetupEvent;
+import com.chyzman.electromechanics.logic.api.configuration.SignalConfiguration;
+import com.chyzman.electromechanics.logic.api.configuration.SignalType;
 
-public abstract class StaticSignalTypeModeHandler implements SetupDynamicStorage {
+public abstract class StaticSignalTypeModeHandler implements GateSetupEvent {
 
     protected final SignalType inputSignalType;
     protected final SignalType outputSignalType;
@@ -19,8 +19,7 @@ public abstract class StaticSignalTypeModeHandler implements SetupDynamicStorage
         this.outputSignalType = outputSignalType;
     }
 
-
-    public SetupDynamicStorage getSetup() {
+    public GateSetupEvent getSetup() {
         return this;
     }
 

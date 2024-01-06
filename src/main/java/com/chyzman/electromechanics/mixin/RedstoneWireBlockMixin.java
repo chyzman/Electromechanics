@@ -1,6 +1,5 @@
 package com.chyzman.electromechanics.mixin;
 
-import com.chyzman.electromechanics.block.gate.MonoGateBlock;
 import com.chyzman.electromechanics.block.redstone.RedstoneEvents;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
@@ -42,10 +41,6 @@ public abstract class RedstoneWireBlockMixin {
     @Inject(method = "connectsTo(Lnet/minecraft/block/BlockState;Lnet/minecraft/util/math/Direction;)Z",
             at = @At("HEAD"), cancellable = true)
     private static void handleCustomConnections(BlockState state, Direction dir, CallbackInfoReturnable<Boolean> cir) {
-        if (state.getBlock() instanceof MonoGateBlock gateBlock && !gateBlock.wireConnectsTo(state, dir)) {
-            cir.setReturnValue(false);
-        }
-
         if (state.getBlock() instanceof RedstoneWireBlock) {
             cir.setReturnValue(true);
         }

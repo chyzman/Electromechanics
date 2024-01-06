@@ -1,4 +1,4 @@
-package com.chyzman.electromechanics.logic.api;
+package com.chyzman.electromechanics.logic.api.configuration;
 
 import com.chyzman.electromechanics.util.EndecUtils;
 import io.wispforest.owo.serialization.Endec;

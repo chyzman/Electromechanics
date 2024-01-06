@@ -1,4 +1,4 @@
-package com.chyzman.electromechanics.logic.api;
+package com.chyzman.electromechanics.logic.api.configuration;
 
 public enum Side {
     FRONT("f"), // 0

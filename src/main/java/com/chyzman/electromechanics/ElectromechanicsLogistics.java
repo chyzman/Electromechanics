@@ -2,8 +2,8 @@ package com.chyzman.electromechanics;
 
 import com.chyzman.electromechanics.block.detector.AdvancedDetectorBlockEntity;
 import com.chyzman.electromechanics.block.detector.DetectorBlockEntity;
-import com.chyzman.electromechanics.block.gate.ProGateBlock;
-import com.chyzman.electromechanics.block.gate.ProGateBlockEntity;
+import com.chyzman.electromechanics.block.gate.GateBlock;
+import com.chyzman.electromechanics.block.gate.GateBlockEntity;
 import com.chyzman.electromechanics.block.redstone.RedstoneEvents;
 import com.chyzman.electromechanics.registries.RedstoneLogisticalBlocks;
 import com.chyzman.electromechanics.registries.RedstoneWires;
@@ -38,15 +38,14 @@ public class ElectromechanicsLogistics implements ModInitializer {
     @Override
     public void onInitialize() {
         FieldRegistrationHandler.register(RedstoneLogisticalBlocks.class, MODID, false);
-        ProGateBlockEntity.getBlockEntityType();
+        GateBlockEntity.getBlockEntityType();
 
         for (Item item : RedstoneLogisticalBlocks.getBlockItems()) {
             if(!(item instanceof BlockItem blockItem)) continue;
 
             var block = blockItem.getBlock();
 
-            if(!(block instanceof ProGateBlock)) continue;
-
+            if(!(block instanceof GateBlock)) continue;
         }
 
         SlimeBlocks.init();

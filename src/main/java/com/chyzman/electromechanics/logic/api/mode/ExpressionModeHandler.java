@@ -1,9 +1,10 @@
 package com.chyzman.electromechanics.logic.api.mode;
 
-import com.chyzman.electromechanics.block.gate.GateStateStorage;
+import com.chyzman.electromechanics.logic.api.state.GateStateStorage;
 import com.chyzman.electromechanics.logic.api.GateInteractEvent;
 import com.chyzman.electromechanics.logic.api.GateLogicFunction;
-import com.chyzman.electromechanics.logic.api.SignalType;
+import com.chyzman.electromechanics.logic.api.configuration.SignalType;
+import com.chyzman.electromechanics.logic.api.GateOutputFunction;
 import net.minecraft.util.ActionResult;
 
 import java.util.ArrayList;
@@ -50,5 +51,9 @@ public class ExpressionModeHandler extends StaticSignalTypeModeHandler implement
         storage.setMode(nextMode);
 
         return ActionResult.CONSUME;
+    }
+
+    public GateOutputFunction create(){
+        return GateOutputFunction.singleExpression(context -> this.getExpression(context.storage().getMode()));
     }
 }

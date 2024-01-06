@@ -1,11 +1,12 @@
 package com.chyzman.electromechanics.logic;
 
 import com.chyzman.electromechanics.ElectromechanicsLogistics;
-import com.chyzman.electromechanics.block.gate.GateStateStorage;
 import com.chyzman.electromechanics.logic.api.GateLogicFunction;
-import com.chyzman.electromechanics.logic.api.IOConfiguration;
-import com.chyzman.electromechanics.logic.api.Side;
-import com.chyzman.electromechanics.logic.api.handlers.GateHandler;
+import com.chyzman.electromechanics.logic.api.state.GateStateStorage;
+import com.chyzman.electromechanics.logic.api.configuration.IOConfiguration;
+import com.chyzman.electromechanics.logic.api.configuration.Side;
+import com.chyzman.electromechanics.logic.api.GateHandler;
+import com.chyzman.electromechanics.logic.api.GateOutputFunction;
 import net.minecraft.util.ActionResult;
 
 import java.util.List;
@@ -13,20 +14,16 @@ import java.util.Map;
 
 public class DirectionGateHandlers {
 
-//    public static final GateHandler CROSS = MultiOutputGateHandler.of(
-//            ChyzyLogistics.id("cross"),
-//            new IOConfiguration(List.of(Side.LEFT, Side.BACK), List.of(Side.RIGHT, Side.FRONT)),
-//            new MultiExpressionModeHandler(SignalType.DIGITAL),
-//            multiExpressionModeHandler -> {
-//                multiExpressionModeHandler.add(consumer -> {
-//                    consumer.accept(new IOConfiguration(Side.LEFT, Side.RIGHT), GateLogicFunction.of((left) -> left));
-//                    consumer.accept(new IOConfiguration(Side.BACK, Side.FRONT), GateLogicFunction.of((front) -> front));
-//                });
-//            }
-//    );
-
     public static final GateHandler DIRECTABLE = GateHandler.of(
-            ElectromechanicsLogistics.id("directable_gate"),
+            ElectromechanicsLogistics.id("directable_gate"), "⤷",
+            GateOutputFunction.singleExpression((context1, integers) -> integers[0]),
+            storage -> {
+                var map = storage.dynamicStorage();
+
+                setOutput(storage, storage.getMode());
+
+                map.put(GateStateStorage.INPUTS, List.of(Side.BACK));
+            },
             storage -> {
                 var nextMode = storage.getMode() + 1;
 
@@ -37,18 +34,8 @@ public class DirectionGateHandlers {
                 storage.setMode(nextMode);
 
                 return ActionResult.SUCCESS;
-            },
-            storage -> {
-                var map = storage.dynamicStorage();
-
-                setOutput(storage, storage.getMode());
-
-                map.put(GateStateStorage.INPUTS, List.of(Side.BACK));
-            },
-            (handler, context, inputData) -> {
-                return GateMathUtils.calculateSingleExpressionOutputData(handler, (context1, integers) -> integers[0], context, inputData);
             }
-    ).displaySymbol("⤷");
+    );
 
     private static void setOutput(GateStateStorage storage, int mode){
         var map = storage.dynamicStorage();
@@ -72,7 +59,28 @@ public class DirectionGateHandlers {
     );
 
     public static final GateHandler CROSS = GateHandler.of(
-            ElectromechanicsLogistics.id("adv_cross_gate"),
+            ElectromechanicsLogistics.id("adv_cross_gate"), "⤧",
+            GateOutputFunction.multiExpression(context -> {
+                var map = context.storage().dynamicStorage();
+
+                var inputs = map.get(GateStateStorage.INPUTS);
+                var outputs = map.get(GateStateStorage.OUTPUTS);
+
+                GateLogicFunction expression = (context1, integers) -> integers[0];
+
+                return Map.of(
+                        new IOConfiguration(inputs.get(0), outputs.get(0)), expression,
+                        new IOConfiguration(inputs.get(1), outputs.get(1)), expression
+                );
+            }),
+            storage -> {
+                var ioConfig = CONFIGURATIONS.get(storage.getMode());
+
+                var map = storage.dynamicStorage();
+
+                map.put(GateStateStorage.INPUTS, ioConfig.inputs());
+                map.put(GateStateStorage.OUTPUTS, ioConfig.outputs());
+            },
             storage -> {
                 var nextMode = storage.getMode() + 1;
 
@@ -88,30 +96,7 @@ public class DirectionGateHandlers {
                 map.put(GateStateStorage.OUTPUTS, ioConfig.outputs());
 
                 return ActionResult.SUCCESS;
-            },
-            storage -> {
-                var ioConfig = CONFIGURATIONS.get(storage.getMode());
-
-                var map = storage.dynamicStorage();
-
-                map.put(GateStateStorage.INPUTS, ioConfig.inputs());
-                map.put(GateStateStorage.OUTPUTS, ioConfig.outputs());
-            },
-            (handler, context, inputData) -> {
-                var map = context.storage().dynamicStorage();
-
-                var inputs = map.get(GateStateStorage.INPUTS);
-                var outputs = map.get(GateStateStorage.OUTPUTS);
-
-                GateLogicFunction expression = (context1, integers) -> integers[0];
-
-                var expressions = Map.of(
-                        new IOConfiguration(inputs.get(0), outputs.get(0)), expression,
-                        new IOConfiguration(inputs.get(1), outputs.get(1)), expression
-                );
-
-                return GateMathUtils.calculateMultiExpressionOutputData(handler, expressions, context, inputData);
             }
-    ).displaySymbol("⤧");
+    );
 
 }

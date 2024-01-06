@@ -1,12 +1,12 @@
-package com.chyzman.electromechanics.logic.api;
+package com.chyzman.electromechanics.logic.api.state;
 
-import com.chyzman.electromechanics.block.gate.GateStateStorage;
-import com.chyzman.electromechanics.logic.SidesHelper;
+import com.chyzman.electromechanics.logic.api.configuration.SideOrientationHelper;
+import com.chyzman.electromechanics.logic.api.configuration.Side;
 import net.minecraft.util.math.Direction;
 
 public abstract class GateContext {
 
-    private final SidesHelper sidesToDirections;
+    private final SideOrientationHelper sidesToDirections;
 
     private final GateStateStorage stateStorage;
 
@@ -19,7 +19,7 @@ public abstract class GateContext {
 
         this.facing = facing;
 
-        this.sidesToDirections = new SidesHelper(facing);
+        this.sidesToDirections = new SideOrientationHelper(facing);
     }
 
     // --

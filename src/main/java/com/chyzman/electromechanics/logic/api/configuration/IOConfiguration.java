@@ -1,4 +1,4 @@
-package com.chyzman.electromechanics.logic.api;
+package com.chyzman.electromechanics.logic.api.configuration;
 
 import java.util.List;
 

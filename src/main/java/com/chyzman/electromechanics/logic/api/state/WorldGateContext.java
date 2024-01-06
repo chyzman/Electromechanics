@@ -1,7 +1,6 @@
-package com.chyzman.electromechanics.logic.api;
+package com.chyzman.electromechanics.logic.api.state;
 
-import com.chyzman.electromechanics.block.gate.GateStateStorage;
-import com.chyzman.electromechanics.block.gate.ProGateBlockEntity;
+import com.chyzman.electromechanics.block.gate.GateBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.RedstoneWireBlock;
@@ -26,7 +25,7 @@ public class WorldGateContext extends GateContext {
     }
 
     public static WorldGateContext of(RedstoneView world, BlockPos pos) {
-        var blockEntity = world.getBlockEntity(pos, ProGateBlockEntity.getBlockEntityType()).get();
+        var blockEntity = world.getBlockEntity(pos, GateBlockEntity.getBlockEntityType()).get();
 
         return new WorldGateContext(world, pos, blockEntity, world.getBlockState(pos));
     }

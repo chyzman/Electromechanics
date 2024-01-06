@@ -1,15 +1,14 @@
-package com.chyzman.electromechanics.logic;
+package com.chyzman.electromechanics.logic.api.configuration;
 
-import com.chyzman.electromechanics.logic.api.Side;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import net.minecraft.util.math.Direction;
 
-public class SidesHelper {
+public class SideOrientationHelper {
 
     private final BiMap<Side, Direction> sidesToDirections;
 
-    public SidesHelper(Direction facing){
+    public SideOrientationHelper(Direction facing){
         this.sidesToDirections = getOrientationData(facing);
     }
 

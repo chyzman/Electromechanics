@@ -13,6 +13,11 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(RedstoneWireBlock.class)
 public interface RedstoneWireBlockAccessor {
+    @Accessor("COLORS")
+    static Vec3d[] chyzy$getCOLORS() {
+        throw new UnsupportedOperationException();
+    }
+
     @Invoker("addPoweredParticles")
     void chyzy$addPoweredParticles(World world, Random random, BlockPos pos, Vec3d color, Direction direction, Direction direction2, float f, float g);
 

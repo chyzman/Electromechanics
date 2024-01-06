@@ -1,8 +1,8 @@
-package com.chyzman.electromechanics.block.gate;
+package com.chyzman.electromechanics.logic.api.state;
 
-import com.chyzman.electromechanics.logic.api.Side;
-import com.chyzman.electromechanics.logic.api.SignalConfiguration;
-import com.chyzman.electromechanics.logic.api.SignalType;
+import com.chyzman.electromechanics.logic.api.configuration.Side;
+import com.chyzman.electromechanics.logic.api.configuration.SignalConfiguration;
+import com.chyzman.electromechanics.logic.api.configuration.SignalType;
 import com.chyzman.electromechanics.util.EndecUtils;
 import io.wispforest.owo.serialization.Endec;
 import io.wispforest.owo.serialization.endec.KeyedEndec;
