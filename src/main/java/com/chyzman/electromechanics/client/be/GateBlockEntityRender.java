@@ -1,6 +1,6 @@
 package com.chyzman.electromechanics.client.be;
 
-import com.chyzman.electromechanics.ElectromechanicsLogistics;
+import com.chyzman.electromechanics.Electromechanics;
 import com.chyzman.electromechanics.block.gate.GateBlockEntity;
 import com.chyzman.electromechanics.client.GateModelLoader;
 import com.chyzman.electromechanics.logic.api.configuration.SideOrientationHelper;
@@ -39,7 +39,7 @@ public class GateBlockEntityRender implements BlockEntityRenderer<GateBlockEntit
     public void render(GateBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         var modelManager = MinecraftClient.getInstance().getBakedModelManager();
 
-        var model = modelManager.getModel(ElectromechanicsLogistics.id("block/gate/board/base"));
+        var model = modelManager.getModel(Electromechanics.id("block/gate/board/base"));
 
         if(model == null){
             return;

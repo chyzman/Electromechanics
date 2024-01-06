@@ -9,6 +9,7 @@ import com.chyzman.electromechanics.item.GateBlockItem;
 import com.chyzman.electromechanics.logic.DigitalGateHandlers;
 import com.chyzman.electromechanics.logic.AnalogGateHandlers;
 import com.chyzman.electromechanics.logic.DirectionGateHandlers;
+import com.chyzman.electromechanics.logic.api.TimerGateHandlers;
 import com.google.common.collect.ImmutableList;
 import io.wispforest.owo.registration.reflect.BlockRegistryContainer;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -35,23 +36,27 @@ public class RedstoneLogisticalBlocks implements BlockRegistryContainer {
 
     public static final Block LISTENER = new ListenerBlock(FabricBlockSettings.copy(Blocks.OBSERVER));
 
-    public static final Block GATE = new GateBlock(DigitalGateHandlers.REPEATER); // new MonoGateBlock(GateType.GATE, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block GATE = new GateBlock(DigitalGateHandlers.REPEATER);
 
-    public static final Block AND_GATE = new GateBlock(DigitalGateHandlers.AND); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block AND_GATE = new GateBlock(DigitalGateHandlers.AND);
 
-    public static final Block OR_GATE = new GateBlock(DigitalGateHandlers.OR); //new BiGateBlock(BiGateType.OR, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block OR_GATE = new GateBlock(DigitalGateHandlers.OR);
 
-    public static final Block XOR_GATE = new GateBlock(DigitalGateHandlers.XOR); //new BiGateBlock(BiGateType.XOR, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block XOR_GATE = new GateBlock(DigitalGateHandlers.XOR);
+
+    public static final Block TIMER = new GateBlock(TimerGateHandlers.TIMER);
+
+    public static final Block ADVANCED_TIMER = new GateBlock(TimerGateHandlers.ADVANCED_TIMER);
 
     //--
 
-    public static final Block TRI_AND_GATE = new GateBlock(DigitalGateHandlers.TRIPLE_AND); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block TRI_AND_GATE = new GateBlock(DigitalGateHandlers.TRIPLE_AND);
 
-    public static final Block TRI_OR_GATE = new GateBlock(DigitalGateHandlers.TRIPLE_OR); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block TRI_OR_GATE = new GateBlock(DigitalGateHandlers.TRIPLE_OR);
 
-    public static final Block AND_THEN_OR_GATE = new GateBlock(DigitalGateHandlers.AND_THEN_OR); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block AND_THEN_OR_GATE = new GateBlock(DigitalGateHandlers.AND_THEN_OR);
 
-    public static final Block OR_THEN_AND_GATE = new GateBlock(DigitalGateHandlers.OR_THEN_AND); //new BiGateBlock(BiGateType.AND, FabricBlockSettings.copy(Blocks.REPEATER));
+    public static final Block OR_THEN_AND_GATE = new GateBlock(DigitalGateHandlers.OR_THEN_AND);
 
     public static final Block CROSS_GATE = new GateBlock(DirectionGateHandlers.CROSS);
 

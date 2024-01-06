@@ -1,9 +1,10 @@
 package com.chyzman.electromechanics.block.gate;
 
-import com.chyzman.electromechanics.ElectromechanicsLogistics;
+import com.chyzman.electromechanics.Electromechanics;
 import com.chyzman.electromechanics.logic.api.state.GateStateStorage;
 import com.chyzman.electromechanics.logic.api.GateHandler;
 import com.chyzman.electromechanics.logic.api.configuration.Side;
+import com.chyzman.electromechanics.logic.api.state.WorldGateContext;
 import com.chyzman.electromechanics.util.EndecUtils;
 import com.chyzman.electromechanics.util.ImplMapCarrier;
 import io.wispforest.owo.ops.WorldOps;
@@ -19,7 +20,9 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.tick.WorldTickScheduler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +36,7 @@ public class GateBlockEntity extends BlockEntity implements GateStateStorage {
 
     public static BlockEntityType<GateBlockEntity> getBlockEntityType(){
         if(GATE_TYPE == null){
-            GATE_TYPE = Registry.register(Registries.BLOCK_ENTITY_TYPE, ElectromechanicsLogistics.id("pro_gate"), GATE_TYPE_BUILDER.build());
+            GATE_TYPE = Registry.register(Registries.BLOCK_ENTITY_TYPE, Electromechanics.id("pro_gate"), GATE_TYPE_BUILDER.build());
         }
 
         return GATE_TYPE;
@@ -131,6 +134,21 @@ public class GateBlockEntity extends BlockEntity implements GateStateStorage {
         this.hasChangesOccurred = true;
 
         WorldOps.updateIfOnServer(this.world, this.pos);
+    }
+
+    //--
+
+    public void tick() {
+        if(this.world.isClient()) return;
+
+        var result = this.handler.onTick(WorldGateContext.of(this.world, this.pos));
+
+        if(result == ActionResult.SUCCESS){
+            world.updateNeighborsAlways(pos, this.getCachedState().getBlock());
+
+            //this.getCachedState().updatePowered(world, pos, state);
+            ((GateBlock) this.getCachedState().getBlock()).updatePowered(this.world, this.pos, this.getCachedState());
+        }
     }
 
     //--

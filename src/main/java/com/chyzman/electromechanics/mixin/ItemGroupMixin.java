@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Collection;
 import java.util.Set;
 
-import static com.chyzman.electromechanics.ElectromechanicsLogistics.bypassingAir;
+import static com.chyzman.electromechanics.Electromechanics.bypassingAir;
 
 @Mixin(ItemGroup.EntriesImpl.class)
 public abstract class ItemGroupMixin {

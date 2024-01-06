@@ -1,6 +1,6 @@
 package com.chyzman.electromechanics.logic;
 
-import com.chyzman.electromechanics.ElectromechanicsLogistics;
+import com.chyzman.electromechanics.Electromechanics;
 import com.chyzman.electromechanics.logic.api.GateLogicFunction;
 import com.chyzman.electromechanics.logic.api.state.GateStateStorage;
 import com.chyzman.electromechanics.logic.api.configuration.IOConfiguration;
@@ -15,7 +15,7 @@ import java.util.Map;
 public class DirectionGateHandlers {
 
     public static final GateHandler DIRECTABLE = GateHandler.of(
-            ElectromechanicsLogistics.id("directable_gate"), "⤷",
+            Electromechanics.id("directable_gate"), "⤷",
             GateOutputFunction.singleExpression((context1, integers) -> integers[0]),
             storage -> {
                 var map = storage.dynamicStorage();
@@ -59,7 +59,7 @@ public class DirectionGateHandlers {
     );
 
     public static final GateHandler CROSS = GateHandler.of(
-            ElectromechanicsLogistics.id("adv_cross_gate"), "⤧",
+            Electromechanics.id("adv_cross_gate"), "⤧",
             GateOutputFunction.multiExpression(context -> {
                 var map = context.storage().dynamicStorage();
 

@@ -4,12 +4,15 @@ import com.chyzman.electromechanics.block.redstone.RedstoneEvents;
 import com.chyzman.electromechanics.logic.api.configuration.Side;
 import com.chyzman.electromechanics.logic.api.state.WorldGateContext;
 import com.chyzman.electromechanics.logic.api.GateHandler;
+import com.chyzman.electromechanics.util.BlockEntityOps;
 import com.mojang.serialization.MapCodec;
 import io.wispforest.owo.serialization.Endec;
 import io.wispforest.owo.serialization.endec.StructEndecBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
@@ -24,11 +27,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.RedstoneView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.tick.TickPriority;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Consumer;
 
 public class GateBlock extends AbstractRedstoneGateBlock implements ImplBlockEntityProvider {
 
@@ -81,11 +85,27 @@ public class GateBlock extends AbstractRedstoneGateBlock implements ImplBlockEnt
         return CODEC;
     }
 
+
+
+    @Override
+    public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
+        super.onPlaced(world, pos, state, placer, itemStack);
+
+        world.getBlockEntity(pos, GateBlockEntity.getBlockEntityType()).ifPresent(blockEntity -> {
+            BlockEntityOps.readFromCarrier(blockEntity, itemStack.getNbt());
+        });
+    }
+
     //--
 
     @Override
     public ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state) {
-        return this.asItem().getDefaultStack();
+        var stack = this.asItem().getDefaultStack();
+
+        world.getBlockEntity(pos, GateBlockEntity.getBlockEntityType())
+                .ifPresent(gateBlockEntity -> gateBlockEntity.setStackNbt(stack));
+
+        return stack;
     }
 
     @Nullable
@@ -103,6 +123,16 @@ public class GateBlock extends AbstractRedstoneGateBlock implements ImplBlockEnt
     @Override
     public boolean onSyncedBlockEvent(BlockState state, World world, BlockPos pos, int type, int data) {
         return ImplBlockEntityProvider.super.onSyncedBlockEvent(world, pos, type, data);
+    }
+
+    @Override
+    public <T extends BlockEntity> Consumer<T> getTickMethod() {
+        return t -> ((GateBlockEntity) t).tick();
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityType<T> getType() {
+        return (BlockEntityType<T>) GateBlockEntity.getBlockEntityType();
     }
 
     //--
@@ -130,7 +160,7 @@ public class GateBlock extends AbstractRedstoneGateBlock implements ImplBlockEnt
         }
     }
 
-    protected void updatePowered(World world, BlockPos pos, BlockState state) {
+    public void updatePowered(World world, BlockPos pos, BlockState state) {
         if (!this.isLocked(world, pos, state)) {
             WorldGateContext context = WorldGateContext.of(world, pos);
 
@@ -184,9 +214,9 @@ public class GateBlock extends AbstractRedstoneGateBlock implements ImplBlockEnt
 
     @Override
     public int getWeakRedstonePower(BlockState state, BlockView worldView, BlockPos pos, Direction direction) {
-        if(!(worldView instanceof RedstoneView redstoneView) || direction.getAxis().isVertical()) return 0;
+        if(!(worldView instanceof World world) || direction.getAxis().isVertical()) return 0;
 
-        WorldGateContext context = WorldGateContext.of(redstoneView, pos);
+        WorldGateContext context = WorldGateContext.of(world, pos);
 
         var side = context.getSide(direction.getOpposite());
 

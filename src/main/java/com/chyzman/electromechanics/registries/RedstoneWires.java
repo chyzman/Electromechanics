@@ -1,6 +1,6 @@
 package com.chyzman.electromechanics.registries;
 
-import com.chyzman.electromechanics.ElectromechanicsLogistics;
+import com.chyzman.electromechanics.Electromechanics;
 import com.chyzman.electromechanics.item.ColoredBlockItem;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -109,7 +109,7 @@ public class RedstoneWires {
     }
 
     public static Block getColoredVariant(DyeColor color, String type){
-        return Registries.BLOCK.get(new Identifier(ElectromechanicsLogistics.MODID, color.asString() + "_" + type));
+        return Registries.BLOCK.get(new Identifier(Electromechanics.MODID, color.asString() + "_" + type));
     }
 
     @Nullable

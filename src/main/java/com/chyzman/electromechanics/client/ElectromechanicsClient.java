@@ -1,6 +1,6 @@
 package com.chyzman.electromechanics.client;
 
-import com.chyzman.electromechanics.ElectromechanicsLogistics;
+import com.chyzman.electromechanics.Electromechanics;
 import com.chyzman.electromechanics.block.gate.GateBlock;
 import com.chyzman.electromechanics.block.gate.GateBlockEntity;
 import com.chyzman.electromechanics.block.redstone.RedstoneEvents;
@@ -57,7 +57,7 @@ public class ElectromechanicsClient implements ClientModInitializer {
 
         for (String variant : SlimeBlocks.variantInfo().keySet()) {
             for (DyeColor value : DyeColor.values()) {
-                var coloredBlock = Registries.BLOCK.get(new Identifier(ElectromechanicsLogistics.MODID, value.asString() + "_" + variant));
+                var coloredBlock = Registries.BLOCK.get(new Identifier(Electromechanics.MODID, value.asString() + "_" + variant));
 
                 ColorProviderRegistry.BLOCK.register((BlockColorProvider) coloredBlock, coloredBlock);
                 ColorProviderRegistry.ITEM.register((ItemColorProvider) coloredBlock.asItem(), coloredBlock.asItem());
@@ -76,7 +76,7 @@ public class ElectromechanicsClient implements ClientModInitializer {
             };
 
             for (DyeColor value : DyeColor.values()) {
-                var coloredBlock = Registries.BLOCK.get(new Identifier(ElectromechanicsLogistics.MODID, value.asString() + "_" + variant));
+                var coloredBlock = Registries.BLOCK.get(new Identifier(Electromechanics.MODID, value.asString() + "_" + variant));
 
                 ColorProviderRegistry.BLOCK.register(provider, coloredBlock);
                 ColorProviderRegistry.ITEM.register((ItemColorProvider) coloredBlock.asItem(), coloredBlock.asItem());

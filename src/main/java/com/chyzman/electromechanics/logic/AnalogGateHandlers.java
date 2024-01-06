@@ -1,6 +1,6 @@
 package com.chyzman.electromechanics.logic;
 
-import com.chyzman.electromechanics.ElectromechanicsLogistics;
+import com.chyzman.electromechanics.Electromechanics;
 import com.chyzman.electromechanics.logic.api.GateLogicFunction;
 import com.chyzman.electromechanics.logic.api.configuration.SignalType;
 import com.chyzman.electromechanics.logic.api.GateHandler;
@@ -16,7 +16,7 @@ import java.util.function.Function;
 
 public class AnalogGateHandlers {
 
-    public static GateHandler GATE = GateHandler.singleExpression(ElectromechanicsLogistics.id("analog_gate"), "0-15",
+    public static GateHandler GATE = GateHandler.singleExpression(Electromechanics.id("analog_gate"), "0-15",
             IOConfigurations.MONO_TO_MONO,
             Util.make(
                 new ExpressionModeHandler(SignalType.ANALOG),
@@ -27,12 +27,12 @@ public class AnalogGateHandlers {
             )
     );
 
-    public static GateHandler ADDITION = biGate(ElectromechanicsLogistics.id("addition"), "+", (left, right) -> left + right);
-    public static GateHandler SUBTRACTION = biGate(ElectromechanicsLogistics.id("subtraction"), "-", (left, right) -> left - right);
-    public static GateHandler MULTIPLICATION = biGate(ElectromechanicsLogistics.id("multiplication"), "x", (left, right) -> left * right);
-    public static GateHandler DIVISION = biGate(ElectromechanicsLogistics.id("division"), "/", (left, right) -> right != 0 ? left / right : 0);
+    public static GateHandler ADDITION = biGate(Electromechanics.id("addition"), "+", (left, right) -> left + right);
+    public static GateHandler SUBTRACTION = biGate(Electromechanics.id("subtraction"), "-", (left, right) -> left - right);
+    public static GateHandler MULTIPLICATION = biGate(Electromechanics.id("multiplication"), "x", (left, right) -> left * right);
+    public static GateHandler DIVISION = biGate(Electromechanics.id("division"), "/", (left, right) -> right != 0 ? left / right : 0);
 
-    public static GateHandler MODULUS = GateHandler.singleExpression(ElectromechanicsLogistics.id("modulus"), "%",
+    public static GateHandler MODULUS = GateHandler.singleExpression(Electromechanics.id("modulus"), "%",
             IOConfigurations.BI_TO_MONO,
             Util.make(
                     new ExpressionModeHandler(SignalType.ANALOG),
@@ -48,7 +48,7 @@ public class AnalogGateHandlers {
     private static final KeyedEndec<Boolean> COUNT_LOCK = Endec.BOOLEAN.keyed("CountLock", false);
 
     public static GateHandler COUNTER = GateHandler.singleExpression(
-            ElectromechanicsLogistics.id("counter"), "i++",
+            Electromechanics.id("counter"), "i++",
             IOConfigurations.MONO_TO_MONO,
             Util.make(
                 new ExpressionModeHandler(SignalType.DIGITAL, SignalType.ANALOG),

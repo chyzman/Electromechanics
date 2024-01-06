@@ -26,7 +26,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 
-public class ElectromechanicsLogistics implements ModInitializer {
+public class Electromechanics implements ModInitializer {
 
     public static final String MODID = "electromechanics";
 

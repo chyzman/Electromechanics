@@ -1,6 +1,6 @@
 package com.chyzman.electromechanics.block.detector;
 
-import com.chyzman.electromechanics.ElectromechanicsLogistics;
+import com.chyzman.electromechanics.Electromechanics;
 import com.chyzman.electromechanics.mixin.BlockEntityAccessor;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -18,7 +18,7 @@ public class AdvancedDetectorBlockEntity extends DetectorBlockEntity {
     private NbtPathArgumentType.NbtPath path;
 
     public AdvancedDetectorBlockEntity(BlockPos pos, BlockState state) {
-        super(ElectromechanicsLogistics.ADVANCED_DETECTOR_BLOCK_ENTITY, pos, state);
+        super(Electromechanics.ADVANCED_DETECTOR_BLOCK_ENTITY, pos, state);
         try {
             this.path = NbtPathArgumentType.nbtPath().parse(new StringReader(""));
         } catch (Exception e) {

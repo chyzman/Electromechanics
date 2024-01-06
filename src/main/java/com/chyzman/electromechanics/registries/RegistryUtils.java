@@ -1,6 +1,6 @@
 package com.chyzman.electromechanics.registries;
 
-import com.chyzman.electromechanics.ElectromechanicsLogistics;
+import com.chyzman.electromechanics.Electromechanics;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.registry.Registries;
@@ -44,12 +44,12 @@ public class RegistryUtils {
     public static Block registerBlock(String path, Supplier<Block> blockFunc){
         var block = blockFunc.get();
 
-        return Registry.register(Registries.BLOCK, new Identifier(ElectromechanicsLogistics.MODID, path), block);
+        return Registry.register(Registries.BLOCK, new Identifier(Electromechanics.MODID, path), block);
     }
 
     public static BlockItem registerBlockItem(String path, Block block, Function<Block, BlockItem> blockItemFunc){
         var item = blockItemFunc.apply(block);
 
-        return Registry.register(Registries.ITEM, new Identifier(ElectromechanicsLogistics.MODID, path), item);
+        return Registry.register(Registries.ITEM, new Identifier(Electromechanics.MODID, path), item);
     }
 }

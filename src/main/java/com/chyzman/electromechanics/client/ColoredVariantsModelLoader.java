@@ -1,6 +1,6 @@
 package com.chyzman.electromechanics.client;
 
-import com.chyzman.electromechanics.ElectromechanicsLogistics;
+import com.chyzman.electromechanics.Electromechanics;
 import com.chyzman.electromechanics.mixin.ModelLoaderAccessor;
 import com.chyzman.electromechanics.registries.RedstoneWires;
 import com.chyzman.electromechanics.registries.SlimeBlocks;
@@ -48,7 +48,7 @@ public class ColoredVariantsModelLoader implements ModelResolver, BlockStateReso
             if(entry.getKey().equals("redstone_wire")){
                 baseId = new Identifier(entry.getKey());
             } else {
-                baseId = new Identifier(ElectromechanicsLogistics.MODID, "colored_" + entry.getKey());
+                baseId = new Identifier(Electromechanics.MODID, "colored_" + entry.getKey());
             }
 
             Collection<Property<?>> properties = defaultEntry.getStateManager().getProperties();
@@ -113,7 +113,7 @@ public class ColoredVariantsModelLoader implements ModelResolver, BlockStateReso
             // Check if the model attempting to be resolved is the default of the colored variant
             if(Registries.ITEM.getId(entry.getValue().asItem()).getPath().equals(itemPath)) break;
 
-            baseModelId = new Identifier(ElectromechanicsLogistics.MODID, "colored_" + variant);
+            baseModelId = new Identifier(Electromechanics.MODID, "colored_" + variant);
 
             break;
         }
@@ -167,7 +167,7 @@ public class ColoredVariantsModelLoader implements ModelResolver, BlockStateReso
                 if(entry.getKey().equals("redstone_wire")){
                     key = "minecraft" + ":" + variant + modelId.getVariant();
                 } else {
-                    key = ElectromechanicsLogistics.MODID + ":colored_" + variant + modelId.getVariant();
+                    key = Electromechanics.MODID + ":colored_" + variant + modelId.getVariant();
                 }
 
                 if (BLOCKSTATE_ID_CACHE.get(key) == null) {

@@ -58,4 +58,5 @@ public abstract class GateContext {
 
     public abstract int getEmittedRedstonePower(Direction direction);
 
+    public abstract long getTime();
 }

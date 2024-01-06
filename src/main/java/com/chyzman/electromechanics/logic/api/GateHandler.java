@@ -57,16 +57,16 @@ public class GateHandler {
         return new GateHandler(id, displaySymbol, outputFunc, setupEvent, interactEvent);
     }
 
-    public static GateHandler of(Identifier id, String displaySymbol, GateOutputFunction outputFunc, GateSetupEvent setupEvent, GateInteractEvent interactEvent, GateTickEvent tickEvent){
-        return new GateHandler(id, displaySymbol, outputFunc, setupEvent, interactEvent).setTickEvent(tickEvent);
+    public static GateHandler of(Identifier id, String displaySymbol, IOConfiguration configuration, GateOutputFunction outputFunc, GateSetupEvent setupEvent, GateInteractEvent interactEvent, GateTickEvent tickEvent){
+        return new GateHandler(id, displaySymbol, outputFunc, setupEvent, interactEvent).setIOConfig(configuration).setTickEvent(tickEvent);
     }
 
     public static GateHandler singleExpression(Identifier id, String displaySymbol, IOConfiguration configuration, ExpressionModeHandler handler){
-        return of(id, displaySymbol, handler.create(), handler, handler).setIOConfig(configuration);
+        return of(id, displaySymbol, configuration, handler.create(), handler, handler, null);
     }
 
     public static GateHandler multiExpression(Identifier id, String displaySymbol, IOConfiguration configuration, MultiExpressionModeHandler handler){
-        return of(id, displaySymbol, handler.create(), handler, handler).setIOConfig(configuration);
+        return of(id, displaySymbol, configuration, handler.create(), handler, handler, null);
     }
 
     protected GateHandler setIOConfig(IOConfiguration configuration){
@@ -95,10 +95,10 @@ public class GateHandler {
         return this.interactEvent.interact(context.storage());
     }
 
-    public void onTick(GateContext context){
-        if(tickEvent == null || !tickEvent.shouldTick(context)) return;
+    public ActionResult onTick(GateContext context){
+        if(tickEvent == null || !tickEvent.shouldTick(context)) return ActionResult.PASS;
 
-        tickEvent.onTick(context);
+        return tickEvent.onTick(this, context);
     }
 
     //--

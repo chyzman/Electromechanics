@@ -18,7 +18,7 @@
       "com.chyzman.electromechanics.client.ElectromechanicsClient"
     ],
     "main": [
-      "com.chyzman.electromechanics.ElectromechanicsLogistics"
+      "com.chyzman.electromechanics.Electromechanics"
     ]
   },
   "mixins": [

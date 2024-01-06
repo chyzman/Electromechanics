@@ -8,15 +8,16 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.RedstoneView;
+import net.minecraft.world.World;
 
 public class WorldGateContext extends GateContext {
 
     public final BlockPos position;
-    public final RedstoneView world;
+    public final World world;
 
     public BlockState state;
 
-    protected WorldGateContext(RedstoneView world, BlockPos position, GateStateStorage stateStorage, BlockState state) {
+    protected WorldGateContext(World world, BlockPos position, GateStateStorage stateStorage, BlockState state) {
         super(stateStorage, state.get(Properties.HORIZONTAL_FACING).getOpposite());
 
         this.state = state;
@@ -24,13 +25,13 @@ public class WorldGateContext extends GateContext {
         this.world = world;
     }
 
-    public static WorldGateContext of(RedstoneView world, BlockPos pos) {
+    public static WorldGateContext of(World world, BlockPos pos) {
         var blockEntity = world.getBlockEntity(pos, GateBlockEntity.getBlockEntityType()).get();
 
         return new WorldGateContext(world, pos, blockEntity, world.getBlockState(pos));
     }
 
-    public static WorldGateContext of(RedstoneView world, BlockPos pos, GateStateStorage stateStorage) {
+    public static WorldGateContext of(World world, BlockPos pos, GateStateStorage stateStorage) {
         return new WorldGateContext(world, pos, stateStorage, world.getBlockState(pos));
     }
 
@@ -43,5 +44,9 @@ public class WorldGateContext extends GateContext {
             BlockState blockState = world.getBlockState(blockPos);
             return Math.max(i, (blockState.isOf(Blocks.REDSTONE_WIRE) || blockState.getBlock() instanceof RedstoneWireBlock) ? blockState.get(RedstoneWireBlock.POWER) : 0);
         }
+    }
+
+    public long getTime(){
+        return this.world.getTime();
     }
 }

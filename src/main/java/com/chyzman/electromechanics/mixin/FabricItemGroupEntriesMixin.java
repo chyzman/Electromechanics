@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static com.chyzman.electromechanics.ElectromechanicsLogistics.bypassingAir;
+import static com.chyzman.electromechanics.Electromechanics.bypassingAir;
 
 @Mixin(FabricItemGroupEntries.class)
 public abstract class FabricItemGroupEntriesMixin {

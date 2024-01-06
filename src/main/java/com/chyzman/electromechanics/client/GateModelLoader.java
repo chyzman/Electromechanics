@@ -1,6 +1,6 @@
 package com.chyzman.electromechanics.client;
 
-import com.chyzman.electromechanics.ElectromechanicsLogistics;
+import com.chyzman.electromechanics.Electromechanics;
 import com.chyzman.electromechanics.block.gate.GateBlockEntity;
 import com.chyzman.electromechanics.mixin.BlockEntityTypeAccessor;
 import net.fabricmc.fabric.api.client.model.loading.v1.BlockStateResolver;
@@ -19,23 +19,23 @@ import java.util.List;
 
 public class GateModelLoader implements ModelResolver {
 
-    public static final Identifier REDSTONE_PATH_GRAY = ElectromechanicsLogistics.id("block/redstone_path_gray");
+    public static final Identifier REDSTONE_PATH_GRAY = Electromechanics.id("block/redstone_path_gray");
 
-    public static final Identifier REDSTONE_PATH_OFF = ElectromechanicsLogistics.id("block/redstone_path_off");
-    public static final Identifier REDSTONE_PATH_ON = ElectromechanicsLogistics.id("block/redstone_path_on");
+    public static final Identifier REDSTONE_PATH_OFF = Electromechanics.id("block/redstone_path_off");
+    public static final Identifier REDSTONE_PATH_ON = Electromechanics.id("block/redstone_path_on");
 
-    public static final Identifier FULL_CHIP = ElectromechanicsLogistics.id("block/chips/full_chip");
-    public static final Identifier HALF_CHIP = ElectromechanicsLogistics.id("block/chips/half_chip");
-    public static final Identifier QUARTER_CHIP = ElectromechanicsLogistics.id("block/chips/quarter_chip");
+    public static final Identifier FULL_CHIP = Electromechanics.id("block/chips/full_chip");
+    public static final Identifier HALF_CHIP = Electromechanics.id("block/chips/half_chip");
+    public static final Identifier QUARTER_CHIP = Electromechanics.id("block/chips/quarter_chip");
 
     private static final JsonUnbakedModel ITEM_MODEL = null;
-    private static final Identifier ITEM_MODEL_ID = ElectromechanicsLogistics.id("item/gate/board/base");
+    private static final Identifier ITEM_MODEL_ID = Electromechanics.id("item/gate/board/base");
 
     private static List<Identifier> gateItems = new ArrayList<>();
 
     public static void init(){
         ModelLoadingPlugin.register(pluginContext -> {
-            pluginContext.addModels(ElectromechanicsLogistics.id("block/gate/board/base"));
+            pluginContext.addModels(Electromechanics.id("block/gate/board/base"));
             pluginContext.addModels(ITEM_MODEL_ID);
 
             pluginContext.addModels(REDSTONE_PATH_GRAY, REDSTONE_PATH_OFF, REDSTONE_PATH_ON);
@@ -64,7 +64,7 @@ public class GateModelLoader implements ModelResolver {
     public @Nullable UnbakedModel resolveModel(Context context) {
         var id = context.id();
 
-        if(!id.getNamespace().equals(ElectromechanicsLogistics.MODID)) return null;
+        if(!id.getNamespace().equals(Electromechanics.MODID)) return null;
 
         // Is Item Model variant
         if (!id.getPath().contains("item/")) return null;

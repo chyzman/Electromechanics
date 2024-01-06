@@ -1,6 +1,6 @@
 package com.chyzman.electromechanics.registries;
 
-import com.chyzman.electromechanics.ElectromechanicsLogistics;
+import com.chyzman.electromechanics.Electromechanics;
 import com.chyzman.electromechanics.block.slime.ColoredSlimeBlock;
 import com.chyzman.electromechanics.block.slime.SlimeSlab;
 import com.chyzman.electromechanics.block.slime.ColoredSlimeSlab;
@@ -122,11 +122,11 @@ public class SlimeBlocks {
     }
 
     public static Block getColoredVariant(DyeColor color, String type){
-        return Registries.BLOCK.get(new Identifier(ElectromechanicsLogistics.MODID, color.asString() + "_" + type));
+        return Registries.BLOCK.get(new Identifier(Electromechanics.MODID, color.asString() + "_" + type));
     }
 
     public static boolean isVariant(Identifier id, String variant){
-        if(!id.getNamespace().equals(ElectromechanicsLogistics.MODID)) return false;
+        if(!id.getNamespace().equals(Electromechanics.MODID)) return false;
 
         var path = id.getPath();
 

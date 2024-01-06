@@ -1,20 +1,27 @@
 package com.chyzman.electromechanics.logic;
 
-import com.chyzman.electromechanics.ElectromechanicsLogistics;
+import com.chyzman.electromechanics.Electromechanics;
+import com.chyzman.electromechanics.logic.api.GateInteractEvent;
 import com.chyzman.electromechanics.logic.api.GateLogicFunction;
+import com.chyzman.electromechanics.logic.api.GateOutputFunction;
 import com.chyzman.electromechanics.logic.api.configuration.IOConfiguration;
+import com.chyzman.electromechanics.logic.api.configuration.Side;
+import com.chyzman.electromechanics.logic.api.configuration.SignalConfiguration;
 import com.chyzman.electromechanics.logic.api.configuration.SignalType;
 import com.chyzman.electromechanics.logic.api.GateHandler;
 import com.chyzman.electromechanics.logic.api.mode.ExpressionModeHandler;
+import com.chyzman.electromechanics.logic.api.state.GateStateStorage;
 import com.chyzman.electromechanics.mixin.ExpressionBuilderAccessor;
 import io.wispforest.owo.serialization.Endec;
 import io.wispforest.owo.serialization.endec.KeyedEndec;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.objecthunter.exp4j.operator.Operator;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.function.TriFunction;
 
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -28,22 +35,22 @@ public class DigitalGateHandlers {
         }
     };
 
-    public static final GateHandler REPEATER = monoGate(ElectromechanicsLogistics.id("repeater"), "0-1", (input) -> input);
+    public static final GateHandler REPEATER = monoGate(Electromechanics.id("repeater"), "0-1", (input) -> input);
 
-    public static final GateHandler AND = biGate(ElectromechanicsLogistics.id("and"), "&&", (right, left) -> (right * left));
-    public static final GateHandler OR = biGate(ElectromechanicsLogistics.id("or"), "||", (right, left) -> (right + left));
-    public static final GateHandler XOR = biGate(ElectromechanicsLogistics.id("xor"), "⊕", (right, left) -> (right ^ left));
+    public static final GateHandler AND = biGate(Electromechanics.id("and"), "&&", (right, left) -> (right * left));
+    public static final GateHandler OR = biGate(Electromechanics.id("or"), "||", (right, left) -> (right + left));
+    public static final GateHandler XOR = biGate(Electromechanics.id("xor"), "⊕", (right, left) -> (right ^ left));
 
-    public static final GateHandler TRIPLE_AND = triGateExpression(ElectromechanicsLogistics.id("tri_and"), "&&&", "r*b*l");
-    public static final GateHandler TRIPLE_OR = triGate(ElectromechanicsLogistics.id("tri_or"), "|||", (right, middle, left) -> (right + middle + left));
-    public static final GateHandler AND_THEN_OR = triGate(ElectromechanicsLogistics.id("and_then_or"), "&&|", (right, middle, left) -> ((right * middle) + left));
-    public static final GateHandler OR_THEN_AND = triGate(ElectromechanicsLogistics.id("or_then_and"), "||&", (right, middle, left) -> ((right + middle) * left));
+    public static final GateHandler TRIPLE_AND = triGateExpression(Electromechanics.id("tri_and"), "&&&", "r*b*l");
+    public static final GateHandler TRIPLE_OR = triGate(Electromechanics.id("tri_or"), "|||", (right, middle, left) -> (right + middle + left));
+    public static final GateHandler AND_THEN_OR = triGate(Electromechanics.id("and_then_or"), "&&|", (right, middle, left) -> ((right * middle) + left));
+    public static final GateHandler OR_THEN_AND = triGate(Electromechanics.id("or_then_and"), "||&", (right, middle, left) -> ((right + middle) * left));
 
     private static final KeyedEndec<Boolean> IS_FLOPPED = Endec.BOOLEAN.keyed("IsFlopped", false);
     private static final KeyedEndec<Boolean> FLOP_LOCK = Endec.BOOLEAN.keyed("FlopLock", false);
 
     public static GateHandler T_FLIP_FLOP = GateHandler.singleExpression(
-            ElectromechanicsLogistics.id("t_flip_flop"), "TFF",
+            Electromechanics.id("t_flip_flop"), "TFF",
             IOConfigurations.MONO_TO_MONO,
             Util.make(
                 new ExpressionModeHandler(SignalType.DIGITAL, SignalType.DIGITAL),

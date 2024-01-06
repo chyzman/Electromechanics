@@ -1,6 +1,6 @@
 package com.chyzman.electromechanics.block.detector;
 
-import com.chyzman.electromechanics.ElectromechanicsLogistics;
+import com.chyzman.electromechanics.Electromechanics;
 import com.chyzman.electromechanics.mixin.BlockEntityAccessor;
 import io.wispforest.owo.ops.WorldOps;
 import net.minecraft.block.BlockState;
@@ -20,7 +20,7 @@ public class DetectorBlockEntity extends BlockEntity {
     }
 
     public DetectorBlockEntity(BlockPos pos, BlockState state) {
-        super(ElectromechanicsLogistics.DETECTOR_BLOCK_ENTITY, pos, state);
+        super(Electromechanics.DETECTOR_BLOCK_ENTITY, pos, state);
     }
 
     @Override

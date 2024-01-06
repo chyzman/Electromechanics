@@ -1,6 +1,6 @@
 package com.chyzman.electromechanics.data;
 
-import com.chyzman.electromechanics.ElectromechanicsLogistics;
+import com.chyzman.electromechanics.Electromechanics;
 import net.minecraft.block.Block;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
@@ -40,6 +40,6 @@ public class SlimeTags {
     }
 
     private static Identifier jello(String path){
-        return new Identifier(ElectromechanicsLogistics.MODID, path);
+        return new Identifier(Electromechanics.MODID, path);
     }
 }
