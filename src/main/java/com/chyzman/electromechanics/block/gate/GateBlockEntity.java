@@ -4,6 +4,7 @@ import com.chyzman.electromechanics.Electromechanics;
 import com.chyzman.electromechanics.logic.api.state.GateStateStorage;
 import com.chyzman.electromechanics.logic.api.GateHandler;
 import com.chyzman.electromechanics.logic.api.configuration.Side;
+import com.chyzman.electromechanics.logic.api.state.ImplGateStateStorage;
 import com.chyzman.electromechanics.logic.api.state.WorldGateContext;
 import com.chyzman.electromechanics.util.EndecUtils;
 import com.chyzman.electromechanics.util.ImplMapCarrier;
@@ -27,7 +28,7 @@ import net.minecraft.world.tick.WorldTickScheduler;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GateBlockEntity extends BlockEntity implements GateStateStorage {
+public class GateBlockEntity extends BlockEntity {
 
     private static BlockEntityType<GateBlockEntity> GATE_TYPE = null;
 
@@ -44,28 +45,10 @@ public class GateBlockEntity extends BlockEntity implements GateStateStorage {
 
     //--
 
-    public static final Endec<Map<Side, Integer>> POWER_LEVEL_ENDEC = EndecUtils.mapOf(Endec.INT, Side::valueOf, Side::name);
-
-    public static final KeyedEndec<Map<Side, Integer>> INPUT = POWER_LEVEL_ENDEC.keyed("Input", new HashMap<>());
-    public static final KeyedEndec<Map<Side, Integer>> OUTPUT = POWER_LEVEL_ENDEC.keyed("Output", new HashMap<>());
-
-    public static final KeyedEndec<Integer> MODE = Endec.INT.keyed("Mode", 0);
-
-    public static final KeyedEndec<NbtCompound> DYNAMIC_DATA = NbtEndec.COMPOUND.keyed("DynamicData", NbtCompound::new);
-
-    //--
-
     private final GateHandler handler;
-
-    private boolean hasChangesOccurred = false;
-
-    private Map<Side, Integer> inputPowerLevel = new HashMap<>();
-    private Map<Side, Integer> outputPowerLevel = new HashMap<>();
-
-    private int mode = 0;
-
-    private final ImplMapCarrier<NbtCompound> dynamicData = new ImplMapCarrier<>(new NbtCompound())
-            .onChange(nbtCompound -> this.markDirty());
+    private final ImplGateStateStorage storage = new ImplGateStateStorage(
+            state -> this.getWorld() == null || !this.getWorld().isClient(), state -> this.markDirty()
+    );
 
     private GateBlockEntity(BlockPos pos, BlockState state, GateHandler handler) {
         super(getBlockEntityType(), pos, state);
@@ -80,13 +63,17 @@ public class GateBlockEntity extends BlockEntity implements GateStateStorage {
 
         var blockEntity = new GateBlockEntity(pos, state, proGateBlock.handler);
 
-        proGateBlock.handler.setupStorage(blockEntity);
+        proGateBlock.handler.setupStorage(blockEntity.storage());
 
         return blockEntity;
     }
 
     public GateHandler getHandler(){
         return this.handler;
+    }
+
+    public GateStateStorage storage(){
+        return this.storage;
     }
 
     @Override
@@ -107,31 +94,19 @@ public class GateBlockEntity extends BlockEntity implements GateStateStorage {
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
 
-        this.inputPowerLevel = nbt.get(INPUT);
-        this.outputPowerLevel = nbt.get(OUTPUT);
-
-        this.mode = nbt.get(MODE);
-
-        this.dynamicData.setMapCarrier(nbt.get(DYNAMIC_DATA));
+        this.storage.readNbt(nbt);
     }
 
     @Override
     protected void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
 
-        nbt.put(INPUT, this.inputPowerLevel);
-        nbt.put(OUTPUT, this.outputPowerLevel);
-
-        nbt.put(MODE, this.mode);
-
-        nbt.put(DYNAMIC_DATA, this.dynamicData.getMapCarrier());
+        this.storage.writeNbt(nbt);
     }
 
     @Override
     public void markDirty() {
         super.markDirty();
-
-        this.hasChangesOccurred = true;
 
         WorldOps.updateIfOnServer(this.world, this.pos);
     }
@@ -153,77 +128,5 @@ public class GateBlockEntity extends BlockEntity implements GateStateStorage {
 
     //--
 
-    public void setHasChangesOccurred(boolean value){
-        this.hasChangesOccurred = value;
-    }
 
-    @Override
-    public boolean hasChangesOccurred(){
-        var hasChanged = this.hasChangesOccurred;
-
-        this.setHasChangesOccurred(false);
-
-        return hasChanged;
-    }
-
-    @Override
-    public void setMode(int mode) {
-        this.mode = mode;
-        this.markDirty();
-    }
-
-    @Override
-    public int getMode() {
-        return mode;
-    }
-
-    @Override
-    public void setOutputPower(Side side, int power){
-        if(this.getWorld().isClient() || (this.outputPowerLevel.containsKey(side) && this.outputPowerLevel.get(side) == power)) return;
-
-        this.outputPowerLevel.put(side, power);
-
-        this.markDirty();
-    }
-
-    @Override
-    public void setInputPower(Side side, int power){
-        if(this.getWorld().isClient() || (this.inputPowerLevel.containsKey(side) && this.inputPowerLevel.get(side) == power)) return;
-
-        this.inputPowerLevel.put(side, power);
-
-        this.markDirty();
-    }
-
-    @Override
-    public int getInputPower(Side side){
-        if(!inputPowerLevel.containsKey(side)) return 0;
-
-        return inputPowerLevel.get(side);
-    }
-
-    @Override
-    public boolean isBeingPowered(Side side){
-        return getInputPower(side) > 0;
-    }
-
-    @Override
-    public int getOutputPower(Side side){
-        return this.outputPowerLevel.getOrDefault(side, 0);
-    }
-
-    @Override
-    public boolean isOutputtingPower(Side side){
-        return getOutputPower(side) > 0;
-    }
-
-    @Override
-    public boolean isOutputtingPower(){
-        return outputPowerLevel.values().stream().anyMatch(integer -> integer > 0);
-    }
-
-    @Override
-    public <M extends MapCarrier> M dynamicStorage() {
-        return (M) this.dynamicData;
-    }
 }

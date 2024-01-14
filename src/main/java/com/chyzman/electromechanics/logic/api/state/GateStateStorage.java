@@ -26,8 +26,6 @@ public interface GateStateStorage {
 
     void setInputPower(Side side, int power);
 
-    boolean hasChangesOccurred();
-
     // --
 
     int getInputPower(Side side);

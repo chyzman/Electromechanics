@@ -46,6 +46,7 @@ public class GateBlockEntityRender implements BlockEntityRenderer<GateBlockEntit
         }
 
         var handler = entity.getHandler();
+        var storage = entity.storage();
 
         var pos = entity.getPos();
         var state = entity.getCachedState();
@@ -75,13 +76,13 @@ public class GateBlockEntityRender implements BlockEntityRenderer<GateBlockEntit
 
         var sideHelper = new SideOrientationHelper(direction.getOpposite());
 
-        var outputs = handler.getOutputs(entity);
-        var inputs = handler.getInputs(entity);
+        var outputs = handler.getOutputs(storage);
+        var inputs = handler.getInputs(storage);
 
         boolean fullDigital = true;
 
         for (Side output : outputs) {
-            var signalType = handler.getSideSignalType(entity, output);
+            var signalType = handler.getSideSignalType(storage, output);
 
             if(signalType == SignalType.ANALOG) fullDigital = false;
 
@@ -92,13 +93,13 @@ public class GateBlockEntityRender implements BlockEntityRenderer<GateBlockEntit
 
             var dirSide = sideHelper.getDirection(output);
 
-            renderPath(pathModel, getColor(entity.getOutputPower(output), signalType, pos, dirSide), dirSide, matrices, renderContext);
+            renderPath(pathModel, getColor(storage.getOutputPower(output), signalType, pos, dirSide), dirSide, matrices, renderContext);
 
             renderSideType(Blocks.ORANGE_CONCRETE, dirSide, matrices, renderContext);
         }
 
         for (Side input : inputs) {
-            var signalType = handler.getSideSignalType(entity, input);
+            var signalType = handler.getSideSignalType(storage, input);
 
             if(signalType == SignalType.ANALOG) fullDigital = false;
 
@@ -109,7 +110,7 @@ public class GateBlockEntityRender implements BlockEntityRenderer<GateBlockEntit
 
             var dirSide = sideHelper.getDirection(input);
 
-            renderPath(pathModel, getColor(entity.getInputPower(input), signalType, pos, dirSide), dirSide, matrices, renderContext);
+            renderPath(pathModel, getColor(storage.getInputPower(input), signalType, pos, dirSide), dirSide, matrices, renderContext);
 
             renderSideType(Blocks.BLUE_CONCRETE, dirSide, matrices, renderContext);
         }

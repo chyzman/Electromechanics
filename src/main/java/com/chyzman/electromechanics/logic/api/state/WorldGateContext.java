@@ -28,7 +28,7 @@ public class WorldGateContext extends GateContext {
     public static WorldGateContext of(World world, BlockPos pos) {
         var blockEntity = world.getBlockEntity(pos, GateBlockEntity.getBlockEntityType()).get();
 
-        return new WorldGateContext(world, pos, blockEntity, world.getBlockState(pos));
+        return new WorldGateContext(world, pos, blockEntity.storage(), world.getBlockState(pos));
     }
 
     public static WorldGateContext of(World world, BlockPos pos, GateStateStorage stateStorage) {
