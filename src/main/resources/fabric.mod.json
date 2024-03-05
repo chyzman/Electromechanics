@@ -3,14 +3,19 @@
   "id": "electromechanics",
   "version": "${version}",
   "name": "Electromechanics",
-  "description": "",
-  "authors": ["chyzman"],
+  "description": "A addition to the existing Redstone ecosystem mechanically and electrically",
+  "authors": [
+    "chyzman",
+    "blodhgarm"
+  ],
   "contributors": [
     "Dr.Zeal - Texture Artist",
     "glisco - was supprised"
   ],
-  "contact": {},
-  "license": "All-Rights-Reserved",
+  "contact": {
+    "sources": "https://github.com/chyzman/chyzyLogistics"
+  },
+  "license": "MIT",
   "icon": "assets/electromechanics/icon.png",
   "environment": "*",
   "entrypoints": {
@@ -25,9 +30,10 @@
     "electromechanics.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=${loader_version}",
+    "fabricloader": ">=0.15.0",
     "fabric": "*",
-    "minecraft": ">=${minecraft_version}"
+    "minecraft": ">=1.20.4",
+    "owo": ">=0.12.0+1.20.3"
   },
   "accessWidener" : "electromechanics.accesswidener"
 }
