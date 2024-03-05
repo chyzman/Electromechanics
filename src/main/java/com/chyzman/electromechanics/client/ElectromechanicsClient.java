@@ -95,7 +95,7 @@ public class ElectromechanicsClient implements ClientModInitializer {
             RedstoneWires.iterateVariants(block -> {
                 var name = LangUtils.toEnglishName(RedstoneWires.getDyeColor(block).getName() + "stone_dust");
 
-                if(name.contains("red")) name = "Redderstone Dust";
+                if(name.contains("Red")) name = "Redderstone Dust";
 
                 helper.addTranslation(block.getTranslationKey(), name);
             });

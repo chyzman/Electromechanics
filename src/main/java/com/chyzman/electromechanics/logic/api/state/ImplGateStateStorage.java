@@ -40,7 +40,9 @@ public class ImplGateStateStorage implements GateStateStorage {
         this.onChange = onChange;
 
         this.dynamicData = new ImplMapCarrier<>(new NbtCompound())
-                .onChange(nbtCompound -> this.onChange.accept(this));
+                .onChange(nbtCompound -> {
+                    if(this.shouldUpdateValue.test(this)) this.onChange.accept(this);
+                });
     }
 
     public void readNbt(NbtCompound nbt) {
@@ -64,17 +66,18 @@ public class ImplGateStateStorage implements GateStateStorage {
     @Override
     public void setMode(int mode) {
         this.mode = mode;
+
         this.onChange.accept(this);
     }
 
     @Override
     public int getMode() {
-        return mode;
+        return this.mode;
     }
 
     @Override
     public void setOutputPower(Side side, int power){
-        if(this.shouldUpdateValue.test(this) || (this.outputPowerLevel.containsKey(side) && this.outputPowerLevel.get(side) == power)) return;
+        if(!this.shouldUpdateValue.test(this) || (this.outputPowerLevel.containsKey(side) && this.outputPowerLevel.get(side) == power)) return;
 
         this.outputPowerLevel.put(side, power);
 
@@ -83,7 +86,7 @@ public class ImplGateStateStorage implements GateStateStorage {
 
     @Override
     public void setInputPower(Side side, int power){
-        if(this.shouldUpdateValue.test(this) || (this.inputPowerLevel.containsKey(side) && this.inputPowerLevel.get(side) == power)) return;
+        if(!this.shouldUpdateValue.test(this) || (this.inputPowerLevel.containsKey(side) && this.inputPowerLevel.get(side) == power)) return;
 
         this.inputPowerLevel.put(side, power);
 
@@ -92,9 +95,7 @@ public class ImplGateStateStorage implements GateStateStorage {
 
     @Override
     public int getInputPower(Side side){
-        if(!inputPowerLevel.containsKey(side)) return 0;
-
-        return inputPowerLevel.get(side);
+        return this.inputPowerLevel.getOrDefault(side, 0);
     }
 
     @Override
@@ -114,7 +115,7 @@ public class ImplGateStateStorage implements GateStateStorage {
 
     @Override
     public boolean isOutputtingPower(){
-        return outputPowerLevel.values().stream().anyMatch(integer -> integer > 0);
+        return this.outputPowerLevel.values().stream().anyMatch(integer -> integer > 0);
     }
 
     @Override

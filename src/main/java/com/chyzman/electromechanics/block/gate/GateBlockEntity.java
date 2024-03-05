@@ -47,7 +47,7 @@ public class GateBlockEntity extends BlockEntity {
 
     private final GateHandler handler;
     private final ImplGateStateStorage storage = new ImplGateStateStorage(
-            state -> this.getWorld() == null || !this.getWorld().isClient(), state -> this.markDirty()
+            state -> this.getWorld() != null && !this.getWorld().isClient(), state -> this.markDirty()
     );
 
     private GateBlockEntity(BlockPos pos, BlockState state, GateHandler handler) {

@@ -5,24 +5,33 @@ import com.chyzman.electromechanics.mixin.ModelLoaderAccessor;
 import com.chyzman.electromechanics.registries.RedstoneWires;
 import com.chyzman.electromechanics.registries.SlimeBlocks;
 import com.google.common.collect.ImmutableMap;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.model.loading.v1.BlockStateResolver;
 import net.fabricmc.fabric.api.client.model.loading.v1.DelegatingUnbakedModel;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelResolver;
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.block.BlockModels;
 import net.minecraft.client.render.model.UnbakedModel;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.registry.Registries;
+import net.minecraft.resource.ResourceManager;
+import net.minecraft.resource.ResourceType;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Property;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.profiler.Profiler;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 public class ColoredVariantsModelLoader implements ModelResolver, BlockStateResolver  {
 
@@ -30,7 +39,7 @@ public class ColoredVariantsModelLoader implements ModelResolver, BlockStateReso
 
     private static final Map<String, Identifier> BLOCKSTATE_ID_CACHE = new HashMap<>();
 
-    private static final Map<String, Block> variants = new HashMap<>();;
+    private static final Map<String, Block> variants = new HashMap<>();
 
     public static void init(){
         var STATIC_DEFS = ModelLoaderAccessor.gelatin$getSTATIC_DEFINITIONS();
@@ -84,6 +93,19 @@ public class ColoredVariantsModelLoader implements ModelResolver, BlockStateReso
                 }
             }
         });
+
+        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES)
+                .registerReloadListener(new SimpleSynchronousResourceReloadListener() {
+                    @Override
+                    public void reload(ResourceManager manager) {
+                        ITEMS_MODEL_CACHE.clear();
+                    }
+
+                    @Override
+                    public Identifier getFabricId() {
+                        return new Identifier(Electromechanics.MODID, "reload_event");
+                    }
+                });
     }
 
     //----------------------------------------------------------------------------------------------------------------------

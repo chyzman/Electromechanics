@@ -8,6 +8,7 @@ import com.chyzman.electromechanics.logic.api.configuration.Side;
 import com.chyzman.electromechanics.logic.api.configuration.SignalType;
 import com.chyzman.electromechanics.mixin.RedstoneWireBlockAccessor;
 import com.chyzman.electromechanics.registries.RedstoneWires;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.RedstoneWireBlock;
@@ -26,6 +27,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Colors;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
+import org.joml.Vector3f;
 
 public class GateBlockEntityRender implements BlockEntityRenderer<GateBlockEntity> {
 
@@ -56,7 +58,10 @@ public class GateBlockEntityRender implements BlockEntityRenderer<GateBlockEntit
         RenderLayer renderLayer = RenderLayers.getMovingBlockLayer(state);
         VertexConsumer vertexConsumer = vertexConsumers.getBuffer(renderLayer);
 
-        var renderContext = new ModelRenderContext(manager, modelManager, entity, matrices, vertexConsumer, overlay, overlay);
+        var renderContext = new ModelRenderContext(manager, modelManager, entity, matrices, vertexConsumer, light, overlay);
+
+        //DiffuseLighting.enableGuiDepthLighting();
+        //RenderSystem.setShaderLights(new Vector3f(-1.5f, -.5f, 0), new Vector3f(0, -1, 0));
 
         matrices.push();
 
@@ -226,6 +231,8 @@ public class GateBlockEntityRender implements BlockEntityRenderer<GateBlockEntit
 
         matrices.pop();
 
+        //DiffuseLighting.disableGuiDepthLighting();
+
         //--
 
 
@@ -339,6 +346,8 @@ public class GateBlockEntityRender implements BlockEntityRenderer<GateBlockEntit
 
             var random = world.getRandom();
 
+            //renderWithColor(model, 1.0f, 1.0f, 1.0f);
+
             renderManager.getModelRenderer().render(world, model, state, pos, matrices, vertexConsumer, false, random, seed, overlay);
         }
 
@@ -355,7 +364,7 @@ public class GateBlockEntityRender implements BlockEntityRenderer<GateBlockEntit
 
             var light = WorldRenderer.getLightmapCoordinates(world, state, pos);
 
-             renderManager.getModelRenderer().render(matrices.peek(), vertexConsumer, state, model, red, green, blue, light, overlay);
+            renderManager.getModelRenderer().render(matrices.peek(), vertexConsumer, state, model, red, green, blue, light, overlay);
         }
     }
 }

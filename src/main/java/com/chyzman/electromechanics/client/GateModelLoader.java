@@ -30,23 +30,24 @@ public class GateModelLoader implements ModelResolver {
 
     private static final JsonUnbakedModel ITEM_MODEL = null;
     private static final Identifier ITEM_MODEL_ID = Electromechanics.id("item/gate/board/base");
+    private static final Identifier GATE_MODEL_ID = Electromechanics.id("block/gate");
 
     private static List<Identifier> gateItems = new ArrayList<>();
 
     public static void init(){
         ModelLoadingPlugin.register(pluginContext -> {
             pluginContext.addModels(Electromechanics.id("block/gate/board/base"));
+
             pluginContext.addModels(ITEM_MODEL_ID);
+            pluginContext.addModels(GATE_MODEL_ID);
 
             pluginContext.addModels(REDSTONE_PATH_GRAY, REDSTONE_PATH_OFF, REDSTONE_PATH_ON);
 
             pluginContext.addModels(FULL_CHIP, HALF_CHIP, QUARTER_CHIP);
 
             BlockStateResolver resolver = context -> {
-//                var model = context.getOrLoadModel(new Identifier("builtin/entity"));
-
                 for (var state : context.block().getStateManager().getStates()) {
-                    context.setModel(state, new DelegatingUnbakedModel(new Identifier("builtin/entity")));
+                    context.setModel(state, new DelegatingUnbakedModel(GATE_MODEL_ID));
                 }
             };
 

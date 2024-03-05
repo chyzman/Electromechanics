@@ -46,7 +46,7 @@ public class GateBlock extends AbstractRedstoneGateBlock implements ImplBlockEnt
 
             var blockEntity = world.getBlockEntity(pos2, GateBlockEntity.getBlockEntityType()).get();
 
-            return !gateBlock.handler.wireConnectsTo(blockEntity, state2.get(FACING).getOpposite(), Direction.fromVector(xDiff, 0, zDiff));
+            return !gateBlock.handler.wireConnectsTo(blockEntity.storage(), state2.get(FACING).getOpposite(), Direction.fromVector(xDiff, 0, zDiff));
         });
     }
 
