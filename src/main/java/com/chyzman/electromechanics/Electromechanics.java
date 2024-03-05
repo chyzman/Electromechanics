@@ -40,14 +40,6 @@ public class Electromechanics implements ModInitializer {
         FieldRegistrationHandler.register(RedstoneLogisticalBlocks.class, MODID, false);
         GateBlockEntity.getBlockEntityType();
 
-        for (Item item : RedstoneLogisticalBlocks.getBlockItems()) {
-            if(!(item instanceof BlockItem blockItem)) continue;
-
-            var block = blockItem.getBlock();
-
-            if(!(block instanceof GateBlock)) continue;
-        }
-
         SlimeBlocks.init();
         RedstoneWires.init();
 
@@ -68,70 +60,62 @@ public class Electromechanics implements ModInitializer {
         });
 
         RegistryEntryAddedCallback.event(Registries.ITEM_GROUP).register((rawId, id, group) -> {
-            if(id.equals(ItemGroups.REDSTONE.getValue()) && group instanceof WrapperGroup wrapperGroup){
-                wrapperGroup.addCustomTab(
-                        Icon.of(RedstoneLogisticalBlocks.ADVANCED_DETECTOR),
-                        "advanced_redstone_blocks",
-                        (context, entries) -> {
-                            var blockItems = Registries.ITEM.stream().filter(item -> item instanceof BlockItem).map(item -> (BlockItem) item).toList();
+            if(!(id.equals(ItemGroups.REDSTONE.getValue()) && group instanceof WrapperGroup wrapperGroup)) return;
 
-                            var gates = new ArrayList<>(blockItems.stream().filter(item -> item.getBlock() instanceof AbstractRedstoneGateBlock)
-                                    .map(Item::getDefaultStack)
-                                    .toList()
-                            );
+            wrapperGroup.addCustomTab(
+                    Icon.of(RedstoneLogisticalBlocks.ADVANCED_DETECTOR),
+                    "advanced_redstone_blocks",
+                    (context, entries) -> {
+                        var blockItems = Registries.ITEM.stream().filter(item -> item instanceof BlockItem).map(item -> (BlockItem) item).toList();
 
-                            var observers = new ArrayList<>(blockItems.stream().filter(item -> item.getBlock() instanceof ObserverBlock).map(ItemStack::new).toList());
-                            for (int i = 0; i <= ((int)Math.ceil(gates.size() / 9.0) * 9) - gates.size(); i++) {
-                                gates.add(ItemStack.EMPTY);
-                            };
-                            var items = new ArrayList<>(gates);
-                            for (int i = 0; i <= ((int)Math.ceil(observers.size() / 9.0) * 9) - observers.size(); i++) {
-                                observers.add(ItemStack.EMPTY);
-                            };
-                            items.addAll(observers);
-                            entries.addAll(
-                                    items,
-                                    ItemGroup.StackVisibility.PARENT_AND_SEARCH_TABS
-                            );
-                        },
-                        false
-                );
-                wrapperGroup.addCustomTab(
-                        Icon.of(SlimeBlocks.getSlimeSlabs().get(0)),
-                        "slime_block_variants",
-                        (context, entries) -> {
-                            entries.addAll(
-                                    SlimeBlocks.getSlimeSlabs().stream().map(ItemStack::new).toList(),
-                                    ItemGroup.StackVisibility.PARENT_AND_SEARCH_TABS
-                            );
+                        var gates = new ArrayList<>(blockItems.stream().filter(item -> item.getBlock() instanceof AbstractRedstoneGateBlock)
+                                .map(Item::getDefaultStack)
+                                .toList()
+                        );
 
-                            entries.add(Blocks.SLIME_BLOCK);
+                        var observers = new ArrayList<>(blockItems.stream().filter(item -> item.getBlock() instanceof ObserverBlock).map(ItemStack::new).toList());
 
-                            entries.addAll(
-                                    SlimeBlocks.getSlimeBlocks().stream().map(ItemStack::new).toList(),
-                                    ItemGroup.StackVisibility.PARENT_AND_SEARCH_TABS
-                            );
-                        },
-                        false
-                );
+                        for (int i = 0; i <= ((int)Math.ceil(gates.size() / 9.0) * 9) - gates.size(); i++) {
+                            gates.add(ItemStack.EMPTY);
+                        }
 
-                wrapperGroup.addCustomTab(
-                        Icon.of(Blocks.REDSTONE_WIRE),
-                        "stone_wire_variants",
-                        (context, entries) -> {
-                            entries.add(Blocks.REDSTONE_WIRE);
+                        var items = new ArrayList<>(gates);
 
-                            entries.addAll(
-                                    RedstoneWires.getDusts().stream().map(ItemStack::new).toList(),
-                                    ItemGroup.StackVisibility.PARENT_AND_SEARCH_TABS
-                            );
-                        },
-                        false
-                );
-            }
+                        for (int i = 0; i <= ((int)Math.ceil(observers.size() / 9.0) * 9) - observers.size(); i++) {
+                            observers.add(ItemStack.EMPTY);
+                        }
+
+                        items.addAll(observers);
+
+                        entries.addAll(items);
+                    },
+                    false
+            );
+
+            wrapperGroup.addCustomTab(
+                    Icon.of(SlimeBlocks.getSlimeSlabs().get(0)),
+                    "slime_block_variants",
+                    (context, entries) -> {
+                        entries.addAll(SlimeBlocks.getSlimeSlabs().stream().map(ItemStack::new).toList());
+
+                        entries.add(Blocks.SLIME_BLOCK);
+
+                        entries.addAll(SlimeBlocks.getSlimeBlocks().stream().map(ItemStack::new).toList());
+                    },
+                    false
+            );
+
+            wrapperGroup.addCustomTab(
+                    Icon.of(Blocks.REDSTONE_WIRE),
+                    "stone_wire_variants",
+                    (context, entries) -> {
+                        entries.add(Blocks.REDSTONE_WIRE);
+
+                        entries.addAll(RedstoneWires.getDusts().stream().map(ItemStack::new).toList());
+                    },
+                    false
+            );
         });
-
-
     }
 
     public static Identifier id(String path){
