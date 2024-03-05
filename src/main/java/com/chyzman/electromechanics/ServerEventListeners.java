@@ -7,37 +7,33 @@ import net.minecraft.block.FacingBlock;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+
+import java.util.HashSet;
 
 public class ServerEventListeners {
     public static void init() {
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
-            var triggered = false;
             if (!player.isSneaking()) {
                 for (Direction direction : Direction.values()) {
                     if (!(world.getBlockState(hitResult.getBlockPos()).getBlock() instanceof ListenerBlock)) {
-                        if (world.getBlockState(hitResult.getBlockPos().offset(direction)).getBlock() instanceof ListenerBlock &&
-                                world.getBlockState(hitResult.getBlockPos().offset(direction)).get(FacingBlock.FACING) == direction.getOpposite()) {
-                            triggered = true;
-                            chainListener(world, hitResult.getBlockPos().offset(direction));
-                        } else if (world.getBlockState(hitResult.getBlockPos().offset(direction, 2)).getBlock() instanceof ListenerBlock &&
-                                world.getBlockState(hitResult.getBlockPos().offset(direction, 2)).get(FacingBlock.FACING) == direction.getOpposite() &&
-                                world.getBlockState(hitResult.getBlockPos().offset(direction, 3)).getBlock() instanceof ListenerBlock) {
-                            triggered = true;
-                            chainListener(world, hitResult.getBlockPos().offset(direction, 3));
+                        var pos = hitResult.getBlockPos().offset(direction);
+                        if (world.getBlockState(pos).getBlock() instanceof ListenerBlock && world.getBlockState(pos).get(FacingBlock.FACING) == direction.getOpposite()) {
+                            if (world.isClient) return ActionResult.SUCCESS;
+                            var chained = new HashSet<BlockPos>();
+                            for (int i = 0; i < Math.pow(2, 13); i++) {
+                                if (world.getBlockState(pos).getBlock() instanceof ListenerBlock listenerBlock && !chained.contains(pos)) {
+                                    chained.add(pos);
+                                    ((ObserverBlockAccessor) listenerBlock).chyzylogistics$callScheduleTick(world, pos);
+                                    pos = pos.offset(world.getBlockState(pos).get(FacingBlock.FACING).getOpposite());
+                                } else {
+                                    return ActionResult.SUCCESS;
+                                }
+                            }
                         }
                     }
                 }
             }
-            return (triggered && world.isClient) ? ActionResult.SUCCESS : ActionResult.PASS;
+            return ActionResult.PASS;
         });
-    }
-
-    public static boolean chainListener(World world, BlockPos pos) {
-        if (world.getBlockState(pos).getBlock() instanceof ListenerBlock listenerBlock) {
-            chainListener(world, pos.offset(world.getBlockState(pos).get(FacingBlock.FACING).getOpposite()));
-            ((ObserverBlockAccessor) listenerBlock).chyzylogistics$callScheduleTick(world, pos);
-        }
-        return false;
     }
 }
