@@ -1,5 +1,6 @@
 {
 	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
 	"textures": {
 		"2": "electromechanics:block/board_quarter",
 		"3": "electromechanics:block/pin",

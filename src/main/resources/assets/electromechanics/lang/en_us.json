@@ -13,6 +13,8 @@
   "block.electromechanics.xnor_gate": "XNOR Gate",
 
   "block.electromechanics.stern_copper": "Stern Copper",
+  "block.electromechanics.observer_button": "Observer Button",
+  "block.electromechanics.board": "Board",
 
   "itemGroup.redstone_blocks.tab.advanced_redstone_blocks": "Advanced Redstone Blocks",
   "itemGroup.redstone_blocks.tab.slime_block_variants": "Slime Block Variants",

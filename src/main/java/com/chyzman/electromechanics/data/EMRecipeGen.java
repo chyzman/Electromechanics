@@ -1,21 +1,19 @@
 package com.chyzman.electromechanics.data;
 
 import com.chyzman.electromechanics.Electromechanics;
-import com.chyzman.electromechanics.block.gate.GateBlock;
 import com.chyzman.electromechanics.registries.RedstoneLogisticalBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.RecipeProvider;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
+import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
 import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
@@ -274,6 +272,28 @@ public class EMRecipeGen extends FabricRecipeProvider {
                 .pattern("SSS")
                 .criterion("has_redstone_wires", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create().items(wireArray).build()))
                 .offerTo(exporter, "counter_gate");
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, Registries.ITEM.get(Electromechanics.id("slime_slab")))
+                .input('S', Items.SLIME_BLOCK)
+                .pattern("SSS")
+                .criterion("has_slime_block", RecipeProvider.conditionsFromItem(Items.SLIME_BLOCK))
+                .offerTo(exporter, "slime_slab");
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, RedstoneLogisticalBlocks.STERN_COPPER)
+                .input('C', Items.COPPER_BLOCK)
+                .input('P', Items.PISTON)
+                .input('S', Items.NETHER_STAR)
+                .pattern("CPC")
+                .pattern("PSP")
+                .pattern("CPC")
+                .criterion("has_star", RecipeProvider.conditionsFromItem(Items.NETHER_STAR))
+                .criterion("has_copper", RecipeProvider.conditionsFromItem(Items.COPPER_BLOCK))
+                .offerTo(exporter, "stern_copper");
+
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.REDSTONE, RedstoneLogisticalBlocks.OBSERVER_BUTTON)
+                .input(Items.OBSERVER)
+                .criterion("has_observer", RecipeProvider.conditionsFromItem(Items.OBSERVER))
+                .offerTo(exporter, "observer_button");
     }
 
     public List<ItemConvertible> getColoredVariants(String pathFormat, DyeColor ...excludeColors){

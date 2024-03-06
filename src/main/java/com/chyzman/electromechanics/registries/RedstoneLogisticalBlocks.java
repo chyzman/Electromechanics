@@ -82,7 +82,7 @@ public class RedstoneLogisticalBlocks implements BlockRegistryContainer {
 
     public static final Block T_FLIP_FLOP = new GateBlock(DigitalGateHandlers.T_FLIP_FLOP);
 
-    public static final Block BOARD = new BoardBlock(FabricBlockSettings.copy(Blocks.REPEATER));
+    //public static final Block BOARD = new BoardBlock(FabricBlockSettings.copy(Blocks.REPEATER));
 
     public static final Block STERN_COPPER = new SternCopperBlock(FabricBlockSettings.copy(Blocks.COPPER_BLOCK));
 
@@ -105,7 +105,7 @@ public class RedstoneLogisticalBlocks implements BlockRegistryContainer {
             )
     );
 
-    public static final Block Observer_Button = new ButtonBlock(OBSERVER_BLOCK_SET_TYPE, 2, FabricBlockSettings.copy(Blocks.OBSERVER).noCollision().strength(0.5F).pistonBehavior(PistonBehavior.DESTROY));
+    public static final Block OBSERVER_BUTTON = new ButtonBlock(OBSERVER_BLOCK_SET_TYPE, 2, FabricBlockSettings.copy(Blocks.OBSERVER).noCollision().strength(0.5F).pistonBehavior(PistonBehavior.DESTROY));
 
     @Override
     public BlockItem createBlockItem(Block block, String identifier) {

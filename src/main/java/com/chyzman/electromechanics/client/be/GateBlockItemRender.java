@@ -19,9 +19,9 @@ public class GateBlockItemRender implements BuiltinItemRendererRegistry.DynamicI
 
     @Override
     public void render(ItemStack stack, ModelTransformationMode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        var render = MinecraftClient.getInstance().getBlockEntityRenderDispatcher();
+        var renderDispatch = MinecraftClient.getInstance().getBlockEntityRenderDispatcher();
 
-        BlockEntity blockEntity = BlockEntityOps.createFromTypeAndStack(GateBlockEntity.getBlockEntityType(), stack);
+        var blockEntity = BlockEntityOps.createFromTypeAndStack(GateBlockEntity.getBlockEntityType(), stack);
 
         if(blockEntity == null) return;
 
@@ -35,7 +35,14 @@ public class GateBlockItemRender implements BuiltinItemRendererRegistry.DynamicI
             matrices.translate(0, 0.3, 0);
         }
 
-        render.renderEntity(blockEntity, matrices, vertexConsumers, light, overlay);
+//        renderDispatch.renderEntity(blockEntity, matrices, vertexConsumers, light, overlay);
+
+        if(renderDispatch.get(blockEntity) instanceof GateBlockEntityRender beRender) {
+            //DiffuseLighting.enableGuiDepthLighting();
+            beRender.wrapCall(render -> render.render(blockEntity, 0.0f, matrices, vertexConsumers, light, overlay));
+            //((VertexConsumerProvider.Immediate) vertexConsumers).draw();
+            //DiffuseLighting.disableGuiDepthLighting();
+        }
 
         matrices.pop();
     }

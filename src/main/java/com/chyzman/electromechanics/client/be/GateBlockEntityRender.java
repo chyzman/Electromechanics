@@ -29,12 +29,24 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
 import org.joml.Vector3f;
 
+import java.util.function.Consumer;
+
 public class GateBlockEntityRender implements BlockEntityRenderer<GateBlockEntity> {
 
     private final BlockRenderManager manager;
 
     public GateBlockEntityRender(BlockEntityRendererFactory.Context ctx) {
         this.manager = ctx.getRenderManager();
+    }
+
+    private boolean isItemRendering = false;
+
+    public void wrapCall(Consumer<GateBlockEntityRender> renderConsumer){
+        this.isItemRendering = true;
+
+        renderConsumer.accept(this);
+
+        this.isItemRendering = false;
     }
 
     @Override
@@ -55,7 +67,7 @@ public class GateBlockEntityRender implements BlockEntityRenderer<GateBlockEntit
 
         var direction = state.get(Properties.HORIZONTAL_FACING);
 
-        RenderLayer renderLayer = RenderLayers.getMovingBlockLayer(state);
+        RenderLayer renderLayer = isItemRendering ? RenderLayers.getEntityBlockLayer(state, false) : RenderLayers.getMovingBlockLayer(state);
         VertexConsumer vertexConsumer = vertexConsumers.getBuffer(renderLayer);
 
         var renderContext = new ModelRenderContext(manager, modelManager, entity, matrices, vertexConsumer, light, overlay);
@@ -303,7 +315,7 @@ public class GateBlockEntityRender implements BlockEntityRenderer<GateBlockEntit
         matrices.pop();
     }
 
-    public static class ModelRenderContext {
+    public class ModelRenderContext {
         private final BlockRenderManager renderManager;
         private final BakedModelManager modelManager;
 
@@ -346,9 +358,11 @@ public class GateBlockEntityRender implements BlockEntityRenderer<GateBlockEntit
 
             var random = world.getRandom();
 
-            //renderWithColor(model, 1.0f, 1.0f, 1.0f);
-
-            renderManager.getModelRenderer().render(world, model, state, pos, matrices, vertexConsumer, false, random, seed, overlay);
+            if(GateBlockEntityRender.this.isItemRendering){
+                renderWithColor(model, 1.0f, 1.0f, 1.0f);
+            } else {
+                renderManager.getModelRenderer().render(world, model, state, pos, matrices, vertexConsumer, false, random, seed, overlay);
+            }
         }
 
         public void renderWithColor(Identifier id, float red, float green, float blue){
@@ -362,7 +376,7 @@ public class GateBlockEntityRender implements BlockEntityRenderer<GateBlockEntit
             var pos = blockEntity.getPos();
             var state = blockEntity.getCachedState();
 
-            var light = WorldRenderer.getLightmapCoordinates(world, state, pos);
+            //var light = WorldRenderer.getLightmapCoordinates(world, state, pos);
 
             renderManager.getModelRenderer().render(matrices.peek(), vertexConsumer, state, model, red, green, blue, light, overlay);
         }
