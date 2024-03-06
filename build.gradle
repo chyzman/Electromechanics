@@ -114,6 +114,11 @@ loom {
                 e.printStackTrace()
             }
         }
+        seperateFolderServer {
+            inherit server
+            name "Minecraft Server: Other"
+            runDir "run_server"
+        }
         datagen {
             inherit server
             name "Data Generation"

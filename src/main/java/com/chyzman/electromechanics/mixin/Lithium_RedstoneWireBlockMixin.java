@@ -24,8 +24,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = RedstoneWireBlock.class, priority = 1500)
 public abstract class Lithium_RedstoneWireBlockMixin {
 
-    @Shadow @Final public static IntProperty POWER;
-
     @TargetHandler(
             mixin = "me.jellysquid.mods.lithium.mixin.block.redstone_wire.RedstoneWireBlockMixin",
             name = "getReceivedPower"
