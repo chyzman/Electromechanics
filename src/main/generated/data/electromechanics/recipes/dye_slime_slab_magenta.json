@@ -1,0 +1,68 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": [
+      {
+        "item": "electromechanics:white_slime_slab"
+      },
+      {
+        "item": "electromechanics:orange_slime_slab"
+      },
+      {
+        "item": "electromechanics:light_blue_slime_slab"
+      },
+      {
+        "item": "electromechanics:yellow_slime_slab"
+      },
+      {
+        "item": "electromechanics:lime_slime_slab"
+      },
+      {
+        "item": "electromechanics:pink_slime_slab"
+      },
+      {
+        "item": "electromechanics:gray_slime_slab"
+      },
+      {
+        "item": "electromechanics:light_gray_slime_slab"
+      },
+      {
+        "item": "electromechanics:cyan_slime_slab"
+      },
+      {
+        "item": "electromechanics:purple_slime_slab"
+      },
+      {
+        "item": "electromechanics:blue_slime_slab"
+      },
+      {
+        "item": "electromechanics:brown_slime_slab"
+      },
+      {
+        "item": "electromechanics:green_slime_slab"
+      },
+      {
+        "item": "electromechanics:red_slime_slab"
+      },
+      {
+        "item": "electromechanics:black_slime_slab"
+      },
+      {
+        "item": "electromechanics:slime_slab"
+      }
+    ],
+    "X": {
+      "item": "minecraft:magenta_dye"
+    }
+  },
+  "pattern": [
+    "###",
+    "#X#",
+    "###"
+  ],
+  "result": {
+    "count": 8,
+    "item": "electromechanics:magenta_slime_slab"
+  }
+}

@@ -19,6 +19,9 @@
   "icon": "assets/electromechanics/icon.png",
   "environment": "*",
   "entrypoints": {
+    "fabric-datagen": [
+      "com.chyzman.electromechanics.data.ElectromechanicsDatagen"
+    ],
     "client": [
       "com.chyzman.electromechanics.client.ElectromechanicsClient"
     ],

@@ -1,0 +1,68 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": [
+      {
+        "item": "electromechanics:white_redstone_wire"
+      },
+      {
+        "item": "electromechanics:orange_redstone_wire"
+      },
+      {
+        "item": "electromechanics:magenta_redstone_wire"
+      },
+      {
+        "item": "electromechanics:light_blue_redstone_wire"
+      },
+      {
+        "item": "electromechanics:yellow_redstone_wire"
+      },
+      {
+        "item": "electromechanics:lime_redstone_wire"
+      },
+      {
+        "item": "electromechanics:pink_redstone_wire"
+      },
+      {
+        "item": "electromechanics:gray_redstone_wire"
+      },
+      {
+        "item": "electromechanics:light_gray_redstone_wire"
+      },
+      {
+        "item": "electromechanics:cyan_redstone_wire"
+      },
+      {
+        "item": "electromechanics:purple_redstone_wire"
+      },
+      {
+        "item": "electromechanics:blue_redstone_wire"
+      },
+      {
+        "item": "electromechanics:brown_redstone_wire"
+      },
+      {
+        "item": "electromechanics:green_redstone_wire"
+      },
+      {
+        "item": "electromechanics:red_redstone_wire"
+      },
+      {
+        "item": "minecraft:redstone"
+      }
+    ],
+    "X": {
+      "item": "minecraft:black_dye"
+    }
+  },
+  "pattern": [
+    "###",
+    "#X#",
+    "###"
+  ],
+  "result": {
+    "count": 8,
+    "item": "electromechanics:black_redstone_wire"
+  }
+}

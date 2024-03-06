@@ -1,0 +1,62 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_dye": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:blue_dye"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_slime_blocks": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "electromechanics:white_slime_block",
+              "electromechanics:orange_slime_block",
+              "electromechanics:magenta_slime_block",
+              "electromechanics:light_blue_slime_block",
+              "electromechanics:yellow_slime_block",
+              "electromechanics:lime_slime_block",
+              "electromechanics:pink_slime_block",
+              "electromechanics:gray_slime_block",
+              "electromechanics:light_gray_slime_block",
+              "electromechanics:cyan_slime_block",
+              "electromechanics:purple_slime_block",
+              "electromechanics:brown_slime_block",
+              "electromechanics:green_slime_block",
+              "electromechanics:red_slime_block",
+              "electromechanics:black_slime_block",
+              "minecraft:slime_block"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:dye_slime_block_blue"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_dye",
+      "has_slime_blocks"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:dye_slime_block_blue"
+    ]
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": [
+      {
+        "item": "electromechanics:orange_slime_block"
+      },
+      {
+        "item": "electromechanics:magenta_slime_block"
+      },
+      {
+        "item": "electromechanics:light_blue_slime_block"
+      },
+      {
+        "item": "electromechanics:yellow_slime_block"
+      },
+      {
+        "item": "electromechanics:lime_slime_block"
+      },
+      {
+        "item": "electromechanics:pink_slime_block"
+      },
+      {
+        "item": "electromechanics:gray_slime_block"
+      },
+      {
+        "item": "electromechanics:light_gray_slime_block"
+      },
+      {
+        "item": "electromechanics:cyan_slime_block"
+      },
+      {
+        "item": "electromechanics:purple_slime_block"
+      },
+      {
+        "item": "electromechanics:blue_slime_block"
+      },
+      {
+        "item": "electromechanics:brown_slime_block"
+      },
+      {
+        "item": "electromechanics:green_slime_block"
+      },
+      {
+        "item": "electromechanics:red_slime_block"
+      },
+      {
+        "item": "electromechanics:black_slime_block"
+      },
+      {
+        "item": "minecraft:slime_block"
+      }
+    ],
+    "X": {
+      "item": "minecraft:white_dye"
+    }
+  },
+  "pattern": [
+    "###",
+    "#X#",
+    "###"
+  ],
+  "result": {
+    "count": 8,
+    "item": "electromechanics:white_slime_block"
+  }
+}

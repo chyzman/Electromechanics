@@ -1,0 +1,62 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_dye": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:cyan_dye"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_redstone_wires": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "electromechanics:white_redstone_wire",
+              "electromechanics:orange_redstone_wire",
+              "electromechanics:magenta_redstone_wire",
+              "electromechanics:light_blue_redstone_wire",
+              "electromechanics:yellow_redstone_wire",
+              "electromechanics:lime_redstone_wire",
+              "electromechanics:pink_redstone_wire",
+              "electromechanics:gray_redstone_wire",
+              "electromechanics:light_gray_redstone_wire",
+              "electromechanics:purple_redstone_wire",
+              "electromechanics:blue_redstone_wire",
+              "electromechanics:brown_redstone_wire",
+              "electromechanics:green_redstone_wire",
+              "electromechanics:red_redstone_wire",
+              "electromechanics:black_redstone_wire",
+              "minecraft:redstone"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:dye_stone_wire_cyan"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_dye",
+      "has_redstone_wires"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:dye_stone_wire_cyan"
+    ]
+  }
+}
