@@ -4,10 +4,10 @@ import com.chyzman.electromechanics.block.ListenerBlock;
 import com.chyzman.electromechanics.block.SternCopperBlock;
 import com.chyzman.electromechanics.block.detector.AdvancedDetectorBlock;
 import com.chyzman.electromechanics.block.detector.DetectorBlock;
-import com.chyzman.electromechanics.block.gate.*;
+import com.chyzman.electromechanics.block.gate.GateBlock;
 import com.chyzman.electromechanics.item.GateBlockItem;
-import com.chyzman.electromechanics.logic.DigitalGateHandlers;
 import com.chyzman.electromechanics.logic.AnalogGateHandlers;
+import com.chyzman.electromechanics.logic.DigitalGateHandlers;
 import com.chyzman.electromechanics.logic.DirectionGateHandlers;
 import com.chyzman.electromechanics.logic.api.TimerGateHandlers;
 import com.google.common.collect.ImmutableList;
@@ -90,9 +90,6 @@ public class RedstoneLogisticalBlocks implements BlockRegistryContainer {
             new BlockSetType(
                     "observer",
                     true,
-                    true,
-                    false,
-                    BlockSetType.ActivationRule.MOBS,
                     BlockSoundGroup.STONE,
                     SoundEvents.BLOCK_IRON_DOOR_CLOSE,
                     SoundEvents.BLOCK_IRON_DOOR_OPEN,
@@ -105,7 +102,7 @@ public class RedstoneLogisticalBlocks implements BlockRegistryContainer {
             )
     );
 
-    public static final Block OBSERVER_BUTTON = new ButtonBlock(OBSERVER_BLOCK_SET_TYPE, 2, FabricBlockSettings.copy(Blocks.OBSERVER).noCollision().strength(0.5F).pistonBehavior(PistonBehavior.DESTROY));
+    public static final Block OBSERVER_BUTTON = new ButtonBlock(FabricBlockSettings.copy(Blocks.OBSERVER).noCollision().strength(0.5F).pistonBehavior(PistonBehavior.DESTROY), OBSERVER_BLOCK_SET_TYPE, 2, false);
 
     @Override
     public BlockItem createBlockItem(Block block, String identifier) {

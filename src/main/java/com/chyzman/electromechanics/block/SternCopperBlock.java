@@ -31,11 +31,6 @@ public class SternCopperBlock extends HorizontalFacingBlock {
     }
 
     @Override
-    protected MapCodec<? extends HorizontalFacingBlock> getCodec() {
-        return null;
-    }
-
-    @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(FACING);
     }

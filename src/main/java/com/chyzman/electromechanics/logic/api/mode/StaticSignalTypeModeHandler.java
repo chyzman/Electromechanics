@@ -1,9 +1,9 @@
 package com.chyzman.electromechanics.logic.api.mode;
 
-import com.chyzman.electromechanics.logic.api.state.GateStateStorage;
 import com.chyzman.electromechanics.logic.api.GateSetupEvent;
 import com.chyzman.electromechanics.logic.api.configuration.SignalConfiguration;
 import com.chyzman.electromechanics.logic.api.configuration.SignalType;
+import com.chyzman.electromechanics.logic.api.state.GateStateStorage;
 
 public abstract class StaticSignalTypeModeHandler implements GateSetupEvent {
 

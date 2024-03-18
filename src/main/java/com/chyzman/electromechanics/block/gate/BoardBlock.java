@@ -14,11 +14,6 @@ public class BoardBlock extends HorizontalFacingBlock {
 
     public static VoxelShape SHAPE = Block.createCuboidShape(0, 0, 0, 16, 2, 16);
 
-    @Override
-    protected MapCodec<? extends HorizontalFacingBlock> getCodec() {
-        return null;
-    }
-
     public BoardBlock(Settings settings) {
         super(settings);
     }

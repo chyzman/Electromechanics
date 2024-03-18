@@ -1,15 +1,15 @@
 package com.chyzman.electromechanics.logic.api;
 
-import com.chyzman.electromechanics.logic.api.state.GateContext;
-import com.chyzman.electromechanics.logic.api.state.GateStateStorage;
 import com.chyzman.electromechanics.logic.api.configuration.IOConfiguration;
-import com.chyzman.electromechanics.logic.api.configuration.SideOrientationHelper;
 import com.chyzman.electromechanics.logic.api.configuration.Side;
+import com.chyzman.electromechanics.logic.api.configuration.SideOrientationHelper;
 import com.chyzman.electromechanics.logic.api.configuration.SignalType;
 import com.chyzman.electromechanics.logic.api.mode.ExpressionModeHandler;
 import com.chyzman.electromechanics.logic.api.mode.MultiExpressionModeHandler;
-import io.wispforest.owo.serialization.Endec;
-import io.wispforest.owo.serialization.endec.BuiltInEndecs;
+import com.chyzman.electromechanics.logic.api.state.GateContext;
+import com.chyzman.electromechanics.logic.api.state.GateStateStorage;
+import com.chyzman.electromechanics.util.EndecUtils;
+import io.wispforest.endec.Endec;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
@@ -21,7 +21,7 @@ public class GateHandler {
 
     private static final Map<Identifier, GateHandler> HANDLERS = new HashMap<>();
 
-    public static final Endec<GateHandler> ENDEC = BuiltInEndecs.IDENTIFIER.xmap(HANDLERS::get, GateHandler::getId);
+    public static final Endec<GateHandler> ENDEC = EndecUtils.IDENTIFIER.xmap(HANDLERS::get, GateHandler::getId);
 
     // --
 

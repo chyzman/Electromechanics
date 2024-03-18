@@ -4,7 +4,7 @@ import com.chyzman.electromechanics.Electromechanics;
 import com.chyzman.electromechanics.registries.RedstoneLogisticalBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.minecraft.data.server.recipe.RecipeExporter;
+import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.data.server.recipe.RecipeProvider;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
@@ -21,6 +21,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public class EMRecipeGen extends FabricRecipeProvider {
 
@@ -29,7 +30,7 @@ public class EMRecipeGen extends FabricRecipeProvider {
     }
 
     @Override
-    public void generate(RecipeExporter exporter) {
+    public void generate(Consumer<RecipeJsonProvider> exporter) {
         for (var color : DyeColor.values()) {
             var dye_item = Registries.ITEM.get(new Identifier(color + "_dye"));
 

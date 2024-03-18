@@ -1,11 +1,11 @@
 package com.chyzman.electromechanics.logic.api.mode;
 
-import com.chyzman.electromechanics.logic.api.state.GateStateStorage;
 import com.chyzman.electromechanics.logic.api.GateInteractEvent;
 import com.chyzman.electromechanics.logic.api.GateLogicFunction;
+import com.chyzman.electromechanics.logic.api.GateOutputFunction;
 import com.chyzman.electromechanics.logic.api.configuration.IOConfiguration;
 import com.chyzman.electromechanics.logic.api.configuration.SignalType;
-import com.chyzman.electromechanics.logic.api.GateOutputFunction;
+import com.chyzman.electromechanics.logic.api.state.GateStateStorage;
 import net.minecraft.util.ActionResult;
 
 import java.util.ArrayList;

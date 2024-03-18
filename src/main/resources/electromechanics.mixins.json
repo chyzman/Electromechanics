@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "plugin": "com.chyzman.electromechanics.mixin.ImplMixinConfigPlugin",
   "mixins": [
+    "NbtCompoundMixin",
     "AbstractRedstoneGateBlockMixin",
     "BlockEntityAccessor",
     "BlockEntityTypeAccessor",

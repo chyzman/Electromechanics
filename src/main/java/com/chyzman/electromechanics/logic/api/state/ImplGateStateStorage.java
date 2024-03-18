@@ -3,10 +3,10 @@ package com.chyzman.electromechanics.logic.api.state;
 import com.chyzman.electromechanics.logic.api.configuration.Side;
 import com.chyzman.electromechanics.util.EndecUtils;
 import com.chyzman.electromechanics.util.ImplMapCarrier;
-import io.wispforest.owo.serialization.Endec;
-import io.wispforest.owo.serialization.endec.KeyedEndec;
-import io.wispforest.owo.serialization.format.nbt.NbtEndec;
-import io.wispforest.owo.serialization.util.MapCarrier;
+import io.wispforest.efm.format.nbt.NbtEndec;
+import io.wispforest.endec.Endec;
+import io.wispforest.endec.impl.KeyedEndec;
+import io.wispforest.endec.util.MapCarrier;
 import net.minecraft.nbt.NbtCompound;
 
 import java.util.HashMap;

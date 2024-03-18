@@ -2,8 +2,8 @@ package com.chyzman.electromechanics.registries;
 
 import com.chyzman.electromechanics.Electromechanics;
 import com.chyzman.electromechanics.block.slime.ColoredSlimeBlock;
-import com.chyzman.electromechanics.block.slime.SlimeSlab;
 import com.chyzman.electromechanics.block.slime.ColoredSlimeSlab;
+import com.chyzman.electromechanics.block.slime.SlimeSlab;
 import com.chyzman.electromechanics.data.SlimeTags;
 import com.chyzman.electromechanics.item.ColoredBlockItem;
 import com.google.common.collect.ImmutableList;

@@ -1,12 +1,12 @@
 package com.chyzman.electromechanics.logic;
 
 import com.chyzman.electromechanics.Electromechanics;
+import com.chyzman.electromechanics.logic.api.GateHandler;
 import com.chyzman.electromechanics.logic.api.GateLogicFunction;
 import com.chyzman.electromechanics.logic.api.configuration.SignalType;
-import com.chyzman.electromechanics.logic.api.GateHandler;
 import com.chyzman.electromechanics.logic.api.mode.ExpressionModeHandler;
-import io.wispforest.owo.serialization.Endec;
-import io.wispforest.owo.serialization.endec.KeyedEndec;
+import io.wispforest.endec.Endec;
+import io.wispforest.endec.impl.KeyedEndec;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import org.apache.commons.lang3.function.TriFunction;

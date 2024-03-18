@@ -116,7 +116,7 @@ public abstract class PistonHandlerMixin {
     //----------------------------------------------------------------------------//
 
     @Unique
-    private static final Direction[] HORIZONTAL = new Direction[]{ Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST };
+    private static final Direction[] HORIZONTAL = Direction.Type.HORIZONTAL.stream().toArray(Direction[]::new);
 
     // Used to call directions that should not be checked since it is
     // top slab or bottom slab meaning the bottom direction and

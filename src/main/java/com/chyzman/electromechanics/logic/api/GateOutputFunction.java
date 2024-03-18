@@ -1,8 +1,8 @@
 package com.chyzman.electromechanics.logic.api;
 
-import com.chyzman.electromechanics.logic.api.state.GateContext;
 import com.chyzman.electromechanics.logic.api.configuration.IOConfiguration;
 import com.chyzman.electromechanics.logic.api.configuration.Side;
+import com.chyzman.electromechanics.logic.api.state.GateContext;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -6,8 +6,8 @@ import com.chyzman.electromechanics.logic.api.configuration.Side;
 import com.chyzman.electromechanics.logic.api.configuration.SignalConfiguration;
 import com.chyzman.electromechanics.logic.api.configuration.SignalType;
 import com.chyzman.electromechanics.logic.api.state.GateStateStorage;
-import io.wispforest.owo.serialization.Endec;
-import io.wispforest.owo.serialization.endec.KeyedEndec;
+import io.wispforest.endec.Endec;
+import io.wispforest.endec.impl.KeyedEndec;
 import net.minecraft.util.ActionResult;
 import org.apache.commons.lang3.BooleanUtils;
 

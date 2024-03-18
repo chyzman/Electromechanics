@@ -35,8 +35,21 @@
   "depends": {
     "fabricloader": ">=0.15.0",
     "fabric": "*",
-    "minecraft": ">=1.20.4",
-    "owo": ">=0.12.0+1.20.3"
+    "minecraft": ">=1.20",
+    "owo": ">=0.11.2+1.20"
   },
-  "accessWidener" : "electromechanics.accesswidener"
+  "accessWidener" : "electromechanics.accesswidener",
+  "custom": {
+    "loom:injected_interfaces": {
+      "net/minecraft/class_1799": [
+        "io/wispforest/endec/util/MapCarrier"
+      ],
+      "net/minecraft/class_2487": [
+        "io/wispforest/endec/util/MapCarrier"
+      ],
+      "net/minecraft/class_2540": [
+        "io/wispforest/endec/util/EndecBuffer"
+      ]
+    }
+  }
 }

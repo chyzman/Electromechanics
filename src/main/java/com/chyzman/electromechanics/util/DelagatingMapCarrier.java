@@ -1,7 +1,7 @@
 package com.chyzman.electromechanics.util;
 
-import io.wispforest.owo.serialization.endec.KeyedEndec;
-import io.wispforest.owo.serialization.util.MapCarrier;
+import io.wispforest.endec.impl.KeyedEndec;
+import io.wispforest.endec.util.MapCarrier;
 import org.jetbrains.annotations.NotNull;
 
 public interface DelagatingMapCarrier extends MapCarrier {

@@ -4,9 +4,9 @@ import com.chyzman.electromechanics.logic.api.configuration.Side;
 import com.chyzman.electromechanics.logic.api.configuration.SignalConfiguration;
 import com.chyzman.electromechanics.logic.api.configuration.SignalType;
 import com.chyzman.electromechanics.util.EndecUtils;
-import io.wispforest.owo.serialization.Endec;
-import io.wispforest.owo.serialization.endec.KeyedEndec;
-import io.wispforest.owo.serialization.util.MapCarrier;
+import io.wispforest.endec.Endec;
+import io.wispforest.endec.impl.KeyedEndec;
+import io.wispforest.endec.util.MapCarrier;
 
 import java.util.List;
 

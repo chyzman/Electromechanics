@@ -5,12 +5,10 @@ import com.chyzman.electromechanics.mixin.ModelLoaderAccessor;
 import com.chyzman.electromechanics.registries.RedstoneWires;
 import com.chyzman.electromechanics.registries.SlimeBlocks;
 import com.google.common.collect.ImmutableMap;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.model.loading.v1.BlockStateResolver;
 import net.fabricmc.fabric.api.client.model.loading.v1.DelegatingUnbakedModel;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelResolver;
-import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.block.Block;
@@ -25,13 +23,10 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Property;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.profiler.Profiler;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 
 public class ColoredVariantsModelLoader implements ModelResolver, BlockStateResolver  {
 

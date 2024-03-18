@@ -1,7 +1,7 @@
 package com.chyzman.electromechanics.logic.api.state;
 
-import com.chyzman.electromechanics.logic.api.configuration.SideOrientationHelper;
 import com.chyzman.electromechanics.logic.api.configuration.Side;
+import com.chyzman.electromechanics.logic.api.configuration.SideOrientationHelper;
 import net.minecraft.util.math.Direction;
 
 public abstract class GateContext {

@@ -3,7 +3,7 @@ plugins {
     id 'maven-publish'
 }
 
-version = project.mod_version
+version = "${project.mod_version}+${project.minecraft_base_version}"
 group = project.maven_group
 
 repositories {
@@ -48,6 +48,10 @@ dependencies {
     modLocalRuntime("me.shedaniel.cloth:basic-math:0.6.1")
     modLocalRuntime("maven.modrinth:architectury-api:${project.arch_api}")
 
+    include implementation("io.wispforest:endec:0.1.0-pre.1")
+    include implementation("io.wispforest.endec:codec:0.1.0-pre.1")
+    include implementation("io.wispforest.endec:netty:0.1.0-pre.1")
+    include implementation("io.wispforest.endec:gson:0.1.0-pre.1")
 
     include(implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.1.1")))
 }

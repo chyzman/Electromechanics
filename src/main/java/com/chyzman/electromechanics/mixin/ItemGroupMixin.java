@@ -25,7 +25,7 @@ public abstract class ItemGroupMixin {
     @Final
     public Set<ItemStack> searchTabStacks;
 
-    @Inject(method = "add", at = @At(value = "HEAD"), remap = false, cancellable = true)
+    @Inject(method = "add", at = @At(value = "HEAD"), cancellable = true)
     private void giveMyRedstoneSomeSpace(ItemStack stack, ItemGroup.StackVisibility visibility, CallbackInfo ci) {
         if (bypassingAir) {
             switch (visibility) {

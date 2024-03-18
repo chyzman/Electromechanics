@@ -1,9 +1,9 @@
 package com.chyzman.electromechanics.util;
 
 import com.mojang.logging.LogUtils;
-import io.wispforest.owo.serialization.endec.KeyedEndec;
-import io.wispforest.owo.serialization.format.nbt.NbtEndec;
-import io.wispforest.owo.serialization.util.MapCarrier;
+import io.wispforest.efm.format.nbt.NbtEndec;
+import io.wispforest.endec.impl.KeyedEndec;
+import io.wispforest.endec.util.MapCarrier;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;

@@ -1,6 +1,6 @@
 package com.chyzman.electromechanics.util;
 
-import io.wispforest.owo.serialization.Endec;
+import io.wispforest.endec.Endec;
 import net.minecraft.util.DyeColor;
 
 public interface Colored {

@@ -1,13 +1,13 @@
 package com.chyzman.electromechanics.block.gate;
 
 import com.chyzman.electromechanics.block.redstone.RedstoneEvents;
+import com.chyzman.electromechanics.logic.api.GateHandler;
 import com.chyzman.electromechanics.logic.api.configuration.Side;
 import com.chyzman.electromechanics.logic.api.state.WorldGateContext;
-import com.chyzman.electromechanics.logic.api.GateHandler;
 import com.chyzman.electromechanics.util.BlockEntityOps;
 import com.mojang.serialization.MapCodec;
-import io.wispforest.owo.serialization.Endec;
-import io.wispforest.owo.serialization.endec.StructEndecBuilder;
+import io.wispforest.endec.CodecUtils;
+import io.wispforest.endec.impl.StructEndecBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -50,12 +50,6 @@ public class GateBlock extends AbstractRedstoneGateBlock implements ImplBlockEnt
         });
     }
 
-    public MapCodec<GateBlock> CODEC = StructEndecBuilder.of(
-            GateHandler.ENDEC.fieldOf("gate_handler", block -> block.handler),
-            Endec.ofCodec(AbstractBlock.Settings.CODEC).fieldOf("properties", AbstractBlock::getSettings),
-            GateBlock::new
-    ).mapCodec();
-
     protected final GateHandler handler;
 
     public GateBlock(GateHandler handler){
@@ -81,13 +75,6 @@ public class GateBlock extends AbstractRedstoneGateBlock implements ImplBlockEnt
     }
 
     @Override
-    protected MapCodec<? extends AbstractRedstoneGateBlock> getCodec(){
-        return CODEC;
-    }
-
-
-
-    @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
 
@@ -99,7 +86,7 @@ public class GateBlock extends AbstractRedstoneGateBlock implements ImplBlockEnt
     //--
 
     @Override
-    public ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state) {
+    public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
         var stack = this.asItem().getDefaultStack();
 
         world.getBlockEntity(pos, GateBlockEntity.getBlockEntityType())

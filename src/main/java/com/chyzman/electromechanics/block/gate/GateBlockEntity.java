@@ -1,18 +1,11 @@
 package com.chyzman.electromechanics.block.gate;
 
 import com.chyzman.electromechanics.Electromechanics;
-import com.chyzman.electromechanics.logic.api.state.GateStateStorage;
 import com.chyzman.electromechanics.logic.api.GateHandler;
-import com.chyzman.electromechanics.logic.api.configuration.Side;
+import com.chyzman.electromechanics.logic.api.state.GateStateStorage;
 import com.chyzman.electromechanics.logic.api.state.ImplGateStateStorage;
 import com.chyzman.electromechanics.logic.api.state.WorldGateContext;
-import com.chyzman.electromechanics.util.EndecUtils;
-import com.chyzman.electromechanics.util.ImplMapCarrier;
 import io.wispforest.owo.ops.WorldOps;
-import io.wispforest.owo.serialization.Endec;
-import io.wispforest.owo.serialization.endec.KeyedEndec;
-import io.wispforest.owo.serialization.format.nbt.NbtEndec;
-import io.wispforest.owo.serialization.util.MapCarrier;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -23,10 +16,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.tick.WorldTickScheduler;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class GateBlockEntity extends BlockEntity {
 

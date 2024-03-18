@@ -13,15 +13,8 @@ import net.minecraft.world.World;
 
 public class SlimeSlab extends SlabBlock {
 
-    public static final MapCodec<SlimeSlab> CODEC = createCodec(SlimeSlab::new);
-
     public SlimeSlab(Settings settings) {
         super(settings);
-    }
-
-    @Override
-    public MapCodec<? extends SlimeSlab> getCodec() {
-        return CODEC;
     }
 
     @Override
