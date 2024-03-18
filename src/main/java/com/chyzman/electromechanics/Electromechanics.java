@@ -84,7 +84,12 @@ public class Electromechanics implements ModInitializer {
                 (context, entries) -> {
                     var blockItems = Registries.ITEM.stream().filter(item -> item instanceof BlockItem).map(item -> (BlockItem) item).toList();
 
-                    var gates = new ArrayList<>(blockItems.stream().filter(item -> item.getBlock() instanceof AbstractRedstoneGateBlock)
+                    var gates = new ArrayList<>(blockItems.stream()
+                            .filter(item -> {
+                                var namespace = Registries.ITEM.getId(item).getNamespace();
+                                
+                                return item.getBlock() instanceof AbstractRedstoneGateBlock && (namespace.equals(Electromechanics.MODID) || namespace.equals("minecraft"));
+                            })
                             .map(Item::getDefaultStack)
                             .toList()
                     );
