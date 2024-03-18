@@ -9,6 +9,8 @@ import com.chyzman.electromechanics.registries.RedstoneLogisticalBlocks;
 import com.chyzman.electromechanics.registries.RedstoneWires;
 import com.chyzman.electromechanics.registries.SlimeBlocks;
 import io.wispforest.owo.itemgroup.Icon;
+import io.wispforest.owo.itemgroup.OwoItemGroup;
+import io.wispforest.owo.itemgroup.gui.ItemGroupButton;
 import io.wispforest.owo.itemgroup.json.WrapperGroup;
 import io.wispforest.owo.registration.reflect.FieldRegistrationHandler;
 import net.fabricmc.api.ModInitializer;
@@ -59,63 +61,74 @@ public class Electromechanics implements ModInitializer {
             return dyeColor != dyeColor2;
         });
 
-        RegistryEntryAddedCallback.event(Registries.ITEM_GROUP).register((rawId, id, group) -> {
-            if(!(id.equals(ItemGroups.REDSTONE.getValue()) && group instanceof WrapperGroup wrapperGroup)) return;
+        OwoItemGroup.builder(Electromechanics.id("main"), () -> Icon.of(RedstoneLogisticalBlocks.CROSS_GATE))
+                        .initializer(Electromechanics::addTabs)
+                        .build()
+                        .initialize();
 
-            wrapperGroup.addCustomTab(
-                    Icon.of(RedstoneLogisticalBlocks.ADVANCED_DETECTOR),
-                    "advanced_redstone_blocks",
-                    (context, entries) -> {
-                        var blockItems = Registries.ITEM.stream().filter(item -> item instanceof BlockItem).map(item -> (BlockItem) item).toList();
+//        RegistryEntryAddedCallback.event(Registries.ITEM_GROUP).register((rawId, id, group) -> {
+//            if(!(id.equals(ItemGroups.REDSTONE.getValue()) && group instanceof WrapperGroup wrapperGroup)) return;
+//
+//            addTabs(wrapperGroup);
+//        });
+    }
 
-                        var gates = new ArrayList<>(blockItems.stream().filter(item -> item.getBlock() instanceof AbstractRedstoneGateBlock)
-                                .map(Item::getDefaultStack)
-                                .toList()
-                        );
+    private static void addTabs(OwoItemGroup group) {
+        group.addButton(ItemGroupButton.link(group, Icon.of(RedstoneLogisticalBlocks.STERN_COPPER), "cool_place", "https://chyz.xyz/"));
 
-                        var observers = new ArrayList<>(blockItems.stream().filter(item -> item.getBlock() instanceof ObserverBlock).map(ItemStack::new).toList());
+        group.addCustomTab(
+                Icon.of(RedstoneLogisticalBlocks.ADVANCED_DETECTOR),
+                "advanced_redstone_blocks",
+                (context, entries) -> {
+                    var blockItems = Registries.ITEM.stream().filter(item -> item instanceof BlockItem).map(item -> (BlockItem) item).toList();
 
-                        for (int i = 0; i <= ((int)Math.ceil(gates.size() / 9.0) * 9) - gates.size(); i++) {
-                            gates.add(ItemStack.EMPTY);
-                        }
+                    var gates = new ArrayList<>(blockItems.stream().filter(item -> item.getBlock() instanceof AbstractRedstoneGateBlock)
+                            .map(Item::getDefaultStack)
+                            .toList()
+                    );
 
-                        var items = new ArrayList<>(gates);
+                    var observers = new ArrayList<>(blockItems.stream().filter(item -> item.getBlock() instanceof ObserverBlock).map(ItemStack::new).toList());
 
-                        for (int i = 0; i <= ((int)Math.ceil(observers.size() / 9.0) * 9) - observers.size(); i++) {
-                            observers.add(ItemStack.EMPTY);
-                        }
+                    for (int i = 0; i <= ((int)Math.ceil(gates.size() / 9.0) * 9) - gates.size(); i++) {
+                        gates.add(ItemStack.EMPTY);
+                    }
 
-                        items.addAll(observers);
+                    var items = new ArrayList<>(gates);
 
-                        entries.addAll(items);
-                    },
-                    false
-            );
+                    for (int i = 0; i <= ((int)Math.ceil(observers.size() / 9.0) * 9) - observers.size(); i++) {
+                        observers.add(ItemStack.EMPTY);
+                    }
 
-            wrapperGroup.addCustomTab(
-                    Icon.of(SlimeBlocks.getSlimeSlabs().get(0)),
-                    "slime_block_variants",
-                    (context, entries) -> {
-                        entries.addAll(SlimeBlocks.getSlimeSlabs().stream().map(ItemStack::new).toList());
+                    items.addAll(observers);
 
-                        entries.add(Blocks.SLIME_BLOCK);
+                    entries.addAll(items);
+                },
+                true
+        );
 
-                        entries.addAll(SlimeBlocks.getSlimeBlocks().stream().map(ItemStack::new).toList());
-                    },
-                    false
-            );
+        group.addCustomTab(
+                Icon.of(SlimeBlocks.getSlimeSlabs().get(0)),
+                "slime_block_variants",
+                (context, entries) -> {
+                    entries.addAll(SlimeBlocks.getSlimeSlabs().stream().map(ItemStack::new).toList());
 
-            wrapperGroup.addCustomTab(
-                    Icon.of(Blocks.REDSTONE_WIRE),
-                    "stone_wire_variants",
-                    (context, entries) -> {
-                        entries.add(Blocks.REDSTONE_WIRE);
+                    entries.add(Blocks.SLIME_BLOCK);
 
-                        entries.addAll(RedstoneWires.getDusts().stream().map(ItemStack::new).toList());
-                    },
-                    false
-            );
-        });
+                    entries.addAll(SlimeBlocks.getSlimeBlocks().stream().map(ItemStack::new).toList());
+                },
+                false
+        );
+
+        group.addCustomTab(
+                Icon.of(Blocks.REDSTONE_WIRE),
+                "stone_wire_variants",
+                (context, entries) -> {
+                    entries.add(Blocks.REDSTONE_WIRE);
+
+                    entries.addAll(RedstoneWires.getDusts().stream().map(ItemStack::new).toList());
+                },
+                false
+        );
     }
 
     public static Identifier id(String path){
