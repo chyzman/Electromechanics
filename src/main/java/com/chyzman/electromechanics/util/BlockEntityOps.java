@@ -26,7 +26,7 @@ public class BlockEntityOps {
     public static <T extends BlockEntity> T createFromTypeAndStack(BlockEntityType<T> type, ItemStack stack){
         if(!(stack.getItem() instanceof BlockItem blockItem)) return null;
 
-        return BlockEntityOps.createAndReadNbt(type, BlockPos.ORIGIN, blockItem.getBlock().getDefaultState(), stack);
+        return BlockEntityOps.createAndReadNbt(type, BlockPos.ORIGIN, blockItem.getBlock().getDefaultState(), stack.getOrCreateNbt());
     }
 
     @Nullable

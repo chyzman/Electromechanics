@@ -41,9 +41,6 @@
   "accessWidener" : "electromechanics.accesswidener",
   "custom": {
     "loom:injected_interfaces": {
-      "net/minecraft/class_1799": [
-        "io/wispforest/endec/util/MapCarrier"
-      ],
       "net/minecraft/class_2487": [
         "io/wispforest/endec/util/MapCarrier"
       ],
