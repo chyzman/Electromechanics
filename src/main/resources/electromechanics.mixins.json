@@ -10,8 +10,6 @@
     "BlockEntityAccessor",
     "BlockEntityTypeAccessor",
     "ExpressionBuilderAccessor",
-    "FabricItemGroupEntriesMixin",
-    "ItemGroupMixin",
     "Lithium_RedstoneWireBlockMixin",
     "ObserverBlockAccessor",
     "PistonHandlerMixin",
