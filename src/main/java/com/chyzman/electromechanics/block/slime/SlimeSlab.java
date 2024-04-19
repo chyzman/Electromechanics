@@ -4,6 +4,7 @@ import com.chyzman.electromechanics.data.SlimeTags;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SlabBlock;
+import net.minecraft.block.enums.SlabType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;
@@ -57,6 +58,6 @@ public class SlimeSlab extends SlabBlock {
     }
 
     public static boolean isSlimeSlab(BlockState state){
-        return state.isIn(SlimeTags.Blocks.SLIME_SLABS) && state.contains(SlabBlock.TYPE);
+        return state.isIn(SlimeTags.Blocks.SLIME_SLABS) && state.contains(SlabBlock.TYPE) && state.get(SlabBlock.TYPE) != SlabType.DOUBLE;
     }
 }
