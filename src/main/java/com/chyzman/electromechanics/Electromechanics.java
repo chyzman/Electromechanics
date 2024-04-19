@@ -32,8 +32,6 @@ public class Electromechanics implements ModInitializer {
 
     public static final String MODID = "electromechanics";
 
-    public static boolean bypassingAir = true;
-
     public static final BlockEntityType<DetectorBlockEntity> DETECTOR_BLOCK_ENTITY = net.minecraft.registry.Registry.register(Registries.BLOCK_ENTITY_TYPE, id("detector"), FabricBlockEntityTypeBuilder.create(DetectorBlockEntity::new, RedstoneLogisticalBlocks.DETECTOR).build());
     public static final BlockEntityType<AdvancedDetectorBlockEntity> ADVANCED_DETECTOR_BLOCK_ENTITY = net.minecraft.registry.Registry.register(Registries.BLOCK_ENTITY_TYPE, id("advanced_detector"), FabricBlockEntityTypeBuilder.create(AdvancedDetectorBlockEntity::new, RedstoneLogisticalBlocks.ADVANCED_DETECTOR).build());
 
@@ -82,29 +80,17 @@ public class Electromechanics implements ModInitializer {
                 (context, entries) -> {
                     var blockItems = Registries.ITEM.stream().filter(item -> item instanceof BlockItem).map(item -> (BlockItem) item).toList();
 
-                    var gates = new ArrayList<>(blockItems.stream()
+                    var items = new ArrayList<>(blockItems.stream()
                             .filter(item -> {
                                 var namespace = Registries.ITEM.getId(item).getNamespace();
-                                
+
                                 return item.getBlock() instanceof AbstractRedstoneGateBlock && (namespace.equals(Electromechanics.MODID) || namespace.equals("minecraft"));
                             })
                             .map(Item::getDefaultStack)
                             .toList()
                     );
 
-                    var observers = new ArrayList<>(blockItems.stream().filter(item -> item.getBlock() instanceof ObserverBlock).map(ItemStack::new).toList());
-
-                    for (int i = 0; i <= ((int)Math.ceil(gates.size() / 9.0) * 9) - gates.size(); i++) {
-                        gates.add(ItemStack.EMPTY);
-                    }
-
-                    var items = new ArrayList<>(gates);
-
-                    for (int i = 0; i <= ((int)Math.ceil(observers.size() / 9.0) * 9) - observers.size(); i++) {
-                        observers.add(ItemStack.EMPTY);
-                    }
-
-                    items.addAll(observers);
+                    items.addAll(blockItems.stream().filter(item -> item.getBlock() instanceof ObserverBlock).map(ItemStack::new).toList());
 
                     entries.addAll(items);
                 },
