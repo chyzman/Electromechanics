@@ -14,14 +14,15 @@ repositories {
     }
     maven { url = "https://maven.maxhenkel.de/repository/public" }
     maven { url = "https://jitpack.io" }
-    maven { url "https://maven.shedaniel.me/" }
+    maven { url = "https://maven.shedaniel.me/" }
+    maven { url = "https://mvn.devos.one/releases/" }
 }
 
 sourceSets {
     main {
         resources {
             srcDirs += [
-                    'src/main/generated'
+                'src/main/generated'
             ]
         }
     }
@@ -39,6 +40,12 @@ dependencies {
 
     implementation include("net.objecthunter:exp4j:${project.exp4j_version}")
 
+    include(implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.1.1")))
+
+    //--
+
+    //modImplementation("io.github.fabricators_of_create.Porting-Lib:model_loader:2.3.0+1.20.1")
+
     modImplementation("maven.modrinth:lithium:${project.lithium}")
 
     modLocalRuntime("maven.modrinth:modmenu:${project.modmenu}")
@@ -47,9 +54,6 @@ dependencies {
     modLocalRuntime("maven.modrinth:cloth-config:${project.cloth}")
     modLocalRuntime("me.shedaniel.cloth:basic-math:0.6.1")
     modLocalRuntime("maven.modrinth:architectury-api:${project.arch_api}")
-
-
-    include(implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.1.1")))
 }
 
 processResources {

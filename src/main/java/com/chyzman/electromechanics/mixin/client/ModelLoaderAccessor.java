@@ -1,4 +1,4 @@
-package com.chyzman.electromechanics.mixin;
+package com.chyzman.electromechanics.mixin.client;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -16,10 +16,5 @@ import java.util.Map;
 
 @Mixin(ModelLoader.class)
 public interface ModelLoaderAccessor {
-    @Accessor("STATIC_DEFINITIONS") static Map<Identifier, StateManager<Block, BlockState>> gelatin$getSTATIC_DEFINITIONS() { throw new UnsupportedOperationException(); }
-
-    @Mutable
-    @Accessor("STATIC_DEFINITIONS") static void gelatin$setSTATIC_DEFINITIONS(Map<Identifier, StateManager<Block, BlockState>> STATIC_DEFINITIONS) { throw new UnsupportedOperationException(); }
-
     @Invoker("loadModelFromJson") JsonUnbakedModel gelatin$LoadModelFromJson(Identifier id) throws IOException;
 }

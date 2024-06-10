@@ -17,7 +17,8 @@
     "RedstoneWireBlockMixin"
   ],
   "client": [
-    "ModelLoaderAccessor",
+    "client.ModelLoaderMixin",
+    "client.ModelLoaderAccessor",
     "client.TranslationStorageMixin"
   ],
   "injectors": {
