@@ -14,14 +14,15 @@ repositories {
     }
     maven { url = "https://maven.maxhenkel.de/repository/public" }
     maven { url = "https://jitpack.io" }
-    maven { url "https://maven.shedaniel.me/" }
+    maven { url = "https://maven.shedaniel.me/" }
+    maven { url = "https://mvn.devos.one/releases/" }
 }
 
 sourceSets {
     main {
         resources {
             srcDirs += [
-                    'src/main/generated'
+                'src/main/generated'
             ]
         }
     }
@@ -37,7 +38,18 @@ dependencies {
     annotationProcessor modImplementation("io.wispforest:owo-lib:${project.owo_version}") { exclude group: "net.fabricmc.fabric-api" }
     include("io.wispforest:owo-sentinel:${project.owo_version}")
 
+    include implementation("io.wispforest:endec:0.1.0-pre.2")
+    include implementation("io.wispforest.endec:codec:0.1.0-pre.1")
+    include implementation("io.wispforest.endec:netty:0.1.0-pre.1")
+    include implementation("io.wispforest.endec:gson:0.1.0-pre.1")
+
     implementation include("net.objecthunter:exp4j:${project.exp4j_version}")
+    
+    include(implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.1.1")))
+
+    //--
+
+    modImplementation("io.github.fabricators_of_create.Porting-Lib:model_loader:2.3.0+1.20.1")
 
     modImplementation("maven.modrinth:lithium:${project.lithium}")
 
@@ -47,13 +59,6 @@ dependencies {
     modLocalRuntime("maven.modrinth:cloth-config:${project.cloth}")
     modLocalRuntime("me.shedaniel.cloth:basic-math:0.6.1")
     modLocalRuntime("maven.modrinth:architectury-api:${project.arch_api}")
-
-    include implementation("io.wispforest:endec:0.1.0-pre.1")
-    include implementation("io.wispforest.endec:codec:0.1.0-pre.1")
-    include implementation("io.wispforest.endec:netty:0.1.0-pre.1")
-    include implementation("io.wispforest.endec:gson:0.1.0-pre.1")
-
-    include(implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.1.1")))
 }
 
 processResources {

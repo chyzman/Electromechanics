@@ -1,10 +1,11 @@
 package com.chyzman.electromechanics.client;
 
 import com.chyzman.electromechanics.Electromechanics;
-import com.chyzman.electromechanics.mixin.ModelLoaderAccessor;
+import com.chyzman.electromechanics.mixin.client.ModelLoaderAccessor;
 import com.chyzman.electromechanics.registries.RedstoneWires;
 import com.chyzman.electromechanics.registries.SlimeBlocks;
-import com.google.common.collect.ImmutableMap;
+import com.chyzman.electromechanics.util.ModelStaticDefinitionAddition;
+import com.mojang.logging.LogUtils;
 import net.fabricmc.fabric.api.client.model.loading.v1.BlockStateResolver;
 import net.fabricmc.fabric.api.client.model.loading.v1.DelegatingUnbakedModel;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
@@ -24,11 +25,16 @@ import net.minecraft.state.property.Property;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class ColoredVariantsModelLoader implements ModelResolver, BlockStateResolver  {
+
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     public static final ColoredVariantsModelLoader INSTANCE = new ColoredVariantsModelLoader();
 
@@ -37,40 +43,38 @@ public class ColoredVariantsModelLoader implements ModelResolver, BlockStateReso
     private static final Map<String, Block> variants = new HashMap<>();
 
     public static void init(){
-        var STATIC_DEFS = ModelLoaderAccessor.gelatin$getSTATIC_DEFINITIONS();
-
-        Map<Identifier, StateManager<Block, BlockState>> mutableMap = new LinkedHashMap<>(STATIC_DEFS);
-
         variants.putAll(SlimeBlocks.variantInfo());
         variants.putAll(RedstoneWires.variantInfo());
 
-        for (var entry : variants.entrySet()) {
-            Block defaultEntry = entry.getValue();
+        ModelStaticDefinitionAddition.EVENT.register(register -> {
+            for (var entry : variants.entrySet()) {
+                var defaultEntry = entry.getValue();
 
-            Identifier baseId;
+                Identifier baseId;
 
-            if(entry.getKey().equals("redstone_wire")){
-                baseId = new Identifier(entry.getKey());
-            } else {
-                baseId = new Identifier(Electromechanics.MODID, "colored_" + entry.getKey());
+                if(entry.getKey().equals("redstone_wire")){
+                    baseId = new Identifier(entry.getKey());
+                } else {
+                    baseId = new Identifier(Electromechanics.MODID, "colored_" + entry.getKey());
+                }
+
+                var properties = defaultEntry.getStateManager().getProperties();
+
+                var customStateManager = new StateManager.Builder<Block, BlockState>(defaultEntry)
+                        .add(properties.toArray(new Property[0]))
+                        .build(Block::getDefaultState, BlockState::new);
+
+                customStateManager.getStates().forEach(state -> {
+                    ModelIdentifier identifier = BlockModels.getModelId(baseId, state);
+
+                    BLOCKSTATE_ID_CACHE.put(baseId + identifier.getVariant(), identifier);
+                });
+
+                if(!register.addManager(baseId, customStateManager)){
+                    LOGGER.error("Unable to register the given state manager! [Identifier: {}]", baseId);
+                }
             }
-
-            Collection<Property<?>> properties = defaultEntry.getStateManager().getProperties();
-
-            StateManager<Block, BlockState> customStateManager = new StateManager.Builder<Block, BlockState>(defaultEntry)
-                    .add(properties.toArray(new Property[0]))
-                    .build(Block::getDefaultState, BlockState::new);
-
-            customStateManager.getStates().forEach(state -> {
-                ModelIdentifier identifier = BlockModels.getModelId(baseId, state);
-
-                BLOCKSTATE_ID_CACHE.put(baseId + identifier.getVariant(), identifier);
-            });
-
-            mutableMap.put(baseId, customStateManager);
-        }
-
-        ModelLoaderAccessor.gelatin$setSTATIC_DEFINITIONS(ImmutableMap.copyOf(mutableMap));
+        });
 
         //---------------------------------
 
