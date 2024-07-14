@@ -1,27 +1,20 @@
 package com.chyzman.electromechanics.logic;
 
 import com.chyzman.electromechanics.Electromechanics;
-import com.chyzman.electromechanics.logic.api.GateInteractEvent;
 import com.chyzman.electromechanics.logic.api.GateLogicFunction;
-import com.chyzman.electromechanics.logic.api.GateOutputFunction;
 import com.chyzman.electromechanics.logic.api.configuration.IOConfiguration;
-import com.chyzman.electromechanics.logic.api.configuration.Side;
-import com.chyzman.electromechanics.logic.api.configuration.SignalConfiguration;
 import com.chyzman.electromechanics.logic.api.configuration.SignalType;
 import com.chyzman.electromechanics.logic.api.GateHandler;
 import com.chyzman.electromechanics.logic.api.mode.ExpressionModeHandler;
-import com.chyzman.electromechanics.logic.api.state.GateStateStorage;
-import com.chyzman.electromechanics.mixin.ExpressionBuilderAccessor;
 import io.wispforest.owo.serialization.Endec;
 import io.wispforest.owo.serialization.endec.KeyedEndec;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.objecthunter.exp4j.operator.Operator;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.function.TriFunction;
+import org.apache.logging.log4j.core.util.ReflectionUtil;
 
-import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -127,7 +120,7 @@ public class DigitalGateHandlers {
     }
 
     private static Consumer<ExpressionModeHandler> digitalInversion(GateExpressionBuilder builder){
-        String expression = ((ExpressionBuilderAccessor) builder).chyz$getExpression();
+        String expression = builder.expression();
 
         var invertedBuilder = new GateExpressionBuilder("!(" + expression + ")")
                 .variable(builder.getInputs())

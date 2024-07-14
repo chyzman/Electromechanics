@@ -10,8 +10,16 @@ public class GateExpressionBuilder extends ExpressionBuilder {
 
     private final List<Side> inputs = new ArrayList<>();
 
+    private final String copy$expression;
+
     public GateExpressionBuilder(String expression){
         super(expression);
+
+        this.copy$expression = expression;
+    }
+
+    public String expression() {
+        return this.copy$expression;
     }
 
     public GateExpressionBuilder variable(List<Side> sides) {
