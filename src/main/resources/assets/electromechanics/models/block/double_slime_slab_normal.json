@@ -1,0 +1,6 @@
+{
+  "parent": "electromechanics:block/double_slime_slab",
+  "textures": {
+    "texture": "minecraft:block/slime_block"
+  }
+}

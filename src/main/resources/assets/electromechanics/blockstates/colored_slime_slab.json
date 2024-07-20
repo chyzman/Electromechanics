@@ -4,10 +4,10 @@
       "model": "electromechanics:block/colored_slime_slab"
     },
     "type=double": {
-      "model": "electromechanics:block/colored_slime_block"
+      "model": "electromechanics:block/colored_double_slime_slab"
     },
     "type=top": {
-      "model": "electromechanics:block/colored_slime_slab_top"
+      "model": "electromechanics:block/colored_slime_slab"
     }
   }
 }

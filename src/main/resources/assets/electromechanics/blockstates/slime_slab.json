@@ -4,7 +4,7 @@
       "model": "electromechanics:block/slime_slab_normal"
     },
     "type=double": {
-      "model": "minecraft:block/slime_block"
+      "model": "electromechanics:block/double_slime_slab_normal"
     },
     "type=top": {
       "model": "electromechanics:block/slime_slab_top_normal"
