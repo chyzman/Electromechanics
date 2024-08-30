@@ -17,6 +17,7 @@ import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.block.BlockModels;
+import net.minecraft.client.render.model.ModelLoader;
 import net.minecraft.client.render.model.UnbakedModel;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.registry.Registries;
@@ -43,7 +44,7 @@ public class ColoredVariantsModelLoader implements ModelResolver, BlockStateReso
 
     public static final ColoredVariantsModelLoader INSTANCE = new ColoredVariantsModelLoader();
 
-    private static final Map<String, Identifier> BLOCKSTATE_ID_CACHE = new HashMap<>();
+    private static final Map<String, ModelIdentifier> BLOCKSTATE_ID_CACHE = new HashMap<>();
 
     private static final Map<String, Block> variants = new HashMap<>();
 
@@ -58,9 +59,9 @@ public class ColoredVariantsModelLoader implements ModelResolver, BlockStateReso
                 Identifier baseId;
 
                 if(entry.getKey().equals("redstone_wire")){
-                    baseId = new Identifier(entry.getKey());
+                    baseId = Identifier.of(entry.getKey());
                 } else {
-                    baseId = new Identifier(Electromechanics.MODID, "colored_" + entry.getKey());
+                    baseId = Electromechanics.id("colored_" + entry.getKey());
                 }
 
                 var properties = defaultEntry.getStateManager().getProperties();
@@ -107,7 +108,7 @@ public class ColoredVariantsModelLoader implements ModelResolver, BlockStateReso
 
                     @Override
                     public Identifier getFabricId() {
-                        return new Identifier(Electromechanics.MODID, "reload_event");
+                        return Electromechanics.id("reload_event");
                     }
                 });
     }
@@ -139,7 +140,7 @@ public class ColoredVariantsModelLoader implements ModelResolver, BlockStateReso
             // Check if the model attempting to be resolved is the default of the colored variant
             if(Registries.ITEM.getId(entry.getValue().asItem()).getPath().equals(itemPath)) break;
 
-            baseModelId = new Identifier(Electromechanics.MODID, "colored_" + variant);
+            baseModelId = Electromechanics.id("colored_" + variant);
 
             break;
         }
@@ -152,7 +153,7 @@ public class ColoredVariantsModelLoader implements ModelResolver, BlockStateReso
 
         // If such should be loaded from Json as it is a base model or the needed model isn't loaded
         if (ITEMS_MODEL_CACHE.get(key) == null || itemPath.contains("colored")) {
-            Identifier modelId = new Identifier(baseModelId.getNamespace(), "item/" + baseModelId.getPath());
+            Identifier modelId = Identifier.of(baseModelId.getNamespace(), "item/" + baseModelId.getPath());
 
             model = loadItemModel(context, modelId);
 
@@ -166,7 +167,7 @@ public class ColoredVariantsModelLoader implements ModelResolver, BlockStateReso
 
     public static UnbakedModel loadItemModel(ModelResolver.Context context, Identifier redirectID) {
         try {
-            return ((ModelLoaderAccessor) context.loader()).gelatin$LoadModelFromJson(redirectID);
+            return ((ModelLoaderAccessor) context.loader()).em$LoadModelFromJson(redirectID);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -181,7 +182,7 @@ public class ColoredVariantsModelLoader implements ModelResolver, BlockStateReso
         for (var state : block.getStateManager().getStates()) {
             ModelIdentifier modelId = BlockModels.getModelId(state);
 
-            if(Objects.equals(modelId.getPath(), "slime_slab")) return;
+            if(Objects.equals(modelId.id().getPath(), "slime_slab")) return;
 
             for (var entry : variants.entrySet()) {
                 String variant = entry.getKey();
@@ -200,7 +201,13 @@ public class ColoredVariantsModelLoader implements ModelResolver, BlockStateReso
                     throw new IllegalResolverStateException("A Block Variant was found to be missing the needed data to load models, which will cause massive issues! [Variant: " + variant + "]");
                 }
 
-                context.setModel(state, new DelegatingUnbakedModel(BLOCKSTATE_ID_CACHE.get(key)));
+                var model = ((ModelLoaderAccessor) context.loader()).em$getModelsToBake().get(BLOCKSTATE_ID_CACHE.get(key));
+
+                if(model != null) {
+                    context.setModel(state, model);
+                } else {
+                    System.out.println(BLOCKSTATE_ID_CACHE.get(key));
+                }
             }
         }
     }

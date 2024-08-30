@@ -1,10 +1,9 @@
 package com.chyzman.electromechanics.logic.api.configuration;
 
-import com.chyzman.electromechanics.util.EndecUtils;
-import io.wispforest.owo.serialization.Endec;
-import io.wispforest.owo.serialization.endec.KeyedEndec;
+import io.wispforest.endec.Endec;
+import io.wispforest.endec.impl.KeyedEndec;
+import io.wispforest.endec.util.MapCarrier;
 import io.wispforest.owo.serialization.format.nbt.NbtEndec;
-import io.wispforest.owo.serialization.util.MapCarrier;
 import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,7 +24,7 @@ public class SignalConfiguration {
     private static final KeyedEndec<SignalType> INPUT_SIGNAL_TYPE = SIGNAL_TYPE_ENDEC.keyed("Input", () -> null);
     private static final KeyedEndec<SignalType> OUTPUT_SIGNAL_TYPE = SIGNAL_TYPE_ENDEC.keyed("Output", () -> null);
 
-    private static final KeyedEndec<Map<Side, SignalType>> SIDE_SIGNAL_TYPE_INFO = EndecUtils.mapOf(SIGNAL_TYPE_ENDEC, Side::valueOf, Side::name)
+    private static final KeyedEndec<Map<Side, SignalType>> SIDE_SIGNAL_TYPE_INFO = Endec.map(Side::name, Side::valueOf, SIGNAL_TYPE_ENDEC)
             .keyed("Sides", HashMap::new);
 
     @Nullable public SignalType inputType;

@@ -9,8 +9,8 @@ import com.chyzman.electromechanics.item.ColoredBlockItem;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import io.wispforest.owo.util.TagInjector;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlimeBlock;
@@ -41,7 +41,7 @@ public class SlimeBlocks {
                 "slime_slab",
                 () -> new SlimeSlab(FabricBlockSettings.copyOf(Blocks.SLIME_BLOCK)),
                 block -> {
-                    var item = new BlockItem(block, new FabricItemSettings());
+                    var item = new BlockItem(block, new Item.Settings());
 
                     SLIME_SLABS.add(item);
 
@@ -52,9 +52,9 @@ public class SlimeBlocks {
 
         for (DyeColor value : Stream.of(0, 8, 7, 15, 12, 14, 1, 4, 5, 13, 9, 3, 11, 10, 2, 6).map(DyeColor::byId).toList()) {
             RegistryUtils.registerBlockAndItem(value.asString() + "_slime_slab",
-                    () -> new ColoredSlimeSlab(value, FabricBlockSettings.copyOf(Blocks.SLIME_BLOCK).mapColor(value)),
+                    () -> new ColoredSlimeSlab(value, AbstractBlock.Settings.copy(Blocks.SLIME_BLOCK).mapColor(value)),
                     block -> {
-                        var item = new ColoredBlockItem(block, new FabricItemSettings());
+                        var item = new ColoredBlockItem(block, new Item.Settings());
 
                         SLIME_SLABS.add(item);
 
@@ -62,9 +62,9 @@ public class SlimeBlocks {
                     });
 
             RegistryUtils.registerBlockAndItem(value.asString() + "_slime_block",
-                    () -> new ColoredSlimeBlock(value, FabricBlockSettings.copyOf(Blocks.SLIME_BLOCK).mapColor(value)),
+                    () -> new ColoredSlimeBlock(value, AbstractBlock.Settings.copy(Blocks.SLIME_BLOCK).mapColor(value)),
                     block -> {
-                        var item = new ColoredBlockItem(block, new FabricItemSettings());
+                        var item = new ColoredBlockItem(block, new Item.Settings());
 
                         SLIME_BLOCKS.add(item);
 
@@ -122,7 +122,7 @@ public class SlimeBlocks {
     }
 
     public static Block getColoredVariant(DyeColor color, String type){
-        return Registries.BLOCK.get(new Identifier(Electromechanics.MODID, color.asString() + "_" + type));
+        return Registries.BLOCK.get(Electromechanics.id(color.asString() + "_" + type));
     }
 
     public static boolean isVariant(Identifier id, String variant){

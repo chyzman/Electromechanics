@@ -6,6 +6,8 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 
+import java.util.Optional;
+
 /**
  * A version containing automatic english Translations
  */
@@ -24,6 +26,6 @@ public interface ExtLangInterface extends LangInterface {
     }
 
     default void addPotion(Potion potion){
-        addPotion(potion, LangUtils.toEnglishName(potion.finishTranslationKey("")));
+        addPotion(potion, LangUtils.toEnglishName(potion.finishTranslationKey(Optional.empty(), "")));
     }
 }

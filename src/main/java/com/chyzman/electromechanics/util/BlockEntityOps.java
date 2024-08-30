@@ -1,9 +1,9 @@
 package com.chyzman.electromechanics.util;
 
 import com.mojang.logging.LogUtils;
-import io.wispforest.owo.serialization.endec.KeyedEndec;
+import io.wispforest.endec.impl.KeyedEndec;
+import io.wispforest.endec.util.MapCarrier;
 import io.wispforest.owo.serialization.format.nbt.NbtEndec;
-import io.wispforest.owo.serialization.util.MapCarrier;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -30,7 +30,7 @@ public class BlockEntityOps {
     }
 
     @Nullable
-    public static <T extends BlockEntity> T createAndReadNbt(BlockEntityType<T> type, BlockPos pos, BlockState state, MapCarrier carrier) {
+    public static <T extends BlockEntity> T createAndReadNbt(BlockEntityType<T> type, BlockPos pos, BlockState state, ItemStack stack) {
         Identifier id = Registries.BLOCK_ENTITY_TYPE.getId(type);
 
         T blockEntity;
@@ -47,20 +47,20 @@ public class BlockEntityOps {
             return null;
         }
 
-        return readFromCarrier(blockEntity, carrier);
+        return readFromCarrier(blockEntity, stack);
     }
 
     @Nullable
-    public static <T extends BlockEntity> T readFromCarrier(T blockEntity, MapCarrier carrier) {
+    public static <T extends BlockEntity> T readFromCarrier(T blockEntity, ItemStack stack) {
         Identifier id = Registries.BLOCK_ENTITY_TYPE.getId(blockEntity.getType());
 
-        if(carrier == null) {
+        if(stack == null) {
             LOGGER.error("Failed to load data block entity due to null data {}", id);
             return null;
         }
 
         try {
-            blockEntity.readNbt(carrier.get(BLOCK_ENTITY_DATA));
+            blockEntity.readComponents(stack);
         } catch (Throwable var4xx) {
             LOGGER.error("Failed to load data for block entity {}", id, var4xx);
             return null;

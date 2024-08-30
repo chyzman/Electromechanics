@@ -123,6 +123,6 @@ public class Electromechanics implements ModInitializer {
     }
 
     public static Identifier id(String path){
-        return new Identifier(MODID, path);
+        return Identifier.of(MODID, path);
     }
 }

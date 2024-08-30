@@ -44,12 +44,12 @@ public class RegistryUtils {
     public static Block registerBlock(String path, Supplier<Block> blockFunc){
         var block = blockFunc.get();
 
-        return Registry.register(Registries.BLOCK, new Identifier(Electromechanics.MODID, path), block);
+        return Registry.register(Registries.BLOCK, Electromechanics.id(path), block);
     }
 
     public static BlockItem registerBlockItem(String path, Block block, Function<Block, BlockItem> blockItemFunc){
         var item = blockItemFunc.apply(block);
 
-        return Registry.register(Registries.ITEM, new Identifier(Electromechanics.MODID, path), item);
+        return Registry.register(Registries.ITEM, Electromechanics.id(path), item);
     }
 }

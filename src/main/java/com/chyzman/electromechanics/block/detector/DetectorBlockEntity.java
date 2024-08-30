@@ -7,6 +7,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
@@ -24,8 +25,8 @@ public class DetectorBlockEntity extends BlockEntity {
     }
 
     @Override
-    public NbtCompound toInitialChunkDataNbt() {
-        return this.createNbt();
+    public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
+        return this.createNbt(registryLookup);
     }
 
     @Override
@@ -37,7 +38,7 @@ public class DetectorBlockEntity extends BlockEntity {
     public boolean tick(BlockEntity targetBlockEntity) {
         var returned = false;
         var nbt = new NbtCompound();
-        ((BlockEntityAccessor) targetBlockEntity).chyzyLogistics$callWriteNbt(nbt);
+        ((BlockEntityAccessor) targetBlockEntity).chyzyLogistics$callWriteNbt(nbt, this.world.getRegistryManager());
         var value = List.of(nbt);
         if (previousValue != null && !previousValue.equals(value)) {
             returned = true;
@@ -47,12 +48,12 @@ public class DetectorBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.writeNbt(nbt, registryLookup);
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
+    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
     }
 }

@@ -2,9 +2,18 @@ package com.chyzman.electromechanics.item;
 
 import com.chyzman.electromechanics.block.gate.GateBlockEntity;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BannerBlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldView;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.stream.Stream;
 
 public class GateBlockItem extends BlockItem {
 
@@ -18,7 +27,7 @@ public class GateBlockItem extends BlockItem {
 
         var itemStack = super.getDefaultStack();
 
-        blockEntity.setStackNbt(itemStack);
+        blockEntity.setStackNbt(itemStack, RegistryWrapper.WrapperLookup.of(Stream.of()));
 
         return itemStack;
     }

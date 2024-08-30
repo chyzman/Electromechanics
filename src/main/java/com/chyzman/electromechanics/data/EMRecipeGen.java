@@ -14,6 +14,7 @@ import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
@@ -21,17 +22,18 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 public class EMRecipeGen extends FabricRecipeProvider {
 
-    public EMRecipeGen(FabricDataOutput output) {
-        super(output);
+    public EMRecipeGen(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+        super(output, registriesFuture);
     }
 
     @Override
     public void generate(RecipeExporter exporter) {
         for (var color : DyeColor.values()) {
-            var dye_item = Registries.ITEM.get(new Identifier(color + "_dye"));
+            var dye_item = Registries.ITEM.get(Identifier.of(color + "_dye"));
 
             {
                 var colored_wire = Registries.ITEM.get(Electromechanics.id(color.asString() + "_redstone_wire"));
@@ -78,7 +80,7 @@ public class EMRecipeGen extends FabricRecipeProvider {
 
                 var otherBlocks = getColoredVariants("{0}_slime_block", color);
 
-                otherBlocks.add(Registries.ITEM.get(new Identifier("slime_block")));
+                otherBlocks.add(Registries.ITEM.get(Identifier.of("slime_block")));
 
                 var blockArray = otherBlocks.toArray(ItemConvertible[]::new);
 
@@ -308,7 +310,7 @@ public class EMRecipeGen extends FabricRecipeProvider {
         for (var color : DyeColor.values()) {
             if(set.contains(color)) continue;
 
-            var item = Registries.ITEM.get(new Identifier(namespace, MessageFormat.format(pathFormat, color)));
+            var item = Registries.ITEM.get(Identifier.of(namespace, MessageFormat.format(pathFormat, color)));
 
             items.add(item);
         }

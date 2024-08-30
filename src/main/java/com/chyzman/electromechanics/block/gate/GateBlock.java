@@ -6,8 +6,8 @@ import com.chyzman.electromechanics.logic.api.state.WorldGateContext;
 import com.chyzman.electromechanics.logic.api.GateHandler;
 import com.chyzman.electromechanics.util.BlockEntityOps;
 import com.mojang.serialization.MapCodec;
-import io.wispforest.owo.serialization.Endec;
-import io.wispforest.owo.serialization.endec.StructEndecBuilder;
+import io.wispforest.endec.impl.StructEndecBuilder;
+import io.wispforest.owo.serialization.CodecUtils;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -50,18 +50,20 @@ public class GateBlock extends AbstractRedstoneGateBlock implements ImplBlockEnt
         });
     }
 
-    public MapCodec<GateBlock> CODEC = StructEndecBuilder.of(
-            GateHandler.ENDEC.fieldOf("gate_handler", block -> block.handler),
-            Endec.ofCodec(AbstractBlock.Settings.CODEC).fieldOf("properties", AbstractBlock::getSettings),
-            GateBlock::new
-    ).mapCodec();
+    public MapCodec<GateBlock> CODEC = CodecUtils.toMapCodec(
+            StructEndecBuilder.of(
+                    GateHandler.ENDEC.fieldOf("gate_handler", block -> block.handler),
+                    CodecUtils.toEndec(AbstractBlock.Settings.CODEC).fieldOf("properties", AbstractBlock::getSettings),
+                    GateBlock::new
+            )
+    );
 
     protected final GateHandler handler;
 
     public GateBlock(GateHandler handler){
         this(handler, FabricBlockSettings.copy(Blocks.REPEATER));
 
-        GateBlockEntity.GATE_TYPE_BUILDER.addBlock(this);
+        GateBlockEntity.addValidBlock(this);
     }
 
     public GateBlock(GateHandler handler, Settings settings) {
@@ -85,14 +87,12 @@ public class GateBlock extends AbstractRedstoneGateBlock implements ImplBlockEnt
         return CODEC;
     }
 
-
-
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
 
         world.getBlockEntity(pos, GateBlockEntity.getBlockEntityType()).ifPresent(blockEntity -> {
-            BlockEntityOps.readFromCarrier(blockEntity, itemStack.getNbt());
+            BlockEntityOps.readFromCarrier(blockEntity, itemStack);
         });
     }
 
@@ -103,7 +103,7 @@ public class GateBlock extends AbstractRedstoneGateBlock implements ImplBlockEnt
         var stack = this.asItem().getDefaultStack();
 
         world.getBlockEntity(pos, GateBlockEntity.getBlockEntityType())
-                .ifPresent(gateBlockEntity -> gateBlockEntity.setStackNbt(stack));
+                .ifPresent(gateBlockEntity -> gateBlockEntity.setStackNbt(stack, world.getRegistryManager()));
 
         return stack;
     }
@@ -194,7 +194,7 @@ public class GateBlock extends AbstractRedstoneGateBlock implements ImplBlockEnt
     //--
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (!player.getAbilities().allowModifyWorld) return ActionResult.PASS;
 
         var context = WorldGateContext.of(world, pos);

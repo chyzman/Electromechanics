@@ -1,7 +1,8 @@
 package com.chyzman.electromechanics.util;
 
-import io.wispforest.owo.serialization.endec.KeyedEndec;
-import io.wispforest.owo.serialization.util.MapCarrier;
+import io.wispforest.endec.SerializationContext;
+import io.wispforest.endec.impl.KeyedEndec;
+import io.wispforest.endec.util.MapCarrier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -33,12 +34,12 @@ public class ImplMapCarrier<M extends MapCarrier> implements MapCarrier {
     }
 
     @Override
-    public <T> T getWithErrors(@NotNull KeyedEndec<T> key) {
+    public <T> T getWithErrors(SerializationContext ctx, @NotNull KeyedEndec<T> key) {
         return this.mapCarrier.getWithErrors(key);
     }
 
     @Override
-    public <T> void put(@NotNull KeyedEndec<T> key, @NotNull T value) {
+    public <T> void put(SerializationContext ctx, @NotNull KeyedEndec<T> key, @NotNull T value) {
         this.mapCarrier.put(key, value);
 
         this.onChange.accept(this.mapCarrier);

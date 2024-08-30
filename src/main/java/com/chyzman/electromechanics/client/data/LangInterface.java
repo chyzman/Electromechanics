@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Inteface with helper methods to make it easy to create a map containing a translation key to name map
@@ -29,10 +30,6 @@ public interface LangInterface {
     }
 
     default void addItemStack(ItemStack key, String name) {
-        addTranslation(key.getTranslationKey(), name);
-    }
-
-    default void addEnchantment(Enchantment key, String name) {
         addTranslation(key.getTranslationKey(), name);
     }
 
@@ -60,7 +57,7 @@ public interface LangInterface {
     }
 
     default void addPotion(String potionType, Potion potion, String translation){
-        addTranslation(potion.finishTranslationKey("item.minecraft." + potionType + ".effect."), translation);
+        addTranslation(potion.finishTranslationKey(Optional.empty(), "item.minecraft." + potionType + ".effect."), translation);
     }
 
     default void addEntityType(EntityType<?> key, String name) {

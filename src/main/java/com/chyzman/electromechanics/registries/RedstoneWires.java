@@ -5,7 +5,6 @@ import com.chyzman.electromechanics.item.ColoredBlockItem;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import io.wispforest.owo.ui.core.Color;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -33,7 +32,7 @@ public class RedstoneWires {
         var map = new HashMap<DyeColor, Vec3d[]>();
 
         for (DyeColor value : DyeColor.values()) {
-            Color color = Color.ofDye(value);
+            Color color = Color.ofArgb(value.getEntityColor());
 
             Vec3d[] dyeColorVariants = Util.make(new Vec3d[16], colors -> {
                 float red = color.red();
@@ -83,7 +82,7 @@ public class RedstoneWires {
                         return block;
                     },
                     block -> {
-                        var item = new ColoredBlockItem(value, block, new FabricItemSettings());
+                        var item = new ColoredBlockItem(value, block, new Item.Settings());
 
                         DUSTS.add(item);
 
@@ -109,7 +108,7 @@ public class RedstoneWires {
     }
 
     public static Block getColoredVariant(DyeColor color, String type){
-        return Registries.BLOCK.get(new Identifier(Electromechanics.MODID, color.asString() + "_" + type));
+        return Registries.BLOCK.get(Electromechanics.id(color.asString() + "_" + type));
     }
 
     @Nullable

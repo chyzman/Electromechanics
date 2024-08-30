@@ -12,10 +12,12 @@ import com.chyzman.electromechanics.item.GateBlockItem;
 import com.chyzman.electromechanics.registries.RedstoneLogisticalBlocks;
 import com.chyzman.electromechanics.registries.RedstoneWires;
 import com.chyzman.electromechanics.registries.SlimeBlocks;
+import com.chyzman.electromechanics.util.Colored;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.fabric.impl.client.rendering.ColorProviderRegistryImpl;
 import net.minecraft.block.Block;
 import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.client.color.item.ItemColorProvider;
@@ -57,10 +59,10 @@ public class ElectromechanicsClient implements ClientModInitializer {
 
         for (String variant : SlimeBlocks.variantInfo().keySet()) {
             for (DyeColor value : DyeColor.values()) {
-                var coloredBlock = Registries.BLOCK.get(new Identifier(Electromechanics.MODID, value.asString() + "_" + variant));
+                var coloredBlock = Registries.BLOCK.get(Electromechanics.id(value.asString() + "_" + variant));
 
-                ColorProviderRegistry.BLOCK.register((BlockColorProvider) coloredBlock, coloredBlock);
-                ColorProviderRegistry.ITEM.register((ItemColorProvider) coloredBlock.asItem(), coloredBlock.asItem());
+                ColorProviderRegistryImpl.BLOCK.register(Colored.BLOCK_COLOR_PROVIDER, coloredBlock);
+                ColorProviderRegistryImpl.ITEM.register(Colored.ITEM_COLOR_PROVIDER, coloredBlock.asItem());
             }
         }
 
@@ -76,10 +78,10 @@ public class ElectromechanicsClient implements ClientModInitializer {
             };
 
             for (DyeColor value : DyeColor.values()) {
-                var coloredBlock = Registries.BLOCK.get(new Identifier(Electromechanics.MODID, value.asString() + "_" + variant));
+                var coloredBlock = Registries.BLOCK.get(Electromechanics.id(value.asString() + "_" + variant));
 
-                ColorProviderRegistry.BLOCK.register(provider, coloredBlock);
-                ColorProviderRegistry.ITEM.register((ItemColorProvider) coloredBlock.asItem(), coloredBlock.asItem());
+                ColorProviderRegistryImpl.BLOCK.register(provider, coloredBlock);
+                ColorProviderRegistryImpl.ITEM.register(Colored.ITEM_COLOR_PROVIDER, coloredBlock.asItem());
             }
         }
 

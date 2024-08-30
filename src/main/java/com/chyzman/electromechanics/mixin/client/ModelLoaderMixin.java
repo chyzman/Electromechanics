@@ -3,6 +3,7 @@ package com.chyzman.electromechanics.mixin.client;
 import com.chyzman.electromechanics.util.ModelStaticDefinitionAddition;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.render.model.BlockStatesLoader;
 import net.minecraft.client.render.model.ModelLoader;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.Identifier;
@@ -14,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-@Mixin(ModelLoader.class)
+@Mixin(BlockStatesLoader.class)
 public abstract class ModelLoaderMixin {
 
     @Mutable
@@ -23,9 +24,9 @@ public abstract class ModelLoaderMixin {
     private static Map<Identifier, StateManager<Block, BlockState>> STATIC_DEFINITIONS;
 
     @Unique
-    private boolean hasRegisterDefs = false;
+    private static boolean hasRegisterDefs = false;
 
-    @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Ljava/util/Map;forEach(Ljava/util/function/BiConsumer;)V"))
+    @Inject(method = "load", at = @At(value = "HEAD"))
     private void addToStaticDef(CallbackInfo ci) {
         if(hasRegisterDefs) return;
 
@@ -41,6 +42,6 @@ public abstract class ModelLoaderMixin {
 
         STATIC_DEFINITIONS = mutableMap;
 
-        this.hasRegisterDefs = true;
+        hasRegisterDefs = true;
     }
 }

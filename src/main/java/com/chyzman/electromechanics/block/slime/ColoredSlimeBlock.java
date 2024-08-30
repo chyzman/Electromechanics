@@ -2,22 +2,21 @@ package com.chyzman.electromechanics.block.slime;
 
 import com.chyzman.electromechanics.util.Colored;
 import com.mojang.serialization.MapCodec;
-import io.wispforest.owo.serialization.Endec;
-import io.wispforest.owo.serialization.endec.StructEndecBuilder;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.EnvironmentInterface;
+import io.wispforest.endec.impl.StructEndecBuilder;
+import io.wispforest.owo.serialization.CodecUtils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.SlimeBlock;
 import net.minecraft.util.DyeColor;
 
-@EnvironmentInterface(value = EnvType.CLIENT, itf = ColoredBlockProvider.class)
-public class ColoredSlimeBlock extends SlimeBlock implements ColoredBlockProvider, Colored {
+public class ColoredSlimeBlock extends SlimeBlock implements Colored {
 
-    public static final MapCodec<ColoredSlimeBlock> CODEC = StructEndecBuilder.of(
-            DYE_COLOR_ENDEC.fieldOf("dye_color", Colored::getColor),
-            Endec.ofCodec(AbstractBlock.Settings.CODEC).fieldOf("properties", AbstractBlock::getSettings),
-            ColoredSlimeBlock::new
-    ).mapCodec();
+    public static final MapCodec<ColoredSlimeBlock> CODEC = CodecUtils.toMapCodec(
+            StructEndecBuilder.of(
+                    DYE_COLOR_ENDEC.fieldOf("dye_color", Colored::getColor),
+                    CodecUtils.toEndec(AbstractBlock.Settings.CODEC).fieldOf("properties", AbstractBlock::getSettings),
+                    ColoredSlimeBlock::new
+            )
+    );
 
     private final DyeColor dyeColor;
 

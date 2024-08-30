@@ -1,12 +1,11 @@
 package com.chyzman.electromechanics.logic.api.state;
 
 import com.chyzman.electromechanics.logic.api.configuration.Side;
-import com.chyzman.electromechanics.util.EndecUtils;
 import com.chyzman.electromechanics.util.ImplMapCarrier;
-import io.wispforest.owo.serialization.Endec;
-import io.wispforest.owo.serialization.endec.KeyedEndec;
+import io.wispforest.endec.Endec;
+import io.wispforest.endec.impl.KeyedEndec;
+import io.wispforest.endec.util.MapCarrier;
 import io.wispforest.owo.serialization.format.nbt.NbtEndec;
-import io.wispforest.owo.serialization.util.MapCarrier;
 import net.minecraft.nbt.NbtCompound;
 
 import java.util.HashMap;
@@ -16,7 +15,7 @@ import java.util.function.Predicate;
 
 public class ImplGateStateStorage implements GateStateStorage {
 
-    public static final Endec<Map<Side, Integer>> POWER_LEVEL_ENDEC = EndecUtils.mapOf(Endec.INT, Side::valueOf, Side::name);
+    public static final Endec<Map<Side, Integer>> POWER_LEVEL_ENDEC = Endec.map(Side::name, Side::valueOf, Endec.INT);
 
     public static final KeyedEndec<Map<Side, Integer>> INPUT = POWER_LEVEL_ENDEC.keyed("Input", new HashMap<>());
     public static final KeyedEndec<Map<Side, Integer>> OUTPUT = POWER_LEVEL_ENDEC.keyed("Output", new HashMap<>());

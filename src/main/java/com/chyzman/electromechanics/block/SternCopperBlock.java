@@ -46,7 +46,7 @@ public class SternCopperBlock extends HorizontalFacingBlock {
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         var retract = player.isSneaking();
         Direction dir = hit.getSide();
         world.setBlockState(pos, dir.getAxis().isHorizontal() ? state.with(FACING, retract ? dir : dir.getOpposite()) : state);

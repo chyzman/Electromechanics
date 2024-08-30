@@ -8,20 +8,24 @@ import com.chyzman.electromechanics.logic.api.configuration.Side;
 import com.chyzman.electromechanics.logic.api.configuration.SignalType;
 import com.chyzman.electromechanics.logic.api.mode.ExpressionModeHandler;
 import com.chyzman.electromechanics.logic.api.mode.MultiExpressionModeHandler;
-import io.wispforest.owo.serialization.Endec;
-import io.wispforest.owo.serialization.endec.BuiltInEndecs;
+import com.mojang.logging.LogUtils;
+import io.wispforest.endec.Endec;
+import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import java.util.*;
 
 public class GateHandler {
 
+    private static final Logger LOGGER = LogUtils.getLogger();
+
     private static final Map<Identifier, GateHandler> HANDLERS = new HashMap<>();
 
-    public static final Endec<GateHandler> ENDEC = BuiltInEndecs.IDENTIFIER.xmap(HANDLERS::get, GateHandler::getId);
+    public static final Endec<GateHandler> ENDEC = MinecraftEndecs.IDENTIFIER.xmap(HANDLERS::get, GateHandler::getId);
 
     // --
 
@@ -193,13 +197,19 @@ public class GateHandler {
     protected Map<Side, Integer> gatherOutputData(GateContext context){
         Map<Side, Integer> inputData = gatherInputData(context);
 
-        var map = this.outputFunc.calculateOutput(this, context, inputData);
+        try {
+            var map = this.outputFunc.calculateOutput(this, context, inputData);
 
-        if(context.updateOutput()){
-            map.forEach(context.storage()::setOutputPower);
+            if (context.updateOutput()) {
+                map.forEach(context.storage()::setOutputPower);
+            }
+
+            return map;
+        } catch (Exception e) {
+            LOGGER.warn("Unable to gather the needed output data as an exception was thrown!", e);
+
+            return Map.of();
         }
-
-        return map;
     }
 
     // --

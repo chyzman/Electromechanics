@@ -8,6 +8,6 @@ public class ElectromechanicsDatagen implements DataGeneratorEntrypoint {
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
         var pack = fabricDataGenerator.createPack();
 
-        pack.addProvider((output, registriesFuture) -> new EMRecipeGen(output));
+        pack.addProvider(EMRecipeGen::new);
     }
 }

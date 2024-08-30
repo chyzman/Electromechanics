@@ -36,10 +36,10 @@ public class SlimeTags {
     }
 
     private static Identifier common(String path){
-        return new Identifier(COMMON_NAMESPACE, path);
+        return Identifier.of(COMMON_NAMESPACE, path);
     }
 
     private static Identifier jello(String path){
-        return new Identifier(Electromechanics.MODID, path);
+        return Electromechanics.id(path);
     }
 }
