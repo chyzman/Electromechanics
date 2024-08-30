@@ -13,7 +13,8 @@
     "PistonHandlerMixin",
     "RedstoneViewMixin",
     "RedstoneWireBlockAccessor",
-    "RedstoneWireBlockMixin"
+    "RedstoneWireBlockMixin",
+    "Accessories_BlockMixin"
   ],
   "client": [
     "client.ModelLoaderMixin",

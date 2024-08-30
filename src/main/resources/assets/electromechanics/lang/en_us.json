@@ -20,5 +20,14 @@
   "itemGroup.electromechanics.main.button.cool_place": "Cool Place",
   "itemGroup.electromechanics.main.tab.advanced_redstone_blocks": "Advanced Redstone Blocks",
   "itemGroup.electromechanics.main.tab.slime_block_variants": "Slime Block Variants",
-  "itemGroup.electromechanics.main.tab.stone_wire_variants": "Stone Wire Variants"
+  "itemGroup.electromechanics.main.tab.stone_wire_variants": "Stone Wire Variants",
+  "accessories.attribute.slime_hops": "Slimey Hops Yo",
+  "accessories.description.active.slime_hops": [
+    "You see they go on your feet and then\n",
+    "it just works... don't question it."
+  ],
+  "accessories.description.inactive.slime_hops": [
+    "You need at least two blocks for the ability to\n",
+    "get Slime Hops, then stick them on like shoes."
+  ]
 }

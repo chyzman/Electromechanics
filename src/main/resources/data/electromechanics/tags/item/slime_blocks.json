@@ -1,0 +1,22 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:slime_block",
+    "electromechanics:white_slime_block",
+    "electromechanics:orange_slime_block",
+    "electromechanics:magenta_slime_block",
+    "electromechanics:light_blue_slime_block",
+    "electromechanics:yellow_slime_block",
+    "electromechanics:lime_slime_block",
+    "electromechanics:pink_slime_block",
+    "electromechanics:gray_slime_block",
+    "electromechanics:light_gray_slime_block",
+    "electromechanics:cyan_slime_block",
+    "electromechanics:purple_slime_block",
+    "electromechanics:blue_slime_block",
+    "electromechanics:brown_slime_block",
+    "electromechanics:green_slime_block",
+    "electromechanics:red_slime_block",
+    "electromechanics:black_slime_block"
+  ]
+}

@@ -5,6 +5,7 @@ import com.chyzman.electromechanics.block.detector.DetectorBlockEntity;
 import com.chyzman.electromechanics.block.gate.GateBlock;
 import com.chyzman.electromechanics.block.gate.GateBlockEntity;
 import com.chyzman.electromechanics.block.redstone.RedstoneEvents;
+import com.chyzman.electromechanics.compat.AccessoriesCompat;
 import com.chyzman.electromechanics.registries.RedstoneLogisticalBlocks;
 import com.chyzman.electromechanics.registries.RedstoneWires;
 import com.chyzman.electromechanics.registries.SlimeBlocks;
@@ -16,6 +17,7 @@ import io.wispforest.owo.registration.reflect.FieldRegistrationHandler;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.AbstractRedstoneGateBlock;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ObserverBlock;
@@ -41,6 +43,11 @@ public class Electromechanics implements ModInitializer {
         GateBlockEntity.getBlockEntityType();
 
         SlimeBlocks.init();
+
+        if(FabricLoader.getInstance().isModLoaded("accessories")) {
+            AccessoriesCompat.init();
+        }
+
         RedstoneWires.init();
 
         ServerEventListeners.init();

@@ -42,6 +42,8 @@ dependencies {
 
     modImplementation("maven.modrinth:lithium:${project.lithium}")
 
+    modImplementation("io.wispforest:accessories-fabric:${project.accessories_version}")
+
     //--
 
     modLocalRuntime("maven.modrinth:modmenu:${project.modmenu}")

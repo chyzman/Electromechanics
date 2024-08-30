@@ -54,11 +54,13 @@ public class SlimeSlab extends SlabBlock {
 
     @Override
     public void onSteppedOn(World world, BlockPos pos, BlockState state, Entity entity) {
-        double d = Math.abs(entity.getVelocity().y);
+        if(!entity.bypassesSteppingEffects()) {
+            double d = Math.abs(entity.getVelocity().y);
 
-        if (d < 0.1 && !entity.bypassesSteppingEffects()) {
-            double e = 0.4 + d * 0.2;
-            entity.setVelocity(entity.getVelocity().multiply(e, 1.0, e));
+            if (d < 0.1) {
+                double e = 0.4 + d * 0.2;
+                entity.setVelocity(entity.getVelocity().multiply(e, 1.0, e));
+            }
         }
 
         super.onSteppedOn(world, pos, state, entity);

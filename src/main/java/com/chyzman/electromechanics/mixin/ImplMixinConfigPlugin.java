@@ -16,6 +16,10 @@ public class ImplMixinConfigPlugin implements IMixinConfigPlugin {
             return FabricLoader.getInstance().isModLoaded("lithium");
         }
 
+        if(mixinClassName.contains("Accessories")){
+            return FabricLoader.getInstance().isModLoaded("accessories");
+        }
+
         return true;
     }
 
