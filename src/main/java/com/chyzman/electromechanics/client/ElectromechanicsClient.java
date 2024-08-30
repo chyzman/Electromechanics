@@ -14,9 +14,10 @@ import com.chyzman.electromechanics.registries.RedstoneWires;
 import com.chyzman.electromechanics.registries.SlimeBlocks;
 import com.chyzman.electromechanics.util.Colored;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.impl.client.rendering.ColorProviderRegistryImpl;
 import net.minecraft.block.Block;
 import net.minecraft.client.color.block.BlockColorProvider;
@@ -27,10 +28,12 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.DyeColor;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
 public class ElectromechanicsClient implements ClientModInitializer {
+
+    public static final ItemColorProvider ITEM_COLOR_PROVIDER = (stack, tintIndex) -> stack.getItem() instanceof Colored colored ? colored.getArgbColor() : -1;
+    public static final BlockColorProvider BLOCK_COLOR_PROVIDER = (state, world, pos, tintIndex) -> state.getBlock() instanceof Colored colored ? colored.getArgbColor() : -1;
 
     private static final RenderLayer TRANSLUCENT = RenderLayer.getTranslucent();
     private static final RenderLayer CUTOUT = RenderLayer.getCutout();
@@ -61,8 +64,8 @@ public class ElectromechanicsClient implements ClientModInitializer {
             for (DyeColor value : DyeColor.values()) {
                 var coloredBlock = Registries.BLOCK.get(Electromechanics.id(value.asString() + "_" + variant));
 
-                ColorProviderRegistryImpl.BLOCK.register(Colored.BLOCK_COLOR_PROVIDER, coloredBlock);
-                ColorProviderRegistryImpl.ITEM.register(Colored.ITEM_COLOR_PROVIDER, coloredBlock.asItem());
+                ColorProviderRegistryImpl.BLOCK.register(BLOCK_COLOR_PROVIDER, coloredBlock);
+                ColorProviderRegistryImpl.ITEM.register(ITEM_COLOR_PROVIDER, coloredBlock.asItem());
             }
         }
 
@@ -81,7 +84,7 @@ public class ElectromechanicsClient implements ClientModInitializer {
                 var coloredBlock = Registries.BLOCK.get(Electromechanics.id(value.asString() + "_" + variant));
 
                 ColorProviderRegistryImpl.BLOCK.register(provider, coloredBlock);
-                ColorProviderRegistryImpl.ITEM.register(Colored.ITEM_COLOR_PROVIDER, coloredBlock.asItem());
+                ColorProviderRegistryImpl.ITEM.register(ITEM_COLOR_PROVIDER, coloredBlock.asItem());
             }
         }
 
