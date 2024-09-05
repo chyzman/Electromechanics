@@ -12,13 +12,13 @@ public class SlimeTags {
 
     public static class Blocks {
 
-        public static final TagKey<Block> SLIME_SLABS = registerJello("slime_slabs");
+        public static final TagKey<Block> SLIME_SLABS = registerEM("slime_slabs");
         public static final TagKey<Block> C_SLIME_SLABS = registerCommon("slime_slabs");
-        public static final TagKey<Block> COLORED_SLIME_SLABS = registerJello("colored_slime_slabs");
+        public static final TagKey<Block> COLORED_SLIME_SLABS = registerEM("colored_slime_slabs");
 
-        public static final TagKey<Block> SLIME_BLOCKS = registerJello("slime_blocks");
+        public static final TagKey<Block> SLIME_BLOCKS = registerEM("slime_blocks");
         public static final TagKey<Block> C_SLIME_BLOCKS = registerCommon("slime_blocks");
-        public static final TagKey<Block> COLORED_SLIME_BLOCKS = registerJello("colored_slime_blocks");
+        public static final TagKey<Block> COLORED_SLIME_BLOCKS = registerEM("colored_slime_blocks");
 
         public static final TagKey<Block> STICKY_BLOCKS = registerCommon("sticky_blocks");
 
@@ -26,8 +26,8 @@ public class SlimeTags {
             return register(common(path));
         }
 
-        private static TagKey<Block> registerJello(String path) {
-            return register(jello(path));
+        private static TagKey<Block> registerEM(String path) {
+            return register(Electromechanics.id(path));
         }
 
         private static TagKey<Block> register(Identifier id) {
@@ -37,9 +37,5 @@ public class SlimeTags {
 
     private static Identifier common(String path){
         return Identifier.of(COMMON_NAMESPACE, path);
-    }
-
-    private static Identifier jello(String path){
-        return Electromechanics.id(path);
     }
 }

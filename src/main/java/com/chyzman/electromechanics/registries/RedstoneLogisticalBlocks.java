@@ -32,7 +32,7 @@ public class RedstoneLogisticalBlocks implements BlockRegistryContainer {
 
     public static final Block DETECTOR = new DetectorBlock(FabricBlockSettings.copy(Blocks.OBSERVER));
 
-    public static final Block ADVANCED_DETECTOR =  new AdvancedDetectorBlock(FabricBlockSettings.copy(DETECTOR).pistonBehavior(PistonBehavior.BLOCK));
+    public static final Block ADVANCED_DETECTOR = new AdvancedDetectorBlock(FabricBlockSettings.copy(DETECTOR).pistonBehavior(PistonBehavior.BLOCK));
 
     public static final Block LISTENER = new ListenerBlock(FabricBlockSettings.copy(Blocks.OBSERVER));
 

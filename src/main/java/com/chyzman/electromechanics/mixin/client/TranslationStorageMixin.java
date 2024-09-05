@@ -1,6 +1,7 @@
 package com.chyzman.electromechanics.mixin.client;
 
 import com.chyzman.electromechanics.client.utils.TranslationInjectionEvent;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.resource.language.LanguageDefinition;
 import net.minecraft.client.resource.language.TranslationStorage;
@@ -17,8 +18,8 @@ import java.util.Map;
 @Mixin(TranslationStorage.class)
 public abstract class TranslationStorageMixin {
 
-    @Inject(method = "load(Lnet/minecraft/resource/ResourceManager;Ljava/util/List;Z)Lnet/minecraft/client/resource/language/TranslationStorage;", at = @At(value = "INVOKE", target = "Lcom/google/common/collect/ImmutableMap;copyOf(Ljava/util/Map;)Lcom/google/common/collect/ImmutableMap;"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private static void dynamicLangStuff(ResourceManager resourceManager, List<String> definitionCodes, boolean rightToLeft, CallbackInfoReturnable<TranslationStorage> cir, Map<String, String> map) {
+    @Inject(method = "load(Lnet/minecraft/resource/ResourceManager;Ljava/util/List;Z)Lnet/minecraft/client/resource/language/TranslationStorage;", at = @At(value = "INVOKE", target = "Lcom/google/common/collect/ImmutableMap;copyOf(Ljava/util/Map;)Lcom/google/common/collect/ImmutableMap;"))
+    private static void dynamicLangStuff(ResourceManager resourceManager, List<String> definitionCodes, boolean rightToLeft, CallbackInfoReturnable<TranslationStorage> cir, @Local Map<String, String> map) {
         List<LanguageDefinition> definitions = List.copyOf(MinecraftClient.getInstance().getLanguageManager().getAllLanguages().values());
 
         TranslationInjectionEvent.AFTER_LANGUAGE_LOAD.invoker().generateLanguageTranslations(new TranslationInjectionEvent.TranslationMapHelper(map, definitions));

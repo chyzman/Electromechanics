@@ -118,3 +118,4 @@ run/
 !gradle-wrapper.jar
 src/main/generated/.cache/f067c5e2e007a812a0ac2eaf61773268f4620806
 /run_server/
+/src/main/generated/.cache/

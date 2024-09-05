@@ -9,5 +9,7 @@ public class ElectromechanicsDatagen implements DataGeneratorEntrypoint {
         var pack = fabricDataGenerator.createPack();
 
         pack.addProvider(EMRecipeGen::new);
+        pack.addProvider(EMLootTableGen::new);
+        pack.addProvider(EMTagGen.Blocks::new);
     }
 }

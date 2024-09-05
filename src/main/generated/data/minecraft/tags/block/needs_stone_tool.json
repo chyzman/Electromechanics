@@ -1,0 +1,9 @@
+{
+  "values": [
+    "electromechanics:stern_copper",
+    "electromechanics:observer_button",
+    "electromechanics:detector",
+    "electromechanics:advanced_detector",
+    "electromechanics:listener"
+  ]
+}
