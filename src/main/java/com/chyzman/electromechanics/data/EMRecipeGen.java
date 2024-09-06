@@ -4,10 +4,12 @@ import com.chyzman.electromechanics.Electromechanics;
 import com.chyzman.electromechanics.registries.RedstoneLogisticalBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.block.Blocks;
 import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.RecipeProvider;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
 import net.minecraft.predicate.item.ItemPredicate;
@@ -55,9 +57,9 @@ public class EMRecipeGen extends FabricRecipeProvider {
                         .offerTo(exporter, MessageFormat.format("dye_stone_wire_{0}", color));
             }
 
-            {
-                var colored_slime_slab = Registries.ITEM.get(Electromechanics.id(color.asString() + "_slime_slab"));
+            var colored_slime_slab = Registries.ITEM.get(Electromechanics.id(color.asString() + "_slime_slab"));
 
+            {
                 var otherSlabs = getColoredVariants("{0}_slime_slab", color);
 
                 otherSlabs.add(Registries.ITEM.get(Electromechanics.id("slime_slab")));
@@ -75,9 +77,9 @@ public class EMRecipeGen extends FabricRecipeProvider {
                         .offerTo(exporter, MessageFormat.format("dye_slime_slab_{0}", color));
             }
 
-            {
-                var colored_slime_block = Registries.ITEM.get(Electromechanics.id(color.asString() + "_slime_block"));
+            var colored_slime_block = Registries.ITEM.get(Electromechanics.id(color.asString() + "_slime_block"));
 
+            {
                 var otherBlocks = getColoredVariants("{0}_slime_block", color);
 
                 otherBlocks.add(Registries.ITEM.get(Identifier.of("slime_block")));
@@ -93,6 +95,14 @@ public class EMRecipeGen extends FabricRecipeProvider {
                         .criterion("has_dye", RecipeProvider.conditionsFromItem(dye_item))
                         .criterion("has_slime_blocks", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create().items(blockArray).build()))
                         .offerTo(exporter, MessageFormat.format("dye_slime_block_{0}", color));
+            }
+
+            {
+                ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, colored_slime_slab, 6)
+                        .input('S', colored_slime_block)
+                        .pattern("SSS")
+                        .criterion("has_slime_block", RecipeProvider.conditionsFromItem(Items.SLIME_BLOCK))
+                        .offerTo(exporter, color.asString() + "_slime_slab");
             }
         }
 
@@ -275,7 +285,7 @@ public class EMRecipeGen extends FabricRecipeProvider {
                 .criterion("has_redstone_wires", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create().items(wireArray).build()))
                 .offerTo(exporter, "counter_gate");
 
-        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, Registries.ITEM.get(Electromechanics.id("slime_slab")))
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, Registries.ITEM.get(Electromechanics.id("slime_slab")), 6)
                 .input('S', Items.SLIME_BLOCK)
                 .pattern("SSS")
                 .criterion("has_slime_block", RecipeProvider.conditionsFromItem(Items.SLIME_BLOCK))
@@ -291,6 +301,46 @@ public class EMRecipeGen extends FabricRecipeProvider {
                 .criterion("has_star", RecipeProvider.conditionsFromItem(Items.NETHER_STAR))
                 .criterion("has_copper", RecipeProvider.conditionsFromItem(Items.COPPER_BLOCK))
                 .offerTo(exporter, "stern_copper");
+
+        //--
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, RedstoneLogisticalBlocks.LISTENER)
+                .input('D', Blocks.COBBLESTONE)
+                .input('R', Items.REDSTONE)
+                .input('S', Blocks.SCULK_SENSOR)
+                .pattern("DDD")
+                .pattern("RRS")
+                .pattern("DDD")
+                .criterion("has_cobblestone", RecipeProvider.conditionsFromItem(Items.COBBLESTONE))
+                .criterion("has_redstone", RecipeProvider.conditionsFromItem(Items.REDSTONE))
+                .criterion("has_sculk_sensor", RecipeProvider.conditionsFromItem(Items.SCULK_SENSOR))
+                .offerTo(exporter, "listener");
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, RedstoneLogisticalBlocks.DETECTOR)
+                .input('D', Blocks.COBBLED_DEEPSLATE)
+                .input('R', Items.REDSTONE)
+                .input('Q', Items.QUARTZ)
+                .pattern("DDD")
+                .pattern("RRQ")
+                .pattern("DDD")
+                .criterion("has_cobblestone", RecipeProvider.conditionsFromItem(Items.COBBLESTONE))
+                .criterion("has_redstone", RecipeProvider.conditionsFromItem(Items.REDSTONE))
+                .criterion("has_quartz", RecipeProvider.conditionsFromItem(Items.QUARTZ))
+                .offerTo(exporter, "detector");
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, RedstoneLogisticalBlocks.ADVANCED_DETECTOR)
+                .input('I', Items.COPPER_INGOT)
+                .input('R', Items.REDSTONE)
+                .input('C', Items.COMPARATOR)
+                .input('D', RedstoneLogisticalBlocks.ADVANCED_DETECTOR)
+                .pattern("III")
+                .pattern("RCD")
+                .pattern("III")
+                .criterion("has_copper_ingot", RecipeProvider.conditionsFromItem(Items.COPPER_INGOT))
+                .criterion("has_redstone", RecipeProvider.conditionsFromItem(Items.REDSTONE))
+                .criterion("has_comparator", RecipeProvider.conditionsFromItem(Items.COMPARATOR))
+                .criterion("has_detector", RecipeProvider.conditionsFromItem(RedstoneLogisticalBlocks.DETECTOR))
+                .offerTo(exporter, "advanced_detector");
 
         ShapelessRecipeJsonBuilder.create(RecipeCategory.REDSTONE, RedstoneLogisticalBlocks.OBSERVER_BUTTON)
                 .input(Items.OBSERVER)

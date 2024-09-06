@@ -3,21 +3,22 @@
   "category": "redstone",
   "key": {
     "D": {
-      "item": "minecraft:cobbled_deepslate"
+      "item": "minecraft:cobblestone"
     },
     "R": {
       "item": "minecraft:redstone"
     },
-    "Q": {
-      "item": "minecraft:quartz"
+    "S": {
+      "item": "minecraft:sculk_sensor"
     }
   },
   "pattern": [
     "DDD",
-    "RRQ",
+    "RRS",
     "DDD"
   ],
   "result": {
-    "item": "electromechanics:detector"
+    "count": 1,
+    "id": "electromechanics:listener"
   }
 }

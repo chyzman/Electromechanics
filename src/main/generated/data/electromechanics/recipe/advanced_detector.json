@@ -2,17 +2,17 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
+    "C": {
+      "item": "minecraft:comparator"
+    },
+    "D": {
+      "item": "electromechanics:advanced_detector"
+    },
     "I": {
       "item": "minecraft:copper_ingot"
     },
     "R": {
       "item": "minecraft:redstone"
-    },
-    "C": {
-      "item": "minecraft:comparator"
-    },
-    "D": {
-      "item": "electromechanics:detector"
     }
   },
   "pattern": [
@@ -21,6 +21,7 @@
     "III"
   ],
   "result": {
-    "item": "electromechanics:advanced_detector"
+    "count": 1,
+    "id": "electromechanics:advanced_detector"
   }
 }
