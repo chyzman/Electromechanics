@@ -1,8 +1,11 @@
 package com.chyzman.electromechanics.data;
 
+import com.chyzman.electromechanics.block.slime.ColoredSlimeBlock;
 import com.chyzman.electromechanics.registries.RedstoneLogisticalBlocks;
+import com.chyzman.electromechanics.registries.RedstoneWires;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BlockTags;
@@ -29,7 +32,6 @@ public class EMTagGen {
 
             this.getOrCreateTagBuilder(BlockTags.NEEDS_STONE_TOOL)
                     .add(RedstoneLogisticalBlocks.STERN_COPPER,
-                            RedstoneLogisticalBlocks.OBSERVER_BUTTON,
                             RedstoneLogisticalBlocks.DETECTOR,
                             RedstoneLogisticalBlocks.ADVANCED_DETECTOR,
                             RedstoneLogisticalBlocks.LISTENER);

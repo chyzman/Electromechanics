@@ -4,6 +4,7 @@ import com.chyzman.electromechanics.Electromechanics;
 import com.chyzman.electromechanics.registries.RedstoneLogisticalBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.RecipeProvider;
@@ -48,7 +49,7 @@ public class EMRecipeGen extends FabricRecipeProvider {
 
                 ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, colored_wire, 8)
                         .input('X', dye_item)
-                        .input('#', Ingredient.ofItems(wireArray))
+                        .input('#', Ingredient.fromTag(ConventionalItemTags.REDSTONE_DUSTS))
                         .pattern("###")
                         .pattern("#X#")
                         .pattern("###")
@@ -113,7 +114,7 @@ public class EMRecipeGen extends FabricRecipeProvider {
         var wireArray = stoneWire.toArray(ItemConvertible[]::new);
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, RedstoneLogisticalBlocks.GATE)
-                .input('R', Ingredient.ofItems(wireArray))
+                .input('R', Ingredient.fromTag(ConventionalItemTags.REDSTONE_DUSTS))
                 .input('S', Items.STONE)
                 .pattern("   ")
                 .pattern("RRR")
@@ -122,7 +123,7 @@ public class EMRecipeGen extends FabricRecipeProvider {
                 .offerTo(exporter, "gate");
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, RedstoneLogisticalBlocks.AND_GATE)
-                .input('R', Ingredient.ofItems(wireArray))
+                .input('R', Ingredient.fromTag(ConventionalItemTags.REDSTONE_DUSTS))
                 .input('T', Items.REDSTONE_TORCH)
                 .input('S', Items.STONE)
                 .input('L', Items.LEVER)
@@ -133,7 +134,7 @@ public class EMRecipeGen extends FabricRecipeProvider {
                 .offerTo(exporter, "and_gate");
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, RedstoneLogisticalBlocks.OR_GATE)
-                .input('R', Ingredient.ofItems(wireArray))
+                .input('R', Ingredient.fromTag(ConventionalItemTags.REDSTONE_DUSTS))
                 .input('S', Items.STONE)
                 .input('L', Items.LEVER)
                 .pattern(" R ")
@@ -143,7 +144,7 @@ public class EMRecipeGen extends FabricRecipeProvider {
                 .offerTo(exporter, "or_gate");
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, RedstoneLogisticalBlocks.XOR_GATE)
-                .input('R', Ingredient.ofItems(wireArray))
+                .input('R', Ingredient.fromTag(ConventionalItemTags.REDSTONE_DUSTS))
                 .input('C', Items.COMPARATOR)
                 .input('S', Items.STONE)
                 .input('L', Items.LEVER)
@@ -154,7 +155,7 @@ public class EMRecipeGen extends FabricRecipeProvider {
                 .offerTo(exporter, "xor_gate");
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, RedstoneLogisticalBlocks.TIMER)
-                .input('R', Ingredient.ofItems(wireArray))
+                .input('R', Ingredient.fromTag(ConventionalItemTags.REDSTONE_DUSTS))
                 .input('S', Items.STONE)
                 .input('T', Items.REPEATER)
                 .pattern("RTR")
@@ -164,7 +165,7 @@ public class EMRecipeGen extends FabricRecipeProvider {
                 .offerTo(exporter, "timer");
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, RedstoneLogisticalBlocks.ADVANCED_TIMER)
-                .input('R', Ingredient.ofItems(wireArray))
+                .input('R', Ingredient.fromTag(ConventionalItemTags.REDSTONE_DUSTS))
                 .input('T', RedstoneLogisticalBlocks.TIMER)
                 .input('L', Items.LEVER)
                 .pattern(" R ")
@@ -175,7 +176,7 @@ public class EMRecipeGen extends FabricRecipeProvider {
                 .offerTo(exporter, "advanced_timer");
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, RedstoneLogisticalBlocks.DIRECTABLE_GATE)
-                .input('R', Ingredient.ofItems(wireArray))
+                .input('R', Ingredient.fromTag(ConventionalItemTags.REDSTONE_DUSTS))
                 .input('G', RedstoneLogisticalBlocks.GATE)
                 .input('P', Items.STICKY_PISTON)
                 .input('L', Items.LEVER)
@@ -187,7 +188,7 @@ public class EMRecipeGen extends FabricRecipeProvider {
                 .offerTo(exporter, "directable_gate");
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, RedstoneLogisticalBlocks.CROSS_GATE)
-                .input('R', Ingredient.ofItems(wireArray))
+                .input('R', Ingredient.fromTag(ConventionalItemTags.REDSTONE_DUSTS))
                 .input('G', RedstoneLogisticalBlocks.GATE)
                 .input('P', Items.STICKY_PISTON)
                 .input('L', Items.LEVER)
@@ -199,7 +200,7 @@ public class EMRecipeGen extends FabricRecipeProvider {
                 .offerTo(exporter, "cross_gate");
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, RedstoneLogisticalBlocks.ANALOG_GATE)
-                .input('R', Ingredient.ofItems(wireArray))
+                .input('R', Ingredient.fromTag(ConventionalItemTags.REDSTONE_DUSTS))
                 .input('S', Items.STONE)
                 .input('Q', Items.QUARTZ)
                 .pattern("   ")
@@ -209,7 +210,7 @@ public class EMRecipeGen extends FabricRecipeProvider {
                 .offerTo(exporter, "analog_gate");
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, RedstoneLogisticalBlocks.ADDITION_GATE)
-                .input('R', Ingredient.ofItems(wireArray))
+                .input('R', Ingredient.fromTag(ConventionalItemTags.REDSTONE_DUSTS))
                 .input('C', Items.COMPARATOR)
                 .input('S', Items.STONE)
                 .input('Q', Items.QUARTZ)
@@ -220,7 +221,7 @@ public class EMRecipeGen extends FabricRecipeProvider {
                 .offerTo(exporter, "addition_gate");
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, RedstoneLogisticalBlocks.SUBTRACTION_GATE)
-                .input('R', Ingredient.ofItems(wireArray))
+                .input('R', Ingredient.fromTag(ConventionalItemTags.REDSTONE_DUSTS))
                 .input('C', Items.COMPARATOR)
                 .input('S', Items.STONE)
                 .input('Q', Items.QUARTZ)
@@ -231,7 +232,7 @@ public class EMRecipeGen extends FabricRecipeProvider {
                 .offerTo(exporter, "subtraction_gate");
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, RedstoneLogisticalBlocks.MULTIPLICATION_GATE)
-                .input('R', Ingredient.ofItems(wireArray))
+                .input('R', Ingredient.fromTag(ConventionalItemTags.REDSTONE_DUSTS))
                 .input('C', Items.COMPARATOR)
                 .input('S', Items.STONE)
                 .input('A', Items.AMETHYST_SHARD)
@@ -242,7 +243,7 @@ public class EMRecipeGen extends FabricRecipeProvider {
                 .offerTo(exporter, "multiplication_gate");
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, RedstoneLogisticalBlocks.DIVISION_GATE)
-                .input('R', Ingredient.ofItems(wireArray))
+                .input('R', Ingredient.fromTag(ConventionalItemTags.REDSTONE_DUSTS))
                 .input('C', Items.COMPARATOR)
                 .input('S', Items.STONE)
                 .input('A', Items.AMETHYST_SHARD)
@@ -253,7 +254,7 @@ public class EMRecipeGen extends FabricRecipeProvider {
                 .offerTo(exporter, "division_gate");
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, RedstoneLogisticalBlocks.MODULUS_GATE)
-                .input('R', Ingredient.ofItems(wireArray))
+                .input('R', Ingredient.fromTag(ConventionalItemTags.REDSTONE_DUSTS))
                 .input('D', RedstoneLogisticalBlocks.DIVISION_GATE)
                 .input('M', RedstoneLogisticalBlocks.MULTIPLICATION_GATE)
                 .input('T', RedstoneLogisticalBlocks.SUBTRACTION_GATE)
@@ -265,7 +266,7 @@ public class EMRecipeGen extends FabricRecipeProvider {
                 .offerTo(exporter, "modulus_gate");
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, RedstoneLogisticalBlocks.T_FLIP_FLOP)
-                .input('R', Ingredient.ofItems(wireArray))
+                .input('R', Ingredient.fromTag(ConventionalItemTags.REDSTONE_DUSTS))
                 .input('S', Items.STONE)
                 .input('L', Items.LEVER)
                 .pattern("   ")
@@ -275,7 +276,7 @@ public class EMRecipeGen extends FabricRecipeProvider {
                 .offerTo(exporter, "t_flip_flop_gate");
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, RedstoneLogisticalBlocks.COUNTER_GATE)
-                .input('R', Ingredient.ofItems(wireArray))
+                .input('R', Ingredient.fromTag(ConventionalItemTags.REDSTONE_DUSTS))
                 .input('S', Items.STONE)
                 .input('H', Items.HOPPER)
                 .input('C', Items.COMPARATOR)
