@@ -5,59 +5,9 @@
     "L": {
       "item": "minecraft:lever"
     },
-    "R": [
-      {
-        "item": "electromechanics:white_redstone_wire"
-      },
-      {
-        "item": "electromechanics:orange_redstone_wire"
-      },
-      {
-        "item": "electromechanics:magenta_redstone_wire"
-      },
-      {
-        "item": "electromechanics:light_blue_redstone_wire"
-      },
-      {
-        "item": "electromechanics:yellow_redstone_wire"
-      },
-      {
-        "item": "electromechanics:lime_redstone_wire"
-      },
-      {
-        "item": "electromechanics:pink_redstone_wire"
-      },
-      {
-        "item": "electromechanics:gray_redstone_wire"
-      },
-      {
-        "item": "electromechanics:light_gray_redstone_wire"
-      },
-      {
-        "item": "electromechanics:cyan_redstone_wire"
-      },
-      {
-        "item": "electromechanics:purple_redstone_wire"
-      },
-      {
-        "item": "electromechanics:blue_redstone_wire"
-      },
-      {
-        "item": "electromechanics:brown_redstone_wire"
-      },
-      {
-        "item": "electromechanics:green_redstone_wire"
-      },
-      {
-        "item": "electromechanics:red_redstone_wire"
-      },
-      {
-        "item": "electromechanics:black_redstone_wire"
-      },
-      {
-        "item": "minecraft:redstone"
-      }
-    ],
+    "R": {
+      "tag": "c:dusts/redstone"
+    },
     "T": {
       "item": "electromechanics:timer"
     }
