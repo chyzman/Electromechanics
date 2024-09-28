@@ -3,9 +3,12 @@ package com.chyzman.electromechanics.mixin;
 import com.bawnorton.mixinsquared.TargetHandler;
 import com.chyzman.electromechanics.block.redstone.RedstoneEvents;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.RedstoneWireBlock;
 import net.minecraft.state.property.IntProperty;
@@ -28,18 +31,18 @@ public abstract class Lithium_RedstoneWireBlockMixin {
             mixin = "me.jellysquid.mods.lithium.mixin.block.redstone_wire.RedstoneWireBlockMixin",
             name = "getReceivedPower"
     )
-    @ModifyExpressionValue(method = "@MixinSquared:Handler", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isOf(Lnet/minecraft/block/Block;)Z"))
-    private boolean adjustIsOfCheck1(boolean orignal, @Local(ordinal = 0) BlockState neighbor){
-        return orignal || neighbor.getBlock() instanceof RedstoneWireBlock;
+    @WrapOperation(method = "@MixinSquared:Handler", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isOf(Lnet/minecraft/block/Block;)Z"))
+    private boolean adjustIsOfCheck1(BlockState state, Block block, Operation<Boolean> orignal){
+        return orignal.call(state, block) || state.getBlock() instanceof RedstoneWireBlock;
     }
 
     @TargetHandler(
             mixin = "me.jellysquid.mods.lithium.mixin.block.redstone_wire.RedstoneWireBlockMixin",
             name = "getStrongPowerTo"
     )
-    @ModifyExpressionValue(method = "@MixinSquared:Handler", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isOf(Lnet/minecraft/block/Block;)Z"))
-    private boolean adjustIsOfCheck2(boolean orignal, @Local(ordinal = 0) BlockState neighbor){
-        return orignal || neighbor.getBlock() instanceof RedstoneWireBlock;
+    @WrapOperation(method = "@MixinSquared:Handler", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isOf(Lnet/minecraft/block/Block;)Z"))
+    private boolean adjustIsOfCheck2(BlockState state, Block block, Operation<Boolean> orignal){
+        return orignal.call(state, block) || state.getBlock() instanceof RedstoneWireBlock;
     }
 
     //--
@@ -51,6 +54,7 @@ public abstract class Lithium_RedstoneWireBlockMixin {
     @Inject(method = "@MixinSquared:Handler", at = @At("HEAD"))
     private void initData(World world, BlockPos pos2, Direction direction, boolean checkWiresAbove, CallbackInfoReturnable<Integer> cir, @Share("pos") LocalRef<BlockPos> pos, @Share("state") LocalRef<BlockState> state){
         pos.set(pos2.offset(direction.getOpposite()));
+
         state.set(world.getBlockState(pos.get()));
     }
 

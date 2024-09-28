@@ -33,6 +33,16 @@ public class RedstoneEvents {
             }
     );
 
+    private static boolean GLOBAL_WIRES_GIVE_POWER = false;
+
+    public static void setGlobalWiresGivePower(boolean value) {
+        GLOBAL_WIRES_GIVE_POWER = value;
+    }
+
+    public static boolean getGlobalWiresGivePower() {
+        return GLOBAL_WIRES_GIVE_POWER;
+    }
+
     public interface ValidConnection {
         boolean shouldCancel(BlockView world, BlockPos pos, BlockState state, BlockPos pos2, BlockState state2);
     }

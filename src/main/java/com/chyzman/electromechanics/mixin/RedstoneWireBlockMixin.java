@@ -3,6 +3,7 @@ package com.chyzman.electromechanics.mixin;
 import com.chyzman.electromechanics.block.redstone.RedstoneEvents;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -13,6 +14,7 @@ import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -22,46 +24,43 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.Map;
 
-@Mixin(RedstoneWireBlock.class)
+@Mixin(value = RedstoneWireBlock.class, priority = 999)
 public abstract class RedstoneWireBlockMixin {
 
     @Shadow @Final public static Map<Direction, EnumProperty<WireConnection>> DIRECTION_TO_WIRE_CONNECTION_PROPERTY;
 
     @Shadow protected abstract WireConnection getRenderConnectionType(BlockView world, BlockPos pos, Direction direction, boolean bl);
 
-    @Unique
-    private static boolean GLOBAL_WIRES_GIVE_POWER = false;
-
     @Inject(method = "connectsTo(Lnet/minecraft/block/BlockState;Lnet/minecraft/util/math/Direction;)Z",
             at = @At("HEAD"), cancellable = true)
     private static void handleCustomConnections(BlockState state, Direction dir, CallbackInfoReturnable<Boolean> cir) {
-        if (state.getBlock() instanceof RedstoneWireBlock) {
-            cir.setReturnValue(true);
-        }
+        if (state.getBlock() instanceof RedstoneWireBlock) cir.setReturnValue(true);
     }
 
     // --
 
-    @Inject(
-            method = "getReceivedRedstonePower",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getReceivedRedstonePower(Lnet/minecraft/util/math/BlockPos;)I", shift = At.Shift.BEFORE, id = "b")
-    )
-    private void globalToggleOff(World world, BlockPos pos, CallbackInfoReturnable<Integer> cir){
-        GLOBAL_WIRES_GIVE_POWER = false;
+    // Injection for lithium only really and will be set to false right away if using vanilla behavior
+    @Inject(method = {"getReceivedRedstonePower"}, at = @At("HEAD"))
+    private void getReceivedPowerFaster(World world, BlockPos pos, CallbackInfoReturnable<Integer> cir) {
+        RedstoneEvents.setGlobalWiresGivePower(true);
     }
 
-    @Inject(
+    @WrapOperation(
             method = "getReceivedRedstonePower",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getReceivedRedstonePower(Lnet/minecraft/util/math/BlockPos;)I", shift = At.Shift.AFTER, id = "a")
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getReceivedRedstonePower(Lnet/minecraft/util/math/BlockPos;)I", id = "b")
     )
-    private void globalToggleOn(World world, BlockPos pos, CallbackInfoReturnable<Integer> cir){
-        GLOBAL_WIRES_GIVE_POWER = true;
+    private int globalToggleOff(World instance, BlockPos pos, Operation<Integer> original){
+        RedstoneEvents.setGlobalWiresGivePower(false);
+
+        var value = original.call(instance, pos);
+
+        RedstoneEvents.setGlobalWiresGivePower(true);
+
+        return value;
     }
 
     @ModifyExpressionValue(
@@ -69,7 +68,7 @@ public abstract class RedstoneWireBlockMixin {
             at = @At(value = "FIELD", target = "Lnet/minecraft/block/RedstoneWireBlock;wiresGivePower:Z")
     )
     private boolean useGlobalGivePower(boolean original){
-        return original && GLOBAL_WIRES_GIVE_POWER;
+        return original && RedstoneEvents.getGlobalWiresGivePower();
     }
 
     // --
@@ -98,13 +97,13 @@ public abstract class RedstoneWireBlockMixin {
 
     // --
 
-    @Inject(
-            method = "getRenderConnectionType(Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/Direction;Z)Lnet/minecraft/block/enums/WireConnection;",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/BlockView;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;", ordinal = 0, shift = At.Shift.BY, by = 2),
-            cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD
+    @WrapMethod(
+            method = "getRenderConnectionType(Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/Direction;Z)Lnet/minecraft/block/enums/WireConnection;"
     )
-    private void preventConnectionIfInvalid(BlockView world, BlockPos pos, Direction direction, boolean bl, CallbackInfoReturnable<WireConnection> cir, BlockPos blockPos, BlockState blockState){
-        if(!isValid(world, direction, pos, null)) cir.setReturnValue(WireConnection.NONE);
+    private WireConnection preventConnectionIfInvalid(BlockView world, BlockPos pos, Direction direction, boolean bl, Operation<WireConnection> original){
+        return (!isValid(world, direction, pos, null))
+                ? WireConnection.NONE
+                : original.call(world, pos, direction, bl);
     }
 
     @WrapOperation(
@@ -112,9 +111,7 @@ public abstract class RedstoneWireBlockMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/block/RedstoneWireBlock;connectsTo(Lnet/minecraft/block/BlockState;)Z", ordinal = 0)
     )
     private boolean validConnectionCheckUp(BlockState state2, Operation<Boolean> original, @Local(argsOnly = true) BlockView world, @Local(argsOnly = true) Direction direction, @Local(argsOnly = true) BlockPos pos){
-        if(!isValid(world, direction, pos, Direction.UP)) return false;
-
-        return original.call(state2);
+        return isValid(world, direction, pos, Direction.UP) && original.call(state2);
     }
 
     @WrapOperation(
@@ -122,9 +119,7 @@ public abstract class RedstoneWireBlockMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/block/RedstoneWireBlock;connectsTo(Lnet/minecraft/block/BlockState;)Z", ordinal = 1)
     )
     private boolean validConnectionCheckDown(BlockState state2, Operation<Boolean> original, @Local(argsOnly = true) BlockView world, @Local(argsOnly = true) Direction direction, @Local(argsOnly = true) BlockPos pos){
-        if(!isValid(world, direction, pos, Direction.DOWN)) return false;
-
-        return original.call(state2);
+        return isValid(world, direction, pos, Direction.DOWN) && original.call(state2);
     }
 
     // --
@@ -158,7 +153,7 @@ public abstract class RedstoneWireBlockMixin {
                 }
             }
 
-            blockStateCache.set(null);
+            blockStateCache.remove();
 
             state = state.with(DIRECTION_TO_WIRE_CONNECTION_PROPERTY.get(direction), wireConnection);
         }
@@ -168,20 +163,18 @@ public abstract class RedstoneWireBlockMixin {
         return state;
     }
 
-    @Inject(
+    @WrapOperation(
             method = "getDefaultWireState",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/block/RedstoneWireBlock;getRenderConnectionType(Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/Direction;Z)Lnet/minecraft/block/enums/WireConnection;", shift = At.Shift.BEFORE)
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/block/RedstoneWireBlock;getRenderConnectionType(Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/Direction;Z)Lnet/minecraft/block/enums/WireConnection;")
     )
-    private void setCache(BlockView world, BlockState state, BlockPos pos, CallbackInfoReturnable<BlockState> cir){
+    private WireConnection setCache(RedstoneWireBlock instance, BlockView world, BlockPos pos, Direction direction, boolean bl, Operation<WireConnection> original, @Local(argsOnly = true) BlockState state){
         this.blockStateCache.set(state);
-    }
 
-    @Inject(
-            method = "getDefaultWireState",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/block/RedstoneWireBlock;getRenderConnectionType(Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/Direction;Z)Lnet/minecraft/block/enums/WireConnection;", shift = At.Shift.AFTER)
-    )
-    private void clearCache(BlockView world, BlockState state, BlockPos pos, CallbackInfoReturnable<BlockState> cir){
-        this.blockStateCache.set(null);
+        var connection = original.call(instance, world, pos, direction, bl);
+
+        this.blockStateCache.remove();
+
+        return connection;
     }
 
     @Unique
@@ -191,9 +184,7 @@ public abstract class RedstoneWireBlockMixin {
         if(!(blockState.getBlock() instanceof RedstoneWireBlock)) {
             var cacheState = blockStateCache.get();
 
-            if(cacheState != null) {
-                blockState = cacheState;
-            }
+            if(cacheState != null) blockState = cacheState;
         }
 
         return isValid(world, primaryDir, pos, blockState, additionalDir);
@@ -215,17 +206,16 @@ public abstract class RedstoneWireBlockMixin {
 
     //--
 
-    @ModifyArg(
+    @WrapOperation(
             method = "randomDisplayTick",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/block/RedstoneWireBlock;addPoweredParticles(Lnet/minecraft/world/World;Lnet/minecraft/util/math/random/Random;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Direction;Lnet/minecraft/util/math/Direction;FF)V"
-            ),
-            index = 3
+            )
     )
-    private Vec3d checkForDifferentColor(Vec3d color, @Local(argsOnly = true) World world, @Local(argsOnly = true) BlockPos pos, @Local(argsOnly = true) BlockState state){
+    private void checkForDifferentColor(RedstoneWireBlock instance, World world, Random random, BlockPos pos, Vec3d color, Direction direction, Direction direction2, float f, float g, Operation<Void> original, @Local(argsOnly = true) BlockState state){
         var newColor = RedstoneEvents.PARTICLE_COLOR_GATHERER_EVENT.invoker().getColor(world, pos, state);
 
-        return newColor != null ? newColor : color;
+        original.call(instance, world, random, pos, (newColor != null ? newColor : color), direction, direction2, f, g);
     }
 }
