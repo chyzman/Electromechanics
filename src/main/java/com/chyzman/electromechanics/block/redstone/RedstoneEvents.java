@@ -3,6 +3,7 @@ package com.chyzman.electromechanics.block.redstone;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.RedstoneWireBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BlockView;
@@ -46,4 +47,12 @@ public class RedstoneEvents {
     public interface ValidConnection {
         boolean shouldCancel(BlockView world, BlockPos pos, BlockState state, BlockPos pos2, BlockState state2);
     }
+
+    public static boolean isValid(BlockView world, BlockPos pos, BlockState state, BlockPos pos2, BlockState state2){
+        if(!(state2.getBlock() instanceof RedstoneWireBlock)) return false;
+
+        return !RedstoneEvents.SHOULD_CANCEl_CONNECTION.invoker()
+                .shouldCancel(world, pos, state, pos2, state2);
+    }
+
 }

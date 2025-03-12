@@ -8,7 +8,7 @@
     "AbstractRedstoneGateBlockMixin",
     "BlockEntityAccessor",
     "BlockEntityTypeAccessor",
-    "Lithium_RedstoneWireBlockMixin",
+    "lithium.Lithium_RedstoneWireBlockMixin",
     "ObserverBlockAccessor",
     "PistonHandlerMixin",
     "RedstoneViewMixin",

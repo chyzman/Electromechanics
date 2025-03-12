@@ -12,7 +12,7 @@ public class ImplMixinConfigPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        if(mixinClassName.contains("Lithium")){
+        if(mixinClassName.contains("lithium")){
             return FabricLoader.getInstance().isModLoaded("lithium");
         }
 
