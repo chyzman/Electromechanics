@@ -7,7 +7,7 @@
       "model": "electromechanics:block/colored_double_slime_slab"
     },
     "type=top": {
-      "model": "electromechanics:block/colored_slime_slab"
+      "model": "electromechanics:block/colored_slime_slab_top"
     }
   }
 }
