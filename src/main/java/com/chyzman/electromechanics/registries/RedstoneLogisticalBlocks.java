@@ -9,7 +9,7 @@ import com.chyzman.electromechanics.item.GateBlockItem;
 import com.chyzman.electromechanics.logic.DigitalGateHandlers;
 import com.chyzman.electromechanics.logic.AnalogGateHandlers;
 import com.chyzman.electromechanics.logic.DirectionGateHandlers;
-import com.chyzman.electromechanics.logic.api.TimerGateHandlers;
+import com.chyzman.electromechanics.logic.TimerGateHandlers;
 import com.google.common.collect.ImmutableList;
 import io.wispforest.owo.registration.reflect.BlockRegistryContainer;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;

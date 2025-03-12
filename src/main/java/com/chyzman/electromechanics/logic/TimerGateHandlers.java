@@ -1,7 +1,8 @@
-package com.chyzman.electromechanics.logic.api;
+package com.chyzman.electromechanics.logic;
 
 import com.chyzman.electromechanics.Electromechanics;
-import com.chyzman.electromechanics.logic.IOConfigurations;
+import com.chyzman.electromechanics.logic.api.GateHandler;
+import com.chyzman.electromechanics.logic.api.GateOutputFunction;
 import com.chyzman.electromechanics.logic.api.configuration.Side;
 import com.chyzman.electromechanics.logic.api.configuration.SignalConfiguration;
 import com.chyzman.electromechanics.logic.api.configuration.SignalType;
