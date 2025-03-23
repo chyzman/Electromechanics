@@ -78,7 +78,7 @@ public abstract class Lithium_RedstoneWireBlockMixin {
             name = "getPowerFromSide"
     )
     @ModifyExpressionValue(method = "@MixinSquared:Handler", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isOf(Lnet/minecraft/block/Block;)Z", ordinal = 2))
-    private boolean adjustIsOfCheck5(boolean orignal, @Local(argsOnly = true) World world, @Local(name = "down") BlockPos down, @Local(name = "belowState") BlockState belowState, @Share("pos") LocalRef<BlockPos> pos, @Share("state") LocalRef<BlockState> state){
+    private boolean adjustIsOfCheck5(boolean orignal, @Local(argsOnly = true) World world, @Local(name = "down") BlockPos down, @Local(name = "belowState") BlockState belowState, @Share(namespace = "electromechanics", value = "pos") LocalRef<BlockPos> pos, @Share(namespace = "electromechanics", value = "state") LocalRef<BlockState> state){
         return orignal || RedstoneEvents.isValid(world, pos.get(), state.get(), down, belowState);
     }
 }
