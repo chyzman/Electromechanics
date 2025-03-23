@@ -28,7 +28,7 @@ public abstract class Lithium_RedstoneWireBlockMixin {
             mixin = "net.caffeinemc.mods.lithium.mixin.block.redstone_wire.RedStoneWireBlockMixin",
             name = "getReceivedPower"
     )
-    @WrapOperation(method = "@MixinSquared:Handler", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isOf(Lnet/minecraft/block/Block;)Z"), remap = false)
+    @WrapOperation(method = "@MixinSquared:Handler", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isOf(Lnet/minecraft/block/Block;)Z"))
     private boolean adjustIsOfCheck1(BlockState state, Block block, Operation<Boolean> orignal){
         return orignal.call(state, block) || state.getBlock() instanceof RedstoneWireBlock;
     }
@@ -37,7 +37,7 @@ public abstract class Lithium_RedstoneWireBlockMixin {
             mixin = "net.caffeinemc.mods.lithium.mixin.block.redstone_wire.RedStoneWireBlockMixin",
             name = "getStrongPowerTo"
     )
-    @WrapOperation(method = "@MixinSquared:Handler", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isOf(Lnet/minecraft/block/Block;)Z"), remap = false)
+    @WrapOperation(method = "@MixinSquared:Handler", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isOf(Lnet/minecraft/block/Block;)Z"))
     private boolean adjustIsOfCheck2(BlockState state, Block block, Operation<Boolean> orignal){
         return orignal.call(state, block) || state.getBlock() instanceof RedstoneWireBlock;
     }
@@ -48,8 +48,8 @@ public abstract class Lithium_RedstoneWireBlockMixin {
             mixin = "net.caffeinemc.mods.lithium.mixin.block.redstone_wire.RedStoneWireBlockMixin",
             name = "getPowerFromSide"
     )
-    @Inject(method = "@MixinSquared:Handler", at = @At("HEAD"), remap = false)
-    private void initData(World world, BlockPos pos2, Direction direction, boolean checkWiresAbove, CallbackInfoReturnable<Integer> cir, @Share("pos") LocalRef<BlockPos> pos, @Share("state") LocalRef<BlockState> state){
+    @Inject(method = "@MixinSquared:Handler", at = @At("HEAD"))
+    private void initData(World world, BlockPos pos2, Direction direction, boolean checkWiresAbove, CallbackInfoReturnable<Integer> cir, @Share(namespace = "electromechanics", value = "pos") LocalRef<BlockPos> pos, @Share(namespace = "electromechanics", value = "state") LocalRef<BlockState> state){
         pos.set(pos2.offset(direction.getOpposite()));
 
         state.set(world.getBlockState(pos.get()));
@@ -59,8 +59,8 @@ public abstract class Lithium_RedstoneWireBlockMixin {
             mixin = "net.caffeinemc.mods.lithium.mixin.block.redstone_wire.RedStoneWireBlockMixin",
             name = "getPowerFromSide"
     )
-    @ModifyExpressionValue(method = "@MixinSquared:Handler", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isOf(Lnet/minecraft/block/Block;)Z", ordinal = 0), remap = false)
-    private boolean adjustIsOfCheck3(boolean orignal, @Local(argsOnly = true) World world, @Local(argsOnly = true) BlockPos pos2, @Local(ordinal = 0) BlockState state2, @Share("pos") LocalRef<BlockPos> pos, @Share("state") LocalRef<BlockState> state){
+    @ModifyExpressionValue(method = "@MixinSquared:Handler", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isOf(Lnet/minecraft/block/Block;)Z", ordinal = 0))
+    private boolean adjustIsOfCheck3(boolean orignal, @Local(argsOnly = true) World world, @Local(argsOnly = true) BlockPos pos2, @Local(ordinal = 0) BlockState state2, @Share(namespace = "electromechanics", value = "pos") LocalRef<BlockPos> pos, @Share(namespace = "electromechanics", value = "state") LocalRef<BlockState> state){
         return orignal || RedstoneEvents.isValid(world, pos.get(), state.get(), pos2, state2);
     }
 
@@ -68,8 +68,8 @@ public abstract class Lithium_RedstoneWireBlockMixin {
             mixin = "net.caffeinemc.mods.lithium.mixin.block.redstone_wire.RedStoneWireBlockMixin",
             name = "getPowerFromSide"
     )
-    @ModifyExpressionValue(method = "@MixinSquared:Handler", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isOf(Lnet/minecraft/block/Block;)Z", ordinal = 1), remap = false)
-    private boolean adjustIsOfCheck4(boolean orignal, @Local(argsOnly = true) World world, @Local(ordinal = 1) BlockPos up, @Local(ordinal = 1) BlockState aboveState, @Share("pos") LocalRef<BlockPos> pos, @Share("state") LocalRef<BlockState> state){
+    @ModifyExpressionValue(method = "@MixinSquared:Handler", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isOf(Lnet/minecraft/block/Block;)Z", ordinal = 1))
+    private boolean adjustIsOfCheck4(boolean orignal, @Local(argsOnly = true) World world, @Local(ordinal = 1) BlockPos up, @Local(ordinal = 1) BlockState aboveState, @Share(namespace = "electromechanics", value = "pos") LocalRef<BlockPos> pos, @Share(namespace = "electromechanics", value = "state") LocalRef<BlockState> state){
         return orignal || RedstoneEvents.isValid(world, pos.get(), state.get(), up, aboveState);
     }
 
@@ -77,7 +77,7 @@ public abstract class Lithium_RedstoneWireBlockMixin {
             mixin = "net.caffeinemc.mods.lithium.mixin.block.redstone_wire.RedStoneWireBlockMixin",
             name = "getPowerFromSide"
     )
-    @ModifyExpressionValue(method = "@MixinSquared:Handler", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isOf(Lnet/minecraft/block/Block;)Z", ordinal = 2), remap = false)
+    @ModifyExpressionValue(method = "@MixinSquared:Handler", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isOf(Lnet/minecraft/block/Block;)Z", ordinal = 2))
     private boolean adjustIsOfCheck5(boolean orignal, @Local(argsOnly = true) World world, @Local(name = "down") BlockPos down, @Local(name = "belowState") BlockState belowState, @Share("pos") LocalRef<BlockPos> pos, @Share("state") LocalRef<BlockState> state){
         return orignal || RedstoneEvents.isValid(world, pos.get(), state.get(), down, belowState);
     }
