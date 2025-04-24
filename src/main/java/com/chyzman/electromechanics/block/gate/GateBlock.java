@@ -142,6 +142,8 @@ public class GateBlock extends AbstractRedstoneGateBlock implements ImplBlockEnt
         if (!this.isLocked(world, pos, state)) {
             WorldGateContext context = WorldGateContext.of(world, pos);
 
+            if (context == null) return;
+
             context.toggleUpdateOutput(true);
 
             for (Side changedOutput : this.handler.changedOutputs(context)) {
@@ -163,6 +165,8 @@ public class GateBlock extends AbstractRedstoneGateBlock implements ImplBlockEnt
     public void updatePowered(World world, BlockPos pos, BlockState state) {
         if (!this.isLocked(world, pos, state)) {
             WorldGateContext context = WorldGateContext.of(world, pos);
+
+            if (context == null) return;
 
             boolean bl = false;
 
@@ -199,6 +203,8 @@ public class GateBlock extends AbstractRedstoneGateBlock implements ImplBlockEnt
 
         var context = WorldGateContext.of(world, pos);
 
+        if (context == null) return ActionResult.FAIL;
+
         var result = handler.interactWithGate(context);
 
         if(result == ActionResult.SUCCESS){
@@ -218,6 +224,8 @@ public class GateBlock extends AbstractRedstoneGateBlock implements ImplBlockEnt
 
         WorldGateContext context = WorldGateContext.of(world, pos);
 
+        if (context == null) return 0;
+
         var side = context.getSide(direction.getOpposite());
 
         if(!this.handler.getOutputs(context.storage()).contains(side)) return 0;
@@ -234,6 +242,8 @@ public class GateBlock extends AbstractRedstoneGateBlock implements ImplBlockEnt
 
         WorldGateContext context = WorldGateContext.of(world, pos);
 
+        if (context == null) return 0;
+
         return context.storage().getOutputPower(context.getSide(context.getFacing()));
     }
 
@@ -243,6 +253,8 @@ public class GateBlock extends AbstractRedstoneGateBlock implements ImplBlockEnt
         var context = WorldGateContext.of(world, pos);
 
         //handler.isPowered(context);
+
+        if (context == null) return false;
 
         return context.storage().isOutputtingPower();
     }

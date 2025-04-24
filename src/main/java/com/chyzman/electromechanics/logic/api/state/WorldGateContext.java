@@ -9,6 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.RedstoneView;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class WorldGateContext extends GateContext {
 
@@ -25,8 +26,11 @@ public class WorldGateContext extends GateContext {
         this.world = world;
     }
 
+    @Nullable
     public static WorldGateContext of(World world, BlockPos pos) {
-        var blockEntity = world.getBlockEntity(pos, GateBlockEntity.getBlockEntityType()).get();
+        var blockEntity = world.getBlockEntity(pos, GateBlockEntity.getBlockEntityType()).orElse(null);
+
+        if (blockEntity == null) return null;
 
         return new WorldGateContext(world, pos, blockEntity.storage(), world.getBlockState(pos));
     }

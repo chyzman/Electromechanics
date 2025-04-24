@@ -115,7 +115,11 @@ public class GateBlockEntity extends BlockEntity {
     public void tick() {
         if(this.world.isClient()) return;
 
-        var result = this.handler.onTick(WorldGateContext.of(this.world, this.pos));
+        var context = WorldGateContext.of(this.world, this.pos);
+
+        if (context == null) return;
+
+        var result = this.handler.onTick(context);
 
         if(result == ActionResult.SUCCESS){
             world.updateNeighborsAlways(pos, this.getCachedState().getBlock());
